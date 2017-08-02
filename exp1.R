@@ -22,7 +22,7 @@ dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$numeroErros[dados$numeroErros > 1] <- 1
-#dados$palavroes[dados$palavroes > 1] <- 1
+dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
@@ -226,7 +226,7 @@ print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
              method = "svmLinear", 
-             trControl = trainControl(method = "cv", number = 10, savePred=T)
+             trControl = trainControl(method = "cv", number = 5, savePred=T)
              #,preProc=c("center", "scale", "nzv")
              ,preProc=c("center")
 ) 
