@@ -124,7 +124,7 @@ library(RWeka)
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
-manter <- round(length(aspectos) * 0.25)
+manter <- round(length(aspectos) * 0.50)
 aspectosManter <- c()
 aspectosRemover <- c()
 
@@ -176,7 +176,7 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
 maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
-save(maFinal, file = "dados_0108.Rda")
+#save(maFinal, file = "dados_0108.Rda")
 
 
 #Sob demanda
@@ -197,6 +197,8 @@ FILE <- "exp1_completao.Rda"
 
 #save(maFinal, file=FILE)
 #load(FILE)
+
+colnames(maFinal[1:20])
 
 SALVAR FIT
 load("dados_0108.Rda")
@@ -232,8 +234,8 @@ data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
 print("Treinando")
-fit <- train(x = subset(maFinal, select = -c(resposta)),
-             y = maFinal$resposta, 
+fit <- train(x = subset(data_train, select = -c(resposta)),
+             y = data_train$resposta, 
              method = "svmLinear", 
              trControl = trainControl(method = "cv", number = 10, savePred=T)
              #,preProc=c("center", "scale", "nzv")
@@ -244,8 +246,8 @@ fit
 library(mlbench)
 
 #subset(data_test, select = -c(resposta))
-pred <- predict(fit, subset(maFinal, select = -c(resposta)))
-confusionMatrix(data = pred, maFinal$resposta, positive="1")
+pred <- predict(fit, subset(data_test, select = -c(resposta)))
+confusionMatrix(data = pred, data_test$resposta, positive="1")
 
 #fitPadrao <- fit
 
