@@ -12,10 +12,12 @@ clearConsole();
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, palavroes FROM tweets WHERE situacao = 'S'")
 #dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
+#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+
 
 #dadosQ1 <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S' AND q1 = 1")
 dados <- dadosQ1
@@ -226,7 +228,7 @@ print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
              method = "svmLinear", 
-             trControl = trainControl(method = "cv", number = 5, savePred=T)
+             trControl = trainControl(method = "cv", number = 10, savePred=T)
              #,preProc=c("center", "scale", "nzv")
              ,preProc=c("center")
 ) 
