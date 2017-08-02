@@ -14,13 +14,15 @@ clearConsole();
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, palavroes FROM tweets WHERE situacao = 'S'")
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
+dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
+dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
+
 #dadosQ1 <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S' AND q1 = 1")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$numeroErros[dados$numeroErros > 1] <- 1
-dados$palavroes[dados$palavroes > 1] <- 1
+#dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
@@ -211,7 +213,7 @@ FILE <- "exp1_completao.Rda"
 #save(maFinal, file=FILE)
 #load(FILE)
 
-load("dados_3007.Rda")
+load("dados_0108.Rda")
 
 library(tools)
 library(caret)
@@ -221,7 +223,7 @@ if (!require("doMC")) {
 }
 library(doMC)
 
-registerDoMC(4)
+registerDoMC(8)
 
 set.seed(10)
 split=0.80
@@ -233,7 +235,7 @@ print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
              method = "svmLinear", 
-             trControl = trainControl(method = "cv", number = 10, savePred=T)
+             trControl = trainControl(method = "cv", number = 5, savePred=T)
              #,preProc=c("center", "scale", "nzv")
              ,preProc=c("center")
 ) 
