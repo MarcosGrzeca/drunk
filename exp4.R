@@ -12,58 +12,49 @@ clearConsole();
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, palavroes FROM tweets WHERE situacao = 'S'")
-dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
+#dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
+#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
 
 #dadosQ1 <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S' AND q1 = 1")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$numeroErros[dados$numeroErros > 1] <- 1
-#dados$palavroes[dados$palavroes > 1] <- 1
+dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
-#dados$taxaAdjetivo <- as.factor(cut(dados$taxaAdjetivo, seq(-0.1,0.6,0.20)))
-#dados$taxaSubstantivo <- as.factor(cut(dados$taxaSubstantivo, seq(-0.01,1.18,0.15)))
-#dados$taxaAdverbio <- as.factor(cut(dados$taxaAdverbio, seq(-0.01,0.8,0.17)))
 
+#aa <- function() {
+dados$adjetivo <- 0
+dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
+dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
+dados$adjetivo[dados$taxaAdjetivo > 0.60] <- 3
+dados$adjetivo[dados$taxaAdjetivo > 0.80] <- 4
 
-aa <- function() {
-  dados$adjetivo <- 0
-  dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
-  dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
-  dados$adjetivo[dados$taxaAdjetivo > 0.60] <- 3
-  dados$adjetivo[dados$taxaAdjetivo > 0.80] <- 4
-  
-  dados$substantivo <- 0
-  dados$substantivo[dados$taxaSubstantivo > 0.15] <- 1
-  dados$substantivo[dados$taxaSubstantivo > 0.30] <- 2
-  dados$substantivo[dados$taxaSubstantivo > 0.45] <- 3
-  dados$substantivo[dados$taxaSubstantivo > 0.60] <- 4
-  dados$substantivo[dados$taxaSubstantivo > 0.75] <- 5
-  dados$substantivo[dados$taxaSubstantivo > 0.90] <- 6
-  
-  dados$adverbio <- 0
-  dados$adverbio[dados$taxaAdverbio > 0.17] <- 1
-  dados$adverbio[dados$taxaAdverbio > 0.34] <- 2
-  dados$adverbio[dados$taxaAdverbio > 0.51] <- 3
-  dados$adverbio[dados$taxaAdverbio > 0.68] <- 4
-  
-  dados$verbo <- 0
-  dados$verbo[dados$taxaVerbo > 0.17] <- 1
-  dados$verbo[dados$taxaVerbo > 0.34] <- 2
-  dados$verbo[dados$taxaVerbo > 0.51] <- 3
-  dados$verbo[dados$taxaVerbo > 0.68] <- 4
-}
+dados$substantivo <- 0
+dados$substantivo[dados$taxaSubstantivo > 0.15] <- 1
+dados$substantivo[dados$taxaSubstantivo > 0.30] <- 2
+dados$substantivo[dados$taxaSubstantivo > 0.45] <- 3
+dados$substantivo[dados$taxaSubstantivo > 0.60] <- 4
+dados$substantivo[dados$taxaSubstantivo > 0.75] <- 5
+dados$substantivo[dados$taxaSubstantivo > 0.90] <- 6
 
-marcos <- function() {
-  dados$taxaAdjetivo <- cut(dados$taxaAdjetivo, seq(-0.1,0.6,0.20))
-  dados$taxaSubstantivo <- cut(dados$taxaSubstantivo, seq(-0.01,1.18,0.15))
-  dados$taxaAdverbio <- cut(dados$taxaAdverbio, seq(-0.01,0.8,0.17))
-}
+dados$adverbio <- 0
+dados$adverbio[dados$taxaAdverbio > 0.17] <- 1
+dados$adverbio[dados$taxaAdverbio > 0.34] <- 2
+dados$adverbio[dados$taxaAdverbio > 0.51] <- 3
+dados$adverbio[dados$taxaAdverbio > 0.68] <- 4
+
+dados$verbo <- 0
+dados$verbo[dados$taxaVerbo > 0.17] <- 1
+dados$verbo[dados$taxaVerbo > 0.34] <- 2
+dados$verbo[dados$taxaVerbo > 0.51] <- 3
+dados$verbo[dados$taxaVerbo > 0.68] <- 4
+#}
+
 
 if (!require("text2vec")) {
   install.packages("text2vec")
@@ -122,23 +113,23 @@ library(RWeka)
 #table(discretize(dados$sentiment, categories=3))
 
 
-bb <- function() {
-  
-  #sentimentos
-  dados$emotiom <- 0
-  dados$emotiom[dados$sentiment < 0] <- -1
-  dados$emotiom[dados$sentiment < -0.33] <- -2
-  dados$emotiom[dados$sentiment < -0.66] <- -3
-  dados$emotiom[dados$sentiment > 0] <- 1
-  dados$emotiom[dados$sentiment > 0.33] <- 2
-  dados$emotiom[dados$sentiment > 0.66] <- 3
-  
-  dados$emotiomH <- 0
-  dados$emotiomH[dados$sentimentH < 0] <- -1
-  dados$emotiomH[dados$sentimentH < -0.5] <- -2
-  dados$emotiomH[dados$sentimentH > 0] <- 1
-  dados$emotiomH[dados$sentimentH > 0.5] <- 2
-}
+#bb <- function() {
+
+#sentimentos
+dados$emotiom <- 0
+dados$emotiom[dados$sentiment < 0] <- -1
+dados$emotiom[dados$sentiment < -0.33] <- -2
+dados$emotiom[dados$sentiment < -0.66] <- -3
+dados$emotiom[dados$sentiment > 0] <- 1
+dados$emotiom[dados$sentiment > 0.33] <- 2
+dados$emotiom[dados$sentiment > 0.66] <- 3
+
+dados$emotiomH <- 0
+dados$emotiomH[dados$sentimentH < 0] <- -1
+dados$emotiomH[dados$sentimentH < -0.5] <- -2
+dados$emotiomH[dados$sentimentH > 0] <- 1
+dados$emotiomH[dados$sentimentH > 0.5] <- 2
+#}
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
@@ -192,13 +183,13 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
-maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
+#maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
 #maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaSubstantivo))
-maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
-maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo))
+#maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
+#maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo))
 #maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount))
-maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
-save(maFinal, file = "dados_exp4.Rda")
+#maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
+save(maFinal, file = "dados_0108.Rda")
 
 #load("dadosLiq.Rda")
 
