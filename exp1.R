@@ -8,7 +8,8 @@ source(file_path_as_absolute("functions.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-dados <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+#dados <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+dados <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S' and q1 = 1")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$numeroErros[dados$numeroErros > 1] <- 1
@@ -177,8 +178,6 @@ maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
 maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
 save(maFinal, file = "dados_0108.Rda")
 
-#exp1
-maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo, emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount, palavroes, numeroErros, numeroConjuncoes, emotiom, emotionH))
 
 #Sob demanda
 #maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
@@ -187,7 +186,7 @@ maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo, e
 #maFinal <- subset(maFinal, select = -c(adverbio, substantivo, verbo))
 #maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount))
 #maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
-save(maFinal, file = "dados_0108.Rda")
+save(maFinal, file = "dados_0108_q2.Rda")
 
 #exp1.Rda
 #exp1_bag.Rda
@@ -199,7 +198,22 @@ FILE <- "exp1_completao.Rda"
 #save(maFinal, file=FILE)
 #load(FILE)
 
+SALVAR FIT
 load("dados_0108.Rda")
+#exp10
+maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo, emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount, palavroes, numeroErros, numeroConjuncoes))
+#exp11
+maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo))
+#exp12
+maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount, palavroes, numeroErros, numeroConjuncoes, emotiom, emotiomH))
+#exp13
+#NAO EXCLUI NADA
+#exp14
+maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount, palavroes, emotiom, emotiomH))
+#exp15
+maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo, palavroes, numeroErros, numeroConjuncoes))
+#exp16
+preProc=c("center", "scale", "nzv")
 
 library(tools)
 library(caret)
@@ -218,8 +232,8 @@ data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
 print("Treinando")
-fit <- train(x = subset(data_train, select = -c(resposta)),
-             y = data_train$resposta, 
+fit <- train(x = subset(maFinal, select = -c(resposta)),
+             y = maFinal$resposta, 
              method = "svmLinear", 
              trControl = trainControl(method = "cv", number = 10, savePred=T)
              #,preProc=c("center", "scale", "nzv")
@@ -230,8 +244,8 @@ fit
 library(mlbench)
 
 #subset(data_test, select = -c(resposta))
-pred <- predict(fit, subset(data_test, select = -c(resposta)))
-confusionMatrix(data = pred, data_test$resposta, positive="1")
+pred <- predict(fit, subset(maFinal, select = -c(resposta)))
+confusionMatrix(data = pred, maFinal$resposta, positive="1")
 
 #fitPadrao <- fit
 
@@ -264,3 +278,5 @@ dotplot(difValues)
 
 pred <- predict(fitSemCV, subset(data_test, select = -c(resposta)))
 confusionMatrix(data = pred, data_test$resposta, positive="1")
+
+save.image(file="exps_0208_2.Rdata")
