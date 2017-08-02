@@ -175,6 +175,10 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
 maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
+save(maFinal, file = "dados_0108.Rda")
+
+#exp1
+maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo, emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount, palavroes, numeroErros, numeroConjuncoes, emotiom, emotionH))
 
 #Sob demanda
 #maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
@@ -205,7 +209,7 @@ if (!require("doMC")) {
 }
 library(doMC)
 
-registerDoMC(8)
+registerDoMC(4)
 
 set.seed(10)
 split=0.80
