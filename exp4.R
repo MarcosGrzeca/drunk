@@ -204,7 +204,7 @@ FILE <- "exp1_completao.Rda"
 #save(maFinal, file=FILE)
 #load(FILE)
 
-load("dados_0108.Rda")
+load("dados_0108.Rda.1")
 
 library(tools)
 library(caret)

@@ -8,24 +8,11 @@ source(file_path_as_absolute("functions.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, palavroes FROM tweets WHERE situacao = 'S'")
-#dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
-
-
-#dadosQ1 <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S' AND q1 = 1")
-dados <- dadosQ1
+dados <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$numeroErros[dados$numeroErros > 1] <- 1
-#dados$palavroes[dados$palavroes > 1] <- 1
+dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
@@ -184,10 +171,12 @@ testea <- function() {
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
+#Sempre remover
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
-#maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
+maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
 
+#Sob demanda
 #maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
 #maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo))
 #maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo, verbo))
@@ -195,9 +184,6 @@ maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
 #maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount))
 #maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
 save(maFinal, file = "dados_0108.Rda")
-
-#load("dadosLiq.Rda")
-
 
 #exp1.Rda
 #exp1_bag.Rda
