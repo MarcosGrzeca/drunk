@@ -282,3 +282,13 @@ pred <- predict(fitSemCV, subset(data_test, select = -c(resposta)))
 confusionMatrix(data = pred, data_test$resposta, positive="1")
 
 save.image(file="exps_0208_2.Rdata")
+
+
+load("importantes/experimentos0108/exps_0208_1.Rdata")
+a <- confusionMatrix(data = pred, maFinal$resposta, positive="1")
+ls(a)
+a$byClass["Precision"]
+a$byClass["Recall"]
+a$byClass["F1"]
+a$byClass
+a
