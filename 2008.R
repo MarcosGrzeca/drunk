@@ -7,44 +7,46 @@ source(file_path_as_absolute("functions.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets")
+#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets")
+dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
-#dados$numeroErros[dados$numeroErros > 1] <- 1
-#dados$palavroes[dados$palavroes > 1] <- 1
+dados$numeroErros[dados$numeroErros > 1] <- 1
+dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
-
-aa <- function() {
-dados$adjetivo <- 0
-dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
-dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
-dados$adjetivo[dados$taxaAdjetivo > 0.60] <- 3
-dados$adjetivo[dados$taxaAdjetivo > 0.80] <- 4
-
-dados$substantivo <- 0
-dados$substantivo[dados$taxaSubstantivo > 0.15] <- 1
-dados$substantivo[dados$taxaSubstantivo > 0.30] <- 2
-dados$substantivo[dados$taxaSubstantivo > 0.45] <- 3
-dados$substantivo[dados$taxaSubstantivo > 0.60] <- 4
-dados$substantivo[dados$taxaSubstantivo > 0.75] <- 5
-dados$substantivo[dados$taxaSubstantivo > 0.90] <- 6
-
-dados$adverbio <- 0
-dados$adverbio[dados$taxaAdverbio > 0.17] <- 1
-dados$adverbio[dados$taxaAdverbio > 0.34] <- 2
-dados$adverbio[dados$taxaAdverbio > 0.51] <- 3
-dados$adverbio[dados$taxaAdverbio > 0.68] <- 4
-
-dados$verbo <- 0
-dados$verbo[dados$taxaVerbo > 0.17] <- 1
-dados$verbo[dados$taxaVerbo > 0.34] <- 2
-dados$verbo[dados$taxaVerbo > 0.51] <- 3
-dados$verbo[dados$taxaVerbo > 0.68] <- 4
+discretizarTaxas <- function(dados) {
+  dados$adjetivo <- 0
+  dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
+  dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
+  dados$adjetivo[dados$taxaAdjetivo > 0.60] <- 3
+  dados$adjetivo[dados$taxaAdjetivo > 0.80] <- 4
+  
+  dados$substantivo <- 0
+  dados$substantivo[dados$taxaSubstantivo > 0.15] <- 1
+  dados$substantivo[dados$taxaSubstantivo > 0.30] <- 2
+  dados$substantivo[dados$taxaSubstantivo > 0.45] <- 3
+  dados$substantivo[dados$taxaSubstantivo > 0.60] <- 4
+  dados$substantivo[dados$taxaSubstantivo > 0.75] <- 5
+  dados$substantivo[dados$taxaSubstantivo > 0.90] <- 6
+  
+  dados$adverbio <- 0
+  dados$adverbio[dados$taxaAdverbio > 0.17] <- 1
+  dados$adverbio[dados$taxaAdverbio > 0.34] <- 2
+  dados$adverbio[dados$taxaAdverbio > 0.51] <- 3
+  dados$adverbio[dados$taxaAdverbio > 0.68] <- 4
+  
+  dados$verbo <- 0
+  dados$verbo[dados$taxaVerbo > 0.17] <- 1
+  dados$verbo[dados$taxaVerbo > 0.34] <- 2
+  dados$verbo[dados$taxaVerbo > 0.51] <- 3
+  dados$verbo[dados$taxaVerbo > 0.68] <- 4
+  return (dados)
 }
 
+dados <- discretizarTaxas(dados)
 
 if (!require("text2vec")) {
   install.packages("text2vec")
@@ -96,23 +98,25 @@ clearConsole()
 library(rowr)
 library(RWeka)
 
-bb <- function() {
-
-#sentimentos
-dados$emotiom <- 0
-dados$emotiom[dados$sentiment < 0] <- -1
-dados$emotiom[dados$sentiment < -0.33] <- -2
-dados$emotiom[dados$sentiment < -0.66] <- -3
-dados$emotiom[dados$sentiment > 0] <- 1
-dados$emotiom[dados$sentiment > 0.33] <- 2
-dados$emotiom[dados$sentiment > 0.66] <- 3
-
-dados$emotiomH <- 0
-dados$emotiomH[dados$sentimentH < 0] <- -1
-dados$emotiomH[dados$sentimentH < -0.5] <- -2
-dados$emotiomH[dados$sentimentH > 0] <- 1
-dados$emotiomH[dados$sentimentH > 0.5] <- 2
+discretizarSentimentos <- function(dados) {
+  #sentimentos
+  dados$emotiom <- 0
+  dados$emotiom[dados$sentiment < 0] <- -1
+  dados$emotiom[dados$sentiment < -0.33] <- -2
+  dados$emotiom[dados$sentiment < -0.66] <- -3
+  dados$emotiom[dados$sentiment > 0] <- 1
+  dados$emotiom[dados$sentiment > 0.33] <- 2
+  dados$emotiom[dados$sentiment > 0.66] <- 3
+  
+  dados$emotiomH <- 0
+  dados$emotiomH[dados$sentimentH < 0] <- -1
+  dados$emotiomH[dados$sentimentH < -0.5] <- -2
+  dados$emotiomH[dados$sentimentH > 0] <- 1
+  dados$emotiomH[dados$sentimentH > 0.5] <- 2
+  return (dados)
 }
+
+dados <- discretizarSentimentos(dados);
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
@@ -130,55 +134,21 @@ for(i in 1:length(aspectos)) {
 
 dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
-testea <- function() {
-  library(tm)
-  
-  corpus <- Corpus(VectorSource(sub("#", "HASH_", sub("#", "HASH_",dados$textParser))))
-  #corpus <- Corpus(VectorSource(dataFrameTexto))
-  funcs <- list(tolower, removePunctuation, removeNumbers, stripWhitespace, stopwords)
-  #funcs <- list(tolower)
-  a <- tm_map(corpus, FUN = tm_reduce, tmFuns = funcs)
-  a.dtm1 <- TermDocumentMatrix(a, control = list(wordLengths = c(1, Inf))) 
-  findFreqTerms(a.dtm1, 5000)
-  
-  wordFreq <- function(corpus, word) {
-    results <- lapply(corpus,
-                      function(x) { grep(as.character(x), pattern=paste0("\\<",word)) }
-    )
-    sum(unlist(results))
-  }
-  
-  wordFreq(corpus, "beer")
-  findFreqTerms(a.dtm1, 50)
-  
-  
-  tfidf = TfIdf$new()
-  # fit model to train data and transform train data with fitted model
-  dtm_train_tfidf = fit_transform(dtm_train_texto, tfidf)
-  # tfidf modified by fit_transform() call!
-  # apply pre-trained tf-idf transformation to test data
-  dtm_test_tfidf  = create_dtm(it_train, vectorizer) %>% 
-    transform(tfidf)
-  dtm_test_tfidf
-}
-
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
-#maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
-#maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaSubstantivo))
-#maFinal <- subset(maFinal, select = -c(emotiom, emotiomH))
-#maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo))
-#maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount))
-#maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
+maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
 save(maFinal, file = "dados_2008.Rda")
+
+aa <- colnames(maFinal)
+aa[1:50]
 
 #load("dadosLiq.Rda")
 
 FILE <- "exp1_completao.Rda"
 
-#load("dados_0108.Rda.1")
+load("dados_2008.Rda")
 
 library(tools)
 library(caret)
@@ -207,10 +177,12 @@ fit <- train(x = subset(data_train, select = -c(resposta)),
 fit
 
 library(mlbench)
-
-#subset(data_test, select = -c(resposta))
 pred <- predict(fit, subset(data_test, select = -c(resposta)))
-confusionMatrix(data = pred, data_test$resposta, positive="1")
+matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
+matriz
+matriz$byClass["Precision"]
+matriz$byClass["Recall"]
+matriz$byClass["F1"]
 
 #fitPadrao <- fit
 
@@ -239,15 +211,3 @@ trellis.par.set(theme1)
 bwplot(difValues, layout = c(3, 1))
 
 dotplot(difValues)
-
-
-pred <- predict(fitSemCV, subset(data_test, select = -c(resposta)))
-matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
-
-print("Matrix")
-matriz
-
-matriz$byClass["Precision"]
-matriz$byClass["Recall"]
-matriz$byClass["F1"]
-matriz$byClass
