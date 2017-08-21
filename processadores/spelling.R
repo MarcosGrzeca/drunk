@@ -7,7 +7,7 @@ source(file_path_as_absolute("functions.R"))
 DATABASE <- "icwsm-2016"
 
 clearConsole();
-dados <- query("SELECT id, idInterno, textParser, textoParserEmoticom as textoCompleto FROM tweets")
+dados <- query("SELECT id, idInterno, textParser, textoParserEmoticom as textoCompleto FROM tweets WHERE situacao = 'N'")
 
 library(hunspell)
 
@@ -22,7 +22,7 @@ fore <- function(x) {
   if (identical(bad[[1]], character(0))) {
   } else {
     erros <- length(bad[[1]])
-    #query(paste("UPDATE `tweets` SET numeroErros = '", erros, "' WHERE idInterno = ", x[1], "", sep=""));
+    query(paste("UPDATE `tweets` SET numeroErros = '", erros, "' WHERE idInterno = ", x[1], "", sep=""));
     teste <- unlist(bad[[1]])
     for(i in 1:length(teste)) {
       sql <- paste("INSERT INTO `tweets_erro_new` (idTweetInterno, palavra) VALUES (", x[1], ", '", dbEscapeStrings(conexao, teste[i]), "')", sep="");

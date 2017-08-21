@@ -6,7 +6,7 @@ load("teste.Rda")
 
 DATABASE <- "icwsm-2016"
 clearConsole();
-dados <- query("SELECT id, idInterno, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags FROM tweets")
+dados <- query("SELECT id, idInterno, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags FROM tweets WHERE situacao = 'N'")
 
 
 library(doMC)
