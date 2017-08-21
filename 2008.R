@@ -2,13 +2,14 @@ options(max.print = 99999999)
 
 library(tools)
 source(file_path_as_absolute("functions.R"))
+source(file_path_as_absolute("processadores/discretizar.R"))
 
 #Configuracoes
 DATABASE <- "icwsm-2016"
 clearConsole();
 
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets")
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
+dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name, tl.category FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 75")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
@@ -17,36 +18,9 @@ dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
-discretizarTaxas <- function(dados) {
-  dados$adjetivo <- 0
-  dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
-  dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
-  dados$adjetivo[dados$taxaAdjetivo > 0.60] <- 3
-  dados$adjetivo[dados$taxaAdjetivo > 0.80] <- 4
-  
-  dados$substantivo <- 0
-  dados$substantivo[dados$taxaSubstantivo > 0.15] <- 1
-  dados$substantivo[dados$taxaSubstantivo > 0.30] <- 2
-  dados$substantivo[dados$taxaSubstantivo > 0.45] <- 3
-  dados$substantivo[dados$taxaSubstantivo > 0.60] <- 4
-  dados$substantivo[dados$taxaSubstantivo > 0.75] <- 5
-  dados$substantivo[dados$taxaSubstantivo > 0.90] <- 6
-  
-  dados$adverbio <- 0
-  dados$adverbio[dados$taxaAdverbio > 0.17] <- 1
-  dados$adverbio[dados$taxaAdverbio > 0.34] <- 2
-  dados$adverbio[dados$taxaAdverbio > 0.51] <- 3
-  dados$adverbio[dados$taxaAdverbio > 0.68] <- 4
-  
-  dados$verbo <- 0
-  dados$verbo[dados$taxaVerbo > 0.17] <- 1
-  dados$verbo[dados$taxaVerbo > 0.34] <- 2
-  dados$verbo[dados$taxaVerbo > 0.51] <- 3
-  dados$verbo[dados$taxaVerbo > 0.68] <- 4
-  return (dados)
-}
-
 dados <- discretizarTaxas(dados)
+dados <- discretizarHora(dados)
+dados <- discretizarSentimentos(dados);
 
 if (!require("text2vec")) {
   install.packages("text2vec")
@@ -98,26 +72,6 @@ clearConsole()
 library(rowr)
 library(RWeka)
 
-discretizarSentimentos <- function(dados) {
-  #sentimentos
-  dados$emotiom <- 0
-  dados$emotiom[dados$sentiment < 0] <- -1
-  dados$emotiom[dados$sentiment < -0.33] <- -2
-  dados$emotiom[dados$sentiment < -0.66] <- -3
-  dados$emotiom[dados$sentiment > 0] <- 1
-  dados$emotiom[dados$sentiment > 0.33] <- 2
-  dados$emotiom[dados$sentiment > 0.66] <- 3
-  
-  dados$emotiomH <- 0
-  dados$emotiomH[dados$sentimentH < 0] <- -1
-  dados$emotiomH[dados$sentimentH < -0.5] <- -2
-  dados$emotiomH[dados$sentimentH > 0] <- 1
-  dados$emotiomH[dados$sentimentH > 0.5] <- 2
-  return (dados)
-}
-
-dados <- discretizarSentimentos(dados);
-
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
 manter <- round(length(aspectos) * 0.25)
@@ -137,18 +91,18 @@ dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
-maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
-maFinal <- subset(maFinal, select = -c(taxaAdjetivo, taxaAdverbio, taxaSubstantivo, taxaVerbo))
-save(maFinal, file = "dados_2008.Rda")
+save(maFinal, file = "dados_2008_end_hora.Rda")
 
-aa <- colnames(maFinal)
-aa[1:50]
 
 #load("dadosLiq.Rda")
 
 FILE <- "exp1_completao.Rda"
 
 load("dados_2008.Rda")
+maFinal <- subset(maFinal, select = -c(adverbio))
+
+#maFinal$mention
+#maFinal$url
 
 library(tools)
 library(caret)
@@ -180,9 +134,11 @@ library(mlbench)
 pred <- predict(fit, subset(data_test, select = -c(resposta)))
 matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
 matriz
+matriz$byClass["F1"]
 matriz$byClass["Precision"]
 matriz$byClass["Recall"]
-matriz$byClass["F1"]
+
+fit2008_9 <- fit
 
 #fitPadrao <- fit
 
@@ -211,3 +167,5 @@ trellis.par.set(theme1)
 bwplot(difValues, layout = c(3, 1))
 
 dotplot(difValues)
+
+save.image(file="image_2008_2.RData")
