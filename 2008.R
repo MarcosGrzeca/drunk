@@ -7,23 +7,17 @@ source(file_path_as_absolute("functions.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-
-dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes, palavroes FROM tweets WHERE situacao = 'S'")
-#dadosDele <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S'")
-#dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, numeroErros, numeroConjuncoes FROM tweets WHERE situacao = 'S'")
-
-#dadosQ1 <- query("SELECT id, q2 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets WHERE situacao = 'S' AND q1 = 1")
+dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
-dados$numeroErros[dados$numeroErros > 1] <- 1
-dados$palavroes[dados$palavroes > 1] <- 1
+#dados$numeroErros[dados$numeroErros > 1] <- 1
+#dados$palavroes[dados$palavroes > 1] <- 1
 dados$resposta <- as.factor(dados$resposta)
 clearConsole()
 
 
-#aa <- function() {
+aa <- function() {
 dados$adjetivo <- 0
 dados$adjetivo[dados$taxaAdjetivo > 0.20] <- 1
 dados$adjetivo[dados$taxaAdjetivo > 0.40] <- 2
@@ -49,7 +43,7 @@ dados$verbo[dados$taxaVerbo > 0.17] <- 1
 dados$verbo[dados$taxaVerbo > 0.34] <- 2
 dados$verbo[dados$taxaVerbo > 0.51] <- 3
 dados$verbo[dados$taxaVerbo > 0.68] <- 4
-#}
+}
 
 
 if (!require("text2vec")) {
@@ -100,16 +94,9 @@ dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
 
 library(rowr)
-
-#summary(dados$sentiment)
-#dados$teste<-cut(dados$sentiment, seq(-2,2,0.5))
-#summary(dados$teste)
-
 library(RWeka)
-#table(discretize(dados$sentiment, categories=3))
 
-
-#bb <- function() {
+bb <- function() {
 
 #sentimentos
 dados$emotiom <- 0
@@ -125,7 +112,7 @@ dados$emotiomH[dados$sentimentH < 0] <- -1
 dados$emotiomH[dados$sentimentH < -0.5] <- -2
 dados$emotiomH[dados$sentimentH > 0] <- 1
 dados$emotiomH[dados$sentimentH > 0.5] <- 2
-#}
+}
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
@@ -185,22 +172,13 @@ maFinal <- subset(maFinal, select = -c(sentiment, sentimentH))
 #maFinal <- subset(maFinal, select = -c(adverbio, substantivo, adjetivo))
 #maFinal <- subset(maFinal, select = -c(emotiomH, emotiom, organizationCount, personCount, localCount, moneyCount))
 #maFinal <- subset(maFinal, select = -c(organizationCount, personCount, localCount, moneyCount))
-save(maFinal, file = "dados_0108.Rda")
+save(maFinal, file = "dados_2008.Rda")
 
 #load("dadosLiq.Rda")
 
-
-#exp1.Rda
-#exp1_bag.Rda
-#exp1_bag_sentiment.Rda
-#exp1_completao.Rda
-#exp1_stemming.Rda
 FILE <- "exp1_completao.Rda"
 
-#save(maFinal, file=FILE)
-#load(FILE)
-
-load("dados_0108.Rda.1")
+#load("dados_0108.Rda.1")
 
 library(tools)
 library(caret)
@@ -264,4 +242,12 @@ dotplot(difValues)
 
 
 pred <- predict(fitSemCV, subset(data_test, select = -c(resposta)))
-confusionMatrix(data = pred, data_test$resposta, positive="1")
+matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
+
+print("Matrix")
+matriz
+
+matriz$byClass["Precision"]
+matriz$byClass["Recall"]
+matriz$byClass["F1"]
+matriz$byClass
