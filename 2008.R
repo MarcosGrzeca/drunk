@@ -9,7 +9,7 @@ DATABASE <- "icwsm-2016"
 clearConsole();
 
 #dadosQ1 <- query("SELECT id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg FROM tweets")
-dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name, tl.category FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 75")
+dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name as nomeEstabeleciomento, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 75")
 dados <- dadosQ1
 
 dados$resposta[is.na(dados$resposta)] <- 0
@@ -93,13 +93,14 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 save(maFinal, file = "dados_2008_end_hora.Rda")
 
-
+dump(maFinal, "dados_2008_end_hora.csv");
 #load("dadosLiq.Rda")
 
 FILE <- "exp1_completao.Rda"
 
 load("dados_2008.Rda")
 maFinal <- subset(maFinal, select = -c(adverbio))
+
 
 #maFinal$mention
 #maFinal$url
