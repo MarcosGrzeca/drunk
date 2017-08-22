@@ -91,6 +91,7 @@ dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
+
 save(maFinal, file = "dados_2008_end_hora.Rda")
 
 dump(maFinal, "dados_2008_end_hora.csv");
@@ -98,12 +99,14 @@ dump(maFinal, "dados_2008_end_hora.csv");
 
 FILE <- "exp1_completao.Rda"
 
-load("dados_2008.Rda")
+load("dados_2008_end_hora.Rda")
 maFinal <- subset(maFinal, select = -c(adverbio))
 
 
 #maFinal$mention
 #maFinal$url
+
+load("dados_2008_end_hora.Rda")
 
 library(tools)
 library(caret)
