@@ -38,7 +38,7 @@ discretizarHora <- function(dados) {
   dados$turno[dados$hora >= 6] <- 1
   dados$turno[dados$hora >= 14] <- 2
   dados$turno[dados$hora >= 22] <- 0
-  dados$turno <- as.factor(dados$turno)
+  #dados$turno <- as.factor(dados$turno)
   dados <- subset(dados, select = -c(hora))
   return (dados)
 }
