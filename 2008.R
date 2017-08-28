@@ -50,7 +50,8 @@ it_train = itoken(dados$textParser,
                   progressbar = TRUE)
 
 stop_words = tm::stopwords("en")
-vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 3L))
+#vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 3L))
+vocab = create_vocabulary(it_train, stopwords = stop_words)
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
 
@@ -92,7 +93,7 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "dados_2708_end_hora_ttt.Rda")
+save(maFinal, file = "dados_2708_bow.Rda")
 
 #dump(maFinal, "dados_2708_end_hora.csv");
 #load("dadosLiq.Rda")
@@ -106,10 +107,13 @@ maFinal <- subset(maFinal, select = -c(adverbio))
 #maFinal$mention
 #maFinal$url
 
-summary(maFinal$turno)
+load("dados_2708_end_hora_ttt.Rda")
 
-load("dados_2008_end_hora.Rda")
-maFinal <- subset(maFinal, select = -c(nomeEstabeleciomento, categoriaEstabelecimento))
+#maFinal <- subset(maFinal, select = -c(nomeEstabeleciomento))
+#maFinal$categoriaEstabelecimento <- as.factor(maFinal$categoriaEstabelecimento)
+maFinal$categoriaEstabelecimento[maFinal$categoriaEstabelecimento == "0"] <- NA
+#maFinal <- subset(maFinal, select = -c(localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, palavroes, nomeEstabeleciomento, categoriaEstabelecimento, adjetivo, substantivo, adverbio, verbo, turno, emotiom, emotiomH))
+
 
 library(tools)
 library(caret)
@@ -119,7 +123,7 @@ if (!require("doMC")) {
 }
 library(doMC)
 
-registerDoMC(16)
+registerDoMC(8)
 
 set.seed(10)
 split=0.80
@@ -130,12 +134,12 @@ data_test <- maFinal[-trainIndex,]
 print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
-             method = "svmLinear", 
+             method = "svmRadial", 
              #method = "svmPoly", 
-             trControl = trainControl(method = "cv", number = 5, savePred=T)
+             trControl = trainControl(method = "cv", number = 5, savePred=T),
              #,preProc=c("center", "scale", "nzv")
-             ,preProc=c("center")
-) 
+             preProc=c("center")
+)
 fit
 
 library(mlbench)
@@ -145,8 +149,6 @@ matriz
 matriz$byClass["F1"]
 matriz$byClass["Precision"]
 matriz$byClass["Recall"]
-
-fit2008_9 <- fit
 
 #fitPadrao <- fit
 
@@ -177,3 +179,11 @@ bwplot(difValues, layout = c(3, 1))
 dotplot(difValues)
 
 save.image(file="image_2008_2.RData")
+
+DF <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA), z = c(4,3,5))
+na.pass(DF)
+
+library(e1071)
+
+
+tuned = tune.svm(data_train$resposta, data = subset(data_train, select = -c(resposta)), gamma = 10^-2, cost = 10^2, tunecontrol=tune.control(cross=10))
