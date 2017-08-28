@@ -8,7 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, IFNULL(tl.name, 0) as nomeEstabeleciomento, IFNULL(tl.category, 0) as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 75")
+dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, IFNULL(tl.name, 0) as nomeEstabeleciomento, IFNULL(tl.category, 0) as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100")
 
 dados <- dadosQ1
 
@@ -50,8 +50,8 @@ it_train = itoken(dados$textParser,
                   progressbar = TRUE)
 
 stop_words = tm::stopwords("en")
-#vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 3L))
-vocab = create_vocabulary(it_train, stopwords = stop_words)
+vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 3L))
+#vocab = create_vocabulary(it_train, stopwords = stop_words)
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
 
@@ -93,7 +93,9 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "dados_2708_bow.Rda")
+save(maFinal, file = "dados_2708_end100m_hora.Rda")
+
+#save(maFinal, file = "dados_2708_bow.Rda")
 
 #dump(maFinal, "dados_2708_end_hora.csv");
 #load("dadosLiq.Rda")
@@ -111,9 +113,10 @@ load("dados_2708_end_hora_ttt.Rda")
 
 #maFinal <- subset(maFinal, select = -c(nomeEstabeleciomento))
 #maFinal$categoriaEstabelecimento <- as.factor(maFinal$categoriaEstabelecimento)
-maFinal$categoriaEstabelecimento[maFinal$categoriaEstabelecimento == "0"] <- NA
-#maFinal <- subset(maFinal, select = -c(localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, palavroes, nomeEstabeleciomento, categoriaEstabelecimento, adjetivo, substantivo, adverbio, verbo, turno, emotiom, emotiomH))
+#maFinal$categoriaEstabelecimento[maFinal$categoriaEstabelecimento == "0"] <- NA
+maFinal <- subset(maFinal, select = -c(localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, palavroes, nomeEstabeleciomento, categoriaEstabelecimento, adjetivo, substantivo, adverbio, verbo, turno, emotiom, emotiomH))
 
+load("dados_2708_bow.Rda")
 
 library(tools)
 library(caret)
@@ -123,7 +126,7 @@ if (!require("doMC")) {
 }
 library(doMC)
 
-registerDoMC(8)
+registerDoMC(16)
 
 set.seed(10)
 split=0.80
@@ -134,11 +137,12 @@ data_test <- maFinal[-trainIndex,]
 print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
-             method = "svmRadial", 
-             #method = "svmPoly", 
+             #method = "svmLinear", 
+             method = "svmPoly", 
              trControl = trainControl(method = "cv", number = 5, savePred=T),
              #,preProc=c("center", "scale", "nzv")
              preProc=c("center")
+             #na.action = na.omit
 )
 fit
 
