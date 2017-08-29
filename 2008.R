@@ -8,7 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name as nomeEstabelecimento, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100")
+dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name as nomeEstabelecimento, tl.category as categoriaEstabelecimento, diaSemana FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100")
 
 dados <- dadosQ1
 
