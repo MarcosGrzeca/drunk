@@ -8,7 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm-2016"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, IFNULL(tl.name, 0) as nomeEstabeleciomento, IFNULL(tl.category, 0) as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100")
+dadosQ1 <- query("SELECT t.id, q1 as resposta, textParser, textoParserEmoticom as textoCompleto, hashtags, emoticonPos, emoticonNeg, sentiment, sentimentH, localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, taxaSubstantivo, taxaAdjetivo, taxaAdverbio, taxaVerbo, palavroes, hora, tl.name as nomeEstabelecimento, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100")
 
 dados <- dadosQ1
 
@@ -65,10 +65,28 @@ vocabHashTags = create_vocabulary(it_train_hash)
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
-dataTexto <- as.matrix(dtm_train_texto)
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
+
+
+#Parsear categoria do estabelecimento
+dados$categoriaEstabelecimento = sub(" ", "_", dados$categoriaEstabelecimento)
+it_train = itoken(dados$categoriaEstabelecimento, 
+                  preprocessor = prep_fun,
+                  tokenizer = tok_fun,
+                  ids = dados$id, 
+                  progressbar = TRUE)
+vocabEstabelecimento = create_vocabulary(it_train, stopwords = stop_words)
+vocabEstabelecimento = prune_vocabulary(vocabEstabelecimento, 
+                                term_count_min = 5, 
+                                doc_proportion_max = 0.9,
+                                doc_proportion_min = 0.001)
+vectorizerEstabelecimento = vocab_vectorizer(vocabEstabelecimento)
+dataFrameEstabelecimento = create_dtm(it_train, vectorizerEstabelecimento)
+dataFrameEstabelecimento <- as.data.frame(as.matrix(dataFrameEstabelecimento))
+
+#CERTO
 
 library(rowr)
 library(RWeka)
@@ -91,32 +109,14 @@ dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
+maFinal <- cbind.fill(maFinal, dataFrameEstabelecimento)
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, categoriaEstabelecimento, nomeEstabelecimento))
 
 save(maFinal, file = "dados_2708_end100m_hora.Rda")
 
-#save(maFinal, file = "dados_2708_bow.Rda")
-
-#dump(maFinal, "dados_2708_end_hora.csv");
-#load("dadosLiq.Rda")
-
-FILE <- "exp1_completao.Rda"
-
 load("dados_2008_end_hora.Rda")
-maFinal <- subset(maFinal, select = -c(adverbio))
-
-
-#maFinal$mention
-#maFinal$url
-
-load("dados_2708_end_hora_ttt.Rda")
-
-#maFinal <- subset(maFinal, select = -c(nomeEstabeleciomento))
-#maFinal$categoriaEstabelecimento <- as.factor(maFinal$categoriaEstabelecimento)
-#maFinal$categoriaEstabelecimento[maFinal$categoriaEstabelecimento == "0"] <- NA
+maFinal <- subset(maFinal, select = -c(nomeEstabeleciomento))
 maFinal <- subset(maFinal, select = -c(localCount, organizationCount, moneyCount, personCount, numeroErros, numeroConjuncoes, palavroes, nomeEstabeleciomento, categoriaEstabelecimento, adjetivo, substantivo, adverbio, verbo, turno, emotiom, emotiomH))
-
-load("dados_2708_bow.Rda")
 
 library(tools)
 library(caret)
@@ -137,8 +137,8 @@ data_test <- maFinal[-trainIndex,]
 print("Treinando")
 fit <- train(x = subset(data_train, select = -c(resposta)),
              y = data_train$resposta, 
-             #method = "svmLinear", 
-             method = "svmPoly", 
+             method = "svmLinear", 
+             #method = "svmPoly", 
              trControl = trainControl(method = "cv", number = 5, savePred=T),
              #,preProc=c("center", "scale", "nzv")
              preProc=c("center")
@@ -183,11 +183,3 @@ bwplot(difValues, layout = c(3, 1))
 dotplot(difValues)
 
 save.image(file="image_2008_2.RData")
-
-DF <- data.frame(x = c(1, 2, 3), y = c(0, 10, NA), z = c(4,3,5))
-na.pass(DF)
-
-library(e1071)
-
-
-tuned = tune.svm(data_train$resposta, data = subset(data_train, select = -c(resposta)), gamma = 10^-2, cost = 10^2, tunecontrol=tune.control(cross=10))
