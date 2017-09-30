@@ -20,6 +20,7 @@ if (!require("text2vec")) {
 library(text2vec)
 library(data.table)
 library(SnowballC)
+library(rowr)
 
 setDT(dados)
 setkey(dados, id)
