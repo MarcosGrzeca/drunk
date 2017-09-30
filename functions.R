@@ -53,3 +53,15 @@ dump <- function(dadosExport, arquivo) {
   write.table(dadosExport, file = arquivo, append = FALSE, quote = TRUE, sep = ",", eol = "\n", na = "?", dec = ".", row.names = FALSE, col.names = TRUE, qmethod = c("escape", "double"), fileEncoding = "")
   #export(dados, "dump_enem_total.arff")
 }
+
+
+convert_count <- function(x) {
+  y <- ifelse(x > 0, 1,0)
+  y
+}
+
+bofPresence <- function(vetor) {
+  vetor <- apply(vetor, 2, convert_count)
+  vetor <- as.data.frame(as.matrix(vetor))
+  return (vetor)
+}
