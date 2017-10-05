@@ -168,5 +168,16 @@ fit2015Style2
 matriz2015Style2 <- getMatriz(fit2015Style2, data_test)
 resultados <- addRow(resultados, "2015 Style Presence", matriz2015Style2)
 
+
+print("2016")
+load("baselines/dataset/2016/2016.Rda")
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
+fit2016 <- treinar(data_train)
+fit2016
+matriz2016 <- getMatriz(fit2016, data_test)
+resultados <- addRow(resultados, "2016", matriz2016)
+
 save.image(file="baselines/compare.RData")
 resultados
