@@ -8,6 +8,7 @@ library(doMC)
 library(mlbench)
 
 treinar <- function(data_train){
+    registerDoMC(8)
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
@@ -25,14 +26,18 @@ getMatriz <- function(fit, data_test) {
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
-addRow <- function(resultados, matriz) {
+addRow <- function(resultados, baseline, matriz, ...) {
   newRes <- data.frame(baseline, matriz$byClass["F1"], matriz$byClass["Precision"], matriz$byClass["Recall"])
+  rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
   return (newdf)
 }
 
-registerDoMC(16)
+library(magrittr)
+
+
+registerDoMC(8)
 
 set.seed(10)
 split=0.80
@@ -50,3 +55,5 @@ fit2013bof
 matrizt2013bof <- getMatriz(fit2013bof, data_test)
 resultados <- addRow(resultados, "2013 BOW", matrizt2013bof)
 View(resultados)
+resultados
+#save.image(file="baselines/compare.RData")
