@@ -8,7 +8,7 @@ library(doMC)
 library(mlbench)
 
 treinar <- function(data_train){
-    registerDoMC(8)
+    registerDoMC(16)
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
@@ -18,6 +18,7 @@ treinar <- function(data_train){
 }
 
 getMatriz <- function(fit, data_test) {
+  registerDoMC(16)
   pred <- predict(fit, subset(data_test, select = -c(resposta)))
   matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
   return (matriz)
@@ -45,6 +46,7 @@ split=0.80
 #Baseline 2013
 
 load("baselines/dataset/2013/bof.Rda")
+print("2013")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
@@ -64,7 +66,7 @@ fit2013bofPresence
 matrizt2013bofPresence <- getMatriz(fit2013bofPresence, data_test)
 resultados <- addRow(resultados, "2013 BOW Presence", matrizt2013bofPresence)
 
-
+print("2014")
 load("baselines/dataset/2014/bof_uni.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -105,6 +107,7 @@ fit2014sbi
 matriz2014sbi <- getMatriz(fit2014sbi, data_test)
 resultados <- addRow(resultados, "2014 Stemming 2-Gram", matriz2014sbi)
 
+print("2015")
 load("baselines/dataset/2015/bof_uni.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
