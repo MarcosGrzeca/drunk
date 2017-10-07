@@ -28,10 +28,12 @@ resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 addRow <- function(resultados, baseline, matriz, ...) {
+  print(baseline)
   newRes <- data.frame(baseline, matriz$byClass["F1"], matriz$byClass["Precision"], matriz$byClass["Recall"])
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
+  save.image(file="baselines/compare.RData")
   return (newdf)
 }
 
@@ -66,6 +68,7 @@ fit2013bofPresence
 matrizt2013bofPresence <- getMatriz(fit2013bofPresence, data_test)
 resultados <- addRow(resultados, "2013 BOW Presence", matrizt2013bofPresence)
 
+
 print("2014")
 load("baselines/dataset/2014/bof_uni.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -87,17 +90,16 @@ fit2014bi
 matriz2014bi <- getMatriz(fit2014bi, data_test)
 resultados <- addRow(resultados, "2014 2-Gram", matriz2014bi)
 
-load("baselines/dataset/2014/bof_stem_uni.Rda")
-maFinal <- subset(maFinal, select = -c(X0, X000, X01, X07, X1, X10, X100, X1000, X1020, X1030, X1046, X105, X106, X11, X111, X112, X12, X120, X13, X14, X140, X15, X16, X160, X17, X18, X19, X1969, X1989, X2, X20, X2005, X2008, X2010, X2011, X2013, X2014, X2016, X208, X21, X212, X22, X23, X238, X24, X25, X250, X26, X29, X3, x3, X30, X300, X302, X308, X31, X315, X31st, X34, X35, X390, X3948824, X4, X40, X400, X420, X430, X45, X46, X48, X49, X4am, X5, X50, X500, X54, X55, X56, X577, X58, X6, X60, X607, X68, X7, X70, X70s, X71, X75, X76, X78, X8, X80, X84, X85, X86, X9, X90, X930, X943, X95, X99))
-trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-data_test <- maFinal[-trainIndex,]
+#load("baselines/dataset/2014/bof_stem_uni.Rda")
+#maFinal <- subset(maFinal, select = -c(X0, X000, X01, X07, X1, X10, X100, X1000, X1020, X1030, X1046, X105, X106, X11, X111, X112, X12, X120, X13, X14, X140, X15, X16, X160, X17, X18, X19, X1969, X1989, X2, X20, X2005, X2008, X2010, X2011, X2013, X2014, X2016, X208, X21, X212, X22, X23, X238, X24, X25, X250, X26, X29, X3, x3, X30, X300, X302, X308, X31, X315, X31st, X34, X35, X390, X3948824, X4, X40, X400, X420, X430, X45, X46, X48, X49, X4am, X5, X50, X500, X54, X55, X56, X577, X58, X6, X60, X607, X68, X7, X70, X70s, X71, X75, X76, X78, X8, X80, X84, X85, X86, X9, X90, X930, X943, X95, X99))
+#trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+#data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+#data_test <- maFinal[-trainIndex,]
 
-fit2014sun <- treinar(data_train)
-fit2014sun
-matriz2014suni <- getMatriz(fit2014sun, data_test)
-resultados <- addRow(resultados, "2014 Stemming 1-Gram", matriz2014suni)
-save.image(file="baselines/compare.RData")
+#fit2014sun <- treinar(data_train)
+#fit2014sun
+#matriz2014suni <- getMatriz(fit2014sun, data_test)
+#resultados <- addRow(resultados, "2014 Stemming 1-Gram", matriz2014suni)
 
 #load("baselines/dataset/2014/bof_stem_bi.Rda")
 #trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -114,13 +116,11 @@ load("baselines/dataset/2015/bof_uni.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
-save.image(file="baselines/compare.RData")
 
 fit2015un <- treinar(data_train)
 fit2015un
 matriz2015un <- getMatriz(fit2015un, data_test)
 resultados <- addRow(resultados, "2015 1-Gram", matriz2015un)
-save.image(file="baselines/compare.RData")
 
 load("baselines/dataset/2015/bof_bi.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -137,7 +137,6 @@ trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-save.image(file="baselines/compare.RData")
 fit2015unPresence <- treinar(data_train)
 fit2015unPresence
 matriz2015unPresence <- getMatriz(fit2015unPresence, data_test)
@@ -153,7 +152,6 @@ fit2015biPresence
 matriz2015biPresence <- getMatriz(fit2015biPresence, data_test)
 resultados <- addRow(resultados, "2015 2-Gram Presence", matriz2015biPresence)
 
-save.image(file="baselines/compare.RData")
 load("baselines/dataset/2015/stile_gram.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -169,14 +167,10 @@ trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-save.image(file="baselines/compare.RData")
-
 fit2015Style2 <- treinar(data_train)
 fit2015Style2
 matriz2015Style2 <- getMatriz(fit2015Style2, data_test)
 resultados <- addRow(resultados, "2015 Style Presence", matriz2015Style2)
-
-save.image(file="baselines/compare.RData")
 
 print("2016")
 load("baselines/dataset/2016/2016.Rda")
