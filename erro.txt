@@ -1,0 +1,17 @@
+[1] "2013"
+Support Vector Machines with Linear Kernel 
+
+3198 samples
+9367 predictors
+   2 classes: '0', '1' 
+
+Pre-processing: centered (9367) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 2878, 2878, 2879, 2878, 2878, 2879, ... 
+Resampling results:
+
+  Accuracy   Kappa    
+  0.8661646  0.7287961
+
+Tuning parameter 'C' was held constant at a value of 1
+[1] "2013 BOW"

@@ -67,6 +67,8 @@ fit2013bofPresence <- treinar(data_train)
 fit2013bofPresence
 matrizt2013bofPresence <- getMatriz(fit2013bofPresence, data_test)
 resultados <- addRow(resultados, "2013 BOW Presence", matrizt2013bofPresence)
+save.image(file="baselines/compare.RData")
+
 
 
 print("2014")
