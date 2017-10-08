@@ -40,7 +40,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
 library(magrittr)
 
 
-registerDoMC(8)
+registerDoMC(10)
 
 set.seed(10)
 split=0.80
@@ -185,4 +185,9 @@ matriz2016 <- getMatriz(fit2016, data_test)
 resultados <- addRow(resultados, "2016", matriz2016)
 
 save.image(file="baselines/compare.RData")
+resultados
+
+
+load("baselines/compare.RData")
+
 resultados
