@@ -184,10 +184,114 @@ fit2016
 matriz2016 <- getMatriz(fit2016, data_test)
 resultados <- addRow(resultados, "2016", matriz2016)
 
-save.image(file="baselines/compare.RData")
+save.image(file="baselines/compare_res.RData")
 resultados
 
 
 load("baselines/compare.RData")
+load("baselines/compare_res.RData")
 
-resultados
+View(resultados)
+
+library(caret)
+
+resamps <- resamples(list("BoW" = fit2013bof,
+                          "BoW Presence" = fit2013bofPresence,
+                          "1-Gram" = fit2014uni,
+                          "2-Gram" = fit2014bi,
+                          "1-Gram Stemming" = fit2014sun,
+                          "2-Gram Stemming" = fit2014sbi,
+                          "1-Gram" = fit2015un,
+                          "2-Gram" = fit2015bi,
+                          "1-Gram Presence" = fit2015unPresence,
+                          "2-Gram Presence" = fit2015biPresence,
+                          "Style" = fit2015Style1,
+                          "Baseline" = fit2016
+                          ))
+
+summary(resamps)
+
+
+bwplot(resamps, layout = c(1, 2))
+
+trellis.par.set(caretTheme())
+dotplot(resamps, metric = "Accuracy")
+
+trellis.par.set(theme1)
+
+difValues <- diff(resamps)
+trellis.par.set(theme1)
+bwplot(difValues, layout = c(2, 1))
+
+dotplot(difValues)
+
+
+plotObsVsPred(pre)
+
+theme1 <- trellis.par.get()
+theme1$plot.symbol$col = rgb(.2, .2, .2, .4)
+theme1$plot.symbol$pch = 16
+theme1$plot.line$col = rgb(1, 0, 0, .7)
+theme1$plot.line$lwd <- 2
+trellis.par.set(theme1)
+bwplot(resamps, layout = c(3, 1))
+
+trellis.par.set(caretTheme())
+dotplot(resamps, metric = "Accuracy")
+
+
+barplot(as.matrix(resultados))
+
+barplot(as.matrix(resultados), main="Autos", ylab= "Total",
+        beside=TRUE, col=rainbow(5))
+
+library(plotly)
+
+p <- plot_ly(
+  x = c("giraffes", "orangutans", "monkeys"),
+  y = c(20, 14, 23),
+  name = "SF Zoo",
+  type = "bar"
+)
+p
+
+# Create a shareable link to your chart
+# Set up API credentials: https://plot.ly/r/getting-started
+chart_link = api_create(p, filename="bar/basic")
+chart_link
+
+
+library(plotly)
+p <- plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
+p
+
+plot_ly(resultados, x = ~F1, color = ~Baseline, type = "box")
+
+
+library(plotly)
+
+TrabalhosRelacionados <- resultados$Baseline
+F1 <- resultados$F1
+Revocacao <- resultados$Revocação
+data <- data.frame(TrabalhosRelacionados, F1, Revocacao)
+
+plot_ly(data, x = ~TrabalhosRelacionados, y = ~F1, type = 'bar', name = 'F1') %>%
+  add_trace(y = ~Revocacao, name = 'Revocacao') %>%
+  layout(yaxis = list(title = 'Count'), barmode = 'group')
+
+
+data <- resultados
+data$Baseline <- c("Jauch et al. 2013 BoW", "Jauch et al. 2013 BoW Presence", "Aphinyanaphongs et al. 2014 1-Gram", "Aphinyanaphongs et al. 2014 2-Gram", "Joshi et al. 2015 1-Gram", "Joshi et al. 2015 2-Gram", "Joshi et al. 2015 1-Gram Presence", "Joshi et al. 2015 2-Gram Presence", "Joshi et al. 2015 Style", "Joshi et al. 2015 Style Presence", "Hossain et al. 2016 3-Gram e #");
+
+#The default order will be alphabetized unless specified as below:
+data$Baseline <- factor(data$Baseline, levels = data[["Baseline"]])
+
+View(data)
+
+plot_ly(data, x = ~Baseline, y = ~F1, type = 'bar', name = 'F-Measure', marker = list(color = 'rgb(158,202,225)', text = F1, textposition = 'auto', line = list(color = 'rgb(8,48,107)', width = 0.5))) %>%
+  add_trace(y = ~Precisão, name = 'Precisão', marker = list(color = 'rgb(210,210,210)')) %>%
+  add_trace(y = ~Revocação, name = 'Revocação', marker = list(color = 'rgb(51, 204, 5)')) %>%
+  layout(title = "Comparativo entre Trabalhos Relacionados", xaxis = list(showline = TRUE, showgrid = TRUE, showarrow = FALSE, title = "", tickangle = 20),
+         yaxis = list(title = ""),
+         margin = list(b = 100),
+         barmode = 'group')
