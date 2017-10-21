@@ -31,4 +31,73 @@ fore <- function(x) {
   }   
 }
 
-apply(subset(dados, select = c(idInterno, textParser)), 1, fore)
+library(hunspell)
+library(qdap)
+which_misspelled(text, suggest=FALSE)
+which_misspelled(text, suggest=TRUE)
+
+text <- "i'm gOod perrson lol.Go to ciroc #mention thats Cigerettes";
+
+text <- "hasn't"
+bad_words <- hunspell(text)
+bad_words
+hunspell_suggest(bad_words[[1]])
+
+
+
+
+
+
+hunspell(text, format = c("text", "man", "latex", "html", "xml"),
+         dict = dictionary("en_US"), ignore = en_stats)
+
+hunspell_parse(text, format = c("text", "man", "latex", "html", "xml"),
+               dict = dictionary("en_US"))
+
+hunspell_check(words, dict = dictionary("en_US"))
+hunspell_suggest(words, dict = dictionary("en_US"))
+hunspell_analyze(words, dict = dictionary("en_US"))
+hunspell_stem(words, dict = dictionary("en_US"))
+hunspell_info(dict = dictionary("en_US"))
+
+#apply(subset(dados, select = c(idInterno, textParser)), 1, fore)
+
+
+library(Rcpp)
+library(microbenchmark)
+
+# pure Rcpp/C++ implementation
+
+sourceCpp("
+          #include <Rcpp.h> 
+          
+          using namespace Rcpp; 
+          
+          // [[Rcpp::export]]
+          std::vector< std::string > ucfirst( std::vector< std::string > strings ) {
+          
+          int len = strings.size();
+          
+          for( int i=0; i < len; i++ ) {
+          std::transform(strings[i].begin(), strings[i].end(), strings[i].begin(), ::tolower);
+          strings[i][0] = toupper( strings[i][0] );
+          }
+          
+          return strings;
+          
+          }")
+
+r_ucfirst <- function (str) {
+  paste(toupper(substring(str, 1, 1)), tolower(substring(str, 2)), sep = "")
+}
+
+print(ucfirst("hello"))
+## [1] "Hello"
+
+print(r_ucfirst("hello"))
+## [1] "Hello"
+
+mb <- microbenchmark(ucfirst("hello"), r_ucfirst("hello"), times=1000)
+print(mb)
+
+.libPaths()
