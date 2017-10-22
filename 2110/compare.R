@@ -40,7 +40,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
 library(magrittr)
 
 
-registerDoMC(10)
+registerDoMC(4)
 
 set.seed(10)
 split=0.80
@@ -53,9 +53,9 @@ trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-fit2013bof <- treinar(data_train)
-fit2013bof
-matrizt2013bof <- getMatriz(fit2013bof, data_test)
+2GRAM <- treinar(data_train)
+2GRAM
+matrizt2013bof <- getMatriz(2GRAM, data_test)
 resultados <- addRow(resultados, "2Gram", matrizt2013bof)
 
 load("2110/2gram-25.Rda")
@@ -63,8 +63,8 @@ trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-fit2013bofPresence <- treinar(data_train)
-fit2013bofPresence
-matrizt2013bofPresence <- getMatriz(fit2013bofPresence, data_test)
+2GRAM25 <- treinar(data_train)
+2GRAM25
+matrizt2013bofPresence <- getMatriz(2GRAM25, data_test)
 resultados <- addRow(resultados, "2GRAM 25%", matrizt2013bofPresence)
 save.image(file="2110/compare21.RData")
