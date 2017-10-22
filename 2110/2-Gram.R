@@ -8,14 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, 
-       q1                  AS resposta, 
-                 textparser, 
-                 textoparseremoticom AS textoCompleto, 
-                 hashtags, 
-                 emoticonpos,	 
-                 emoticonneg
-                 FROM   tweets t ")
+dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> ''")
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 clearConsole()
@@ -37,8 +30,11 @@ stem_tokenizer1 =function(x) {
 
 dados$textParser = sub("'", "", dados$textParser)
 
+
 prep_fun = tolower
 tok_fun = word_tokenizer
+
+dados$textParser
 
 it_train = itoken(dados$textParser, 
                   preprocessor = prep_fun, 
@@ -63,7 +59,6 @@ vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
-
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
 
