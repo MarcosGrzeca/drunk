@@ -34,8 +34,6 @@ dados$textParser = sub("'", "", dados$textParser)
 prep_fun = tolower
 tok_fun = word_tokenizer
 
-dados$textParser
-
 it_train = itoken(dados$textParser, 
                   preprocessor = prep_fun, 
                   #                  tokenizer = stem_tokenizer1,
@@ -70,3 +68,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
 save(maFinal, file = "2110/2gram.Rda")
+
