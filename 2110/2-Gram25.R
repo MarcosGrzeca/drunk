@@ -9,7 +9,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dadosQ1 <- query("SELECT t.id, 
-       q1                  AS resposta, 
+                 q1                  AS resposta, 
                  textparser, 
                  textoparseremoticom AS textoCompleto, 
                  hashtags, 
@@ -70,8 +70,25 @@ clearConsole()
 library(rowr)
 library(RWeka)
 
+cols <- colnames(dataFrameTexto)
+aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
+manter <- round(length(aspectos) * 0.25)
+aspectosManter <- c()
+aspectosRemover <- c()
+
+for(i in 1:length(aspectos)) {
+  if (i <= manter) {
+    aspectosManter <- c(aspectosManter, aspectos[i])
+  } else {
+    aspectosRemover <- c(aspectosRemover, aspectos[i])
+  }
+}
+
+View(as.data.frame(aspectosManter))
+dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
+
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/2gram.Rda")
+save(maFinal, file = "2110/2gram-25.Rda")
