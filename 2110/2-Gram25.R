@@ -84,7 +84,6 @@ for(i in 1:length(aspectos)) {
   }
 }
 
-View(as.data.frame(aspectosManter))
 dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
