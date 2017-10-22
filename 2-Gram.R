@@ -16,8 +16,6 @@ dadosQ1 <- query("SELECT t.id,
                  emoticonpos,	 
                  emoticonneg
                  FROM   tweets t ")
-
-View(dados)
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 clearConsole()
