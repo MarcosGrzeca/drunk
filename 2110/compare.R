@@ -53,18 +53,18 @@ trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-2GRAM <- treinar(data_train)
-2GRAM
-matrizt2013bof <- getMatriz(2GRAM, data_test)
-resultados <- addRow(resultados, "2Gram", matrizt2013bof)
+twogram <- treinar(data_train)
+twogram
+matriz2Gram <- getMatriz(twogram, data_test)
+resultados <- addRow(resultados, "2Gram", matriz2Gram)
 
 load("2110/2gram-25.Rda")
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
 
-2GRAM25 <- treinar(data_train)
-2GRAM25
-matrizt2013bofPresence <- getMatriz(2GRAM25, data_test)
-resultados <- addRow(resultados, "2GRAM 25%", matrizt2013bofPresence)
+twogram25 <- treinar(data_train)
+twogram25
+matriz2Gram25 <- getMatriz(twogram25, data_test)
+resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
 save.image(file="2110/compare21.RData")
