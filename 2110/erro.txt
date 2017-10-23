@@ -12,3 +12,7 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
+Warning messages:
+1: In train.default(x = subset(data_train, select = -c(resposta)),  :
+  You are trying to do regression and your outcome only has two possible values Are you trying to do classification? If so, use a 2 level factor as your outcome column.
+2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
