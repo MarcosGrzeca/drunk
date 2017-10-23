@@ -8,7 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> ''")
+dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> '' id <> 462478714693890048")
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 clearConsole()
