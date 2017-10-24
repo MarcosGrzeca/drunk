@@ -1,9 +1,9 @@
-Loading required package: lattice
-Loading required package: ggplot2
-Loading required package: doMC
-Loading required package: foreach
-Loading required package: iterators
-Loading required package: parallel
+Carregando pacotes exigidos: lattice
+Carregando pacotes exigidos: ggplot2
+Carregando pacotes exigidos: doMC
+Carregando pacotes exigidos: foreach
+Carregando pacotes exigidos: iterators
+Carregando pacotes exigidos: parallel
 Loading required package: kernlab
 
 Attaching package: ‘kernlab’
@@ -12,10 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
-Calls: treinar -> train -> train.default -> nominalTrainWorkflow
-In addition: Warning message:
-In train.default(x = subset(data_train, select = -c(resposta)),  :
-  You are trying to do regression and your outcome only has two possible values Are you trying to do classification? If so, use a 2 level factor as your outcome column.
-Execution halted
