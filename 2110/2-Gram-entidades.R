@@ -8,9 +8,24 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
-dados <- dadosQ1
+dados <- query("SELECT t.id,
+       q1 AS resposta,
+       textParser,
+       textoParserEmoticom AS textoCompleto,
+       hashtags,
+       emoticonPos,
+       emoticonNeg,
+
+    (SELECT GROUP_CONCAT(tn.palavra)
+     FROM tweets_nlp tn
+     WHERE tn.idTweetInterno = t.idInterno
+     GROUP BY tn.idTweetInterno) AS entidades
+FROM tweets t
+WHERE textparser <> ''
+    AND id <> 462478714693890048")
 dados$resposta[is.na(dados$resposta)] <- 0
+dados$resposta <- as.factor(dados$resposta)
+dados$textParser <- enc2utf8(dados$textParser)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -32,10 +47,6 @@ dados$textParser = sub("'", "", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
-
-#dados$textParser <- iconv(dados$textParser, "latin1", "UTF-8")
-dados$textParser <- enc2utf8(dados$textParser)
-#Encoding(teste)
 
 it_train = itoken(dados$textParser, 
                   preprocessor = prep_fun, 
@@ -60,6 +71,27 @@ vocabHashTags = create_vocabulary(it_train_hash)
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
+
+it_train = itoken(strsplit(dados$entidades, ","), 
+                  ids = dados$id, 
+                  progressbar = TRUE)
+
+vocab = create_vocabulary(it_train)
+vectorizer = vocab_vectorizer(vocab)
+dataFrameEntidades = create_dtm(it_train, vectorizer)
+dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
+
+#it_train = itoken(strsplit(dados$grams, ","), 
+#                  ids = dados$id, 
+                  #progressbar = TRUE)
+
+#vocab = create_vocabulary(it_train)
+#vectorizer = vocab_vectorizer(vocab)
+#dataFrameGram = create_dtm(it_train, vectorizer)
+#dataFrameGram <- as.data.frame(as.matrix(dataFrameGram))
+
+
+#Concatenar resultados
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
@@ -69,16 +101,7 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
+maFinal <- cbind.fill(maFinal, dataFrameEntidades)
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "2110/2gram.Rda")
-
-
-load("2110/compare21.RData")
-
-
-View(resultados)
-twogram
-twogram25
-
-
+save(maFinal, file = "2110/2gram-entidades.Rda")
