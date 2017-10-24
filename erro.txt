@@ -12,14 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in readChar(con, 5L, useBytes = TRUE) : 
-  não é possível abrir a conexão
-Calls: load -> readChar
-Além disso: Warning message:
-In readChar(con, 5L, useBytes = TRUE) :
-  não foi possível abrir o arquivo comprimido '2110/rdas/2gram-25-entidades.Rda', motivo provável 'Arquivo ou diretório não encontrado'
-Execução interrompida
