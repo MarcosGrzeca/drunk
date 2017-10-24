@@ -69,7 +69,7 @@ twogram25
 matriz2Gram25 <- getMatriz(twogram25, data_test)
 resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
 
-load("2110/rdas/2gram-25-entidades.Rda")
+load("2110/rdas/2gram-entidades.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))

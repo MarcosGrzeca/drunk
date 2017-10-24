@@ -32,25 +32,92 @@ SELECT t.id,
        emoticonNeg,
 
     (
-     SELECt
+     SELECt SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
+     FROM 
      (
-       SELECT GROUP_CONCAT(DISTINCT(REPLACE(c.resource, "http://dbpedia.org/resource/", ""))) as conceito
+       SELECT c.resource as resource, t.id
        FROM tweets_nlp tn
        JOIN conceito c ON c.palavra = tn.palavra
        JOIN resource_type ty ON ty.resource = c.resource
        WHERE tn.idTweetInterno = t.idInterno
-       GROUP BY t.id
 
        UNION
 
-     SELECT GROUP_CONCAT(DISTINCT(REPLACE(c.resource, "http://dbpedia.org/resource/", ""))) as conceito
+       SELECT c.resource as resource, t.id
        FROM tweets_gram tn
        JOIN conceito c ON c.palavra = tn.palavra
        WHERE tn.idTweetInterno = t.idInterno
-       GROUP BY t.id
-   ) as todosConceitos
+       GROUP BY 2
+     ) as todosConceitos
      ) AS entidades
 FROM tweets t
+
+
+SELECT t.id,
+       q1 AS resposta,
+       textParser,
+       textoParserEmoticom AS textoCompleto,
+       hashtags,
+       emoticonPos,
+       emoticonNeg,
+
+    (
+     SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
+     FROM 
+     (
+  
+       
+       SELECT c.resource as resource, tn.idTweetInterno
+       FROM tweets_nlp tn
+       JOIN conceito c ON c.palavra = tn.palavra
+       JOIN resource_type ty ON ty.resource = c.resource
+
+
+       UNION
+
+       SELECT c.resource as resource, tn.idTweetInterno
+       FROM tweets_gram tn
+       JOIN conceito c ON c.palavra = tn.palavra
+       GROUP BY 2
+     ) as louco
+       WHERE louco.idTweetInterno = t.idInterno
+     )
+FROM tweets t
+
+
+SELECT t.id,
+       t.idInterno,
+
+       q1 AS resposta,
+       textParser,
+       textoParserEmoticom AS textoCompleto,
+       hashtags,
+       emoticonPos,
+       emoticonNeg,
+
+    (
+     SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
+     FROM 
+     (
+  
+       
+       SELECT c.resource as resource, tn.idTweetInterno
+       FROM tweets_nlp tn
+       JOIN conceito c ON c.palavra = tn.palavra
+       JOIN resource_type ty ON ty.resource = c.resource
+
+
+       UNION ALL
+
+       SELECT c.resource as resource, tn.idTweetInterno
+       FROM tweets_gram tn
+       JOIN conceito c ON c.palavra = tn.palavra
+       GROUP BY 2
+     ) as louco
+       WHERE louco.idTweetInterno = t.idInterno
+     )
+FROM tweets t
+
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
