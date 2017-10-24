@@ -9,83 +9,6 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-                q1 AS resposta,
-                textParser,
-                textoParserEmoticom AS textoCompleto,
-                hashtags,
-                emoticonPos,
-                emoticonNeg,
-                (SELECT GROUP_CONCAT(tn.palavra)
-                FROM tweets_nlp tn
-                WHERE tn.idTweetInterno = t.idInterno
-                GROUP BY tn.idTweetInterno) AS entidades
-                FROM tweets t
-                WHERE textparser <> ''
-                AND id <> 462478714693890048")
-
-SELECT t.id,
-       q1 AS resposta,
-       textParser,
-       textoParserEmoticom AS textoCompleto,
-       hashtags,
-       emoticonPos,
-       emoticonNeg,
-
-    (
-     SELECt SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
-     FROM 
-     (
-       SELECT c.resource as resource, t.id
-       FROM tweets_nlp tn
-       JOIN conceito c ON c.palavra = tn.palavra
-       JOIN resource_type ty ON ty.resource = c.resource
-       WHERE tn.idTweetInterno = t.idInterno
-
-       UNION
-
-       SELECT c.resource as resource, t.id
-       FROM tweets_gram tn
-       JOIN conceito c ON c.palavra = tn.palavra
-       WHERE tn.idTweetInterno = t.idInterno
-       GROUP BY 2
-     ) as todosConceitos
-     ) AS entidades
-FROM tweets t
-
-
-SELECT t.id,
-       q1 AS resposta,
-       textParser,
-       textoParserEmoticom AS textoCompleto,
-       hashtags,
-       emoticonPos,
-       emoticonNeg,
-
-    (
-     SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
-     FROM 
-     (
-  
-       
-       SELECT c.resource as resource, tn.idTweetInterno
-       FROM tweets_nlp tn
-       JOIN conceito c ON c.palavra = tn.palavra
-       JOIN resource_type ty ON ty.resource = c.resource
-
-
-       UNION
-
-       SELECT c.resource as resource, tn.idTweetInterno
-       FROM tweets_gram tn
-       JOIN conceito c ON c.palavra = tn.palavra
-       GROUP BY 2
-     ) as louco
-       WHERE louco.idTweetInterno = t.idInterno
-     )
-FROM tweets t
-
-
-SELECT t.id,
        t.idInterno,
 
        q1 AS resposta,
@@ -104,7 +27,8 @@ SELECT t.id,
        SELECT c.resource as resource, tn.idTweetInterno
        FROM tweets_nlp tn
        JOIN conceito c ON c.palavra = tn.palavra
-       JOIN resource_type ty ON ty.resource = c.resource
+       WHERE c.sucesso = 1
+       
 
 
        UNION ALL
@@ -112,12 +36,14 @@ SELECT t.id,
        SELECT c.resource as resource, tn.idTweetInterno
        FROM tweets_gram tn
        JOIN conceito c ON c.palavra = tn.palavra
-       GROUP BY 2
+       WHERE c.sucesso = 1
+       GROUP BY 1,2
      ) as louco
        WHERE louco.idTweetInterno = t.idInterno
      )
 FROM tweets t
-
+LIMIT 10
+")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
