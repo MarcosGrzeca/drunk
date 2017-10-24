@@ -33,7 +33,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  save.image(file="2110/compare21.RData")
+  save.image(file="2110/rdas/compare21.RData")
   return (newdf)
 }
 
@@ -47,7 +47,7 @@ split=0.80
 
 #Baseline 2013
 
-load("2110/2gram.Rda")
+load("2110/rdas/2gram.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -58,7 +58,7 @@ twogram
 matriz2Gram <- getMatriz(twogram, data_test)
 resultados <- addRow(resultados, "2Gram", matriz2Gram)
 
-load("2110/2gram-25.Rda")
+load("2110/rdas/2gram-25.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -69,7 +69,7 @@ twogram25
 matriz2Gram25 <- getMatriz(twogram25, data_test)
 resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
 
-load("2110/2gram-25-entidades.Rda")
+load("2110/rdas/2gram-25-entidades.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -80,7 +80,7 @@ twogramentidades
 matriz2GramEntidades <- getMatriz(twogramentidades, data_test)
 resultados <- addRow(resultados, "2GRAM entidades", matriz2GramEntidades)
 
-load("2110/3gram-25.Rda")
+load("2110/rdas/3gram-25.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -92,4 +92,4 @@ matriz3Gram25 <- getMatriz(treegram25, data_test)
 resultados <- addRow(resultados, "3GRAM 25", matriz3Gram25)
 
 
-save.image(file="2110/compare21.RData")
+save.image(file="2110/rdas/compare21.RData")
