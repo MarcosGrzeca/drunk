@@ -135,6 +135,17 @@ dbpediaTypesCompleto
 matrizDBPediaCompleto <- getMatriz(dbpediaTypesCompleto, data_test)
 resultados <- addRow(resultados, "2 Gram dbpedia types (todos)", matrizDBPediaCompleto)
 
+load("2110/rdas/2gram-entidades-25.Rda")
+maFinal$resposta <- as.factor(maFinal$resposta)
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
+
+twoGramEntidades25 <- treinar(data_train)
+twoGramEntidades25
+matrizTwoGramEntidades2 <- getMatriz(twoGramEntidades25, data_test)
+resultados <- addRow(resultados, "2 Gram 25% + entidades", matrizTwoGramEntidades2)
+
 save.image(file="2110/rdas/2gram-dbpedia.Rda")
 
 #load("2110/rdas/compare21.RData")

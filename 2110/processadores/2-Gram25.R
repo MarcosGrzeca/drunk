@@ -84,4 +84,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/2gram-25.Rda")
+save(maFinal, file = "2110/rdas/2gram-25.Rda")
