@@ -26,6 +26,7 @@ WHERE textparser <> ''
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$entidades <- enc2utf8(dados$entidades)
 clearConsole()
 
 if (!require("text2vec")) {
