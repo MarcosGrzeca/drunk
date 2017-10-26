@@ -51,7 +51,6 @@ dados <- query("SELECT t.id,
                            'http://dbpedia.org/class/yago/Ceramic102997391',
                            'http://dbpedia.org/class/yago/Biome107941945')
      GROUP BY t.id) AS entidades,
-
     (SELECT GROUP_CONCAT(ty.type)
      FROM tweets_gram tn
      JOIN conceito c ON c.palavra = tn.palavra
