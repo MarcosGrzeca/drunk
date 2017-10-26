@@ -37,6 +37,7 @@ dados <- query("SELECT t.id,
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$resources <- enc2utf8(dados$resources)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -112,6 +113,6 @@ library(RWeka)
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameResource)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, resources))
 
 save(maFinal, file = "2110/rdas/2gram-dbpedia.Rda")
