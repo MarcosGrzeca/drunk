@@ -10,29 +10,21 @@ clearConsole();
 
 dados <- query("SELECT t.id,
        t.idInterno,
-
        q1 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
        emoticonNeg,
-
     (
-     SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, "http://dbpedia.org/resource/", "")))
+     SELECT GROUP_CONCAT(DISTINCT(REPLACE(resource, 'http://dbpedia.org/resource/', '')))
      FROM 
      (
-  
-       
        SELECT c.resource as resource, tn.idTweetInterno
        FROM tweets_nlp tn
        JOIN conceito c ON c.palavra = tn.palavra
        WHERE c.sucesso = 1
-       
-
-
        UNION ALL
-
        SELECT c.resource as resource, tn.idTweetInterno
        FROM tweets_gram tn
        JOIN conceito c ON c.palavra = tn.palavra
@@ -40,10 +32,7 @@ dados <- query("SELECT t.id,
        GROUP BY 1,2
      ) as louco
        WHERE louco.idTweetInterno = t.idInterno
-     )
-FROM tweets t
-LIMIT 10
-")
+     ) as resources FROM tweets t")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
@@ -93,15 +82,14 @@ vocabHashTags = create_vocabulary(it_train_hash)
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
-
-it_train = itoken(strsplit(dados$entidades, ","), 
+it_train = itoken(strsplit(dados$resources, ","), 
                   ids = dados$id, 
                   progressbar = TRUE)
 
 vocab = create_vocabulary(it_train)
 vectorizer = vocab_vectorizer(vocab)
-dataFrameEntidades = create_dtm(it_train, vectorizer)
-dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
+dataFrameResource = create_dtm(it_train, vectorizer)
+dataFrameResource <- as.data.frame(as.matrix(dataFrameResource))
 
 #it_train = itoken(strsplit(dados$grams, ","), 
 #                  ids = dados$id, 
@@ -123,7 +111,7 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- cbind.fill(maFinal, dataFrameEntidades)
+maFinal <- cbind.fill(maFinal, dataFrameResource)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "2110/2gram-entidades.Rda")
+save(maFinal, file = "2110/rdas/2gram-dbpedia.Rda")

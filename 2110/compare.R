@@ -91,5 +91,21 @@ treegram25
 matriz3Gram25 <- getMatriz(treegram25, data_test)
 resultados <- addRow(resultados, "3GRAM 25", matriz3Gram25)
 
+load("2110/rdas/2-Gram-dbpedia-resource.R")
+maFinal$resposta <- as.factor(maFinal$resposta)
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
 
-save.image(file="2110/rdas/compare21.RData")
+twoGDBPedia <- treinar(data_train)
+twoGDBPedia
+matriz2GramDBPedia <- getMatriz(twoGDBPedia, data_test)
+resultados <- addRow(resultados, "2 Gram DBPedia Resource", matriz2GramDBPedia)
+
+
+save.image(file="2110/rdas/2gram-dbpedia.Rda")
+
+
+
+#load("2110/rdas/compare21.RData")
+#View(resultados)
