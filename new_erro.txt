@@ -1,0 +1,16 @@
+Support Vector Machines with Linear Kernel 
+
+ 3197 samples
+29875 predictors
+    2 classes: '0', '1' 
+
+Pre-processing: centered (29875) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 2878, 2877, 2877, 2877, 2878, 2877, ... 
+Resampling results:
+
+  Accuracy  Kappa    
+  0.877402  0.7517626
+
+Tuning parameter 'C' was held constant at a value of 1
+[1] "2Gram"
