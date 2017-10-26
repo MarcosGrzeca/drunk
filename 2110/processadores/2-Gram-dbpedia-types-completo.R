@@ -9,54 +9,30 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
+       t.idInterno,
        q1 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
        emoticonNeg,
-    (SELECT GROUP_CONCAT(ty.type)
-     FROM tweets_nlp tn
-     JOIN conceito c ON c.palavra = tn.palavra
-     JOIN resource_type ty ON ty.resource = c.resource
-     WHERE tn.idTweetInterno = t.idInterno
-     GROUP BY t.id) AS entidades,
-    (SELECT GROUP_CONCAT(ty.type)
-     FROM tweets_gram tn
-     JOIN conceito c ON c.palavra = tn.palavra
-     JOIN resource_type ty ON ty.resource = c.resource
-     WHERE tn.idTweetInterno = t.idInterno
-         AND ty.`type` IN ('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#SocialPerson',
-                           'http://schema.org/Organization',
-                           'http://dbpedia.org/ontology/Group',
-                           'http://schema.org/MusicGroup',
-                           'http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#NaturalPerson',
-                           'http://schema.org/Product',
-                           'http://dbpedia.org/class/yago/Rocket104099429',
-                           'http://dbpedia.org/class/yago/Holder110180178',
-                           'http://dbpedia.org/ontology/Artist',
-                           'http://dbpedia.org/class/yago/Female109619168',
-                           'http://dbpedia.org/class/yago/Child109918248',
-                           'http://dbpedia.org/class/yago/Male109624168',
-                           'http://dbpedia.org/class/yago/Document103217458',
-                           'http://dbpedia.org/class/yago/AthleticFacility102752311',
-                           'http://dbpedia.org/class/yago/Pool103982060',
-                           'http://dbpedia.org/class/yago/PlasticArt103958097',
-                           'http://dbpedia.org/class/yago/SolidFigure113863473',
-                           'http://dbpedia.org/class/yago/Attacker109821253',
-                           'http://dbpedia.org/class/yago/AcousticDevice102676261',
-                           'http://dbpedia.org/class/yago/SignalingDevice104217718',
-                           'http://dbpedia.org/class/yago/Anomaly114505821',
-                           'http://dbpedia.org/class/yago/Defect114464005',
-                           'http://dbpedia.org/class/yago/Climber113102409',
-                           'http://dbpedia.org/class/yago/ComputerUser109951274',
-                           'http://dbpedia.org/class/yago/Engineer109615807',
-                           'http://dbpedia.org/class/yago/RootVegetable107710283',
-                           'http://dbpedia.org/class/yago/SolanaceousVegetable107710007',
-                           'http://dbpedia.org/class/yago/Stimulant104320126',
-                           'http://dbpedia.org/class/yago/Ceramic102997391',
-                           'http://dbpedia.org/class/yago/Biome107941945')
-     GROUP BY t.id) AS resources
+  ( SELECT GROUP_CONCAT(DISTINCT(REPLACE(type, 'http://dbpedia.org/class/', '')))
+   FROM
+     ( SELECT c.resource AS resource,
+              tn.idTweetInterno
+      FROM tweets_nlp tn
+      JOIN conceito c ON c.palavra = tn.palavra
+      WHERE c.sucesso = 1
+      UNION ALL SELECT c.resource AS resource,
+                       tn.idTweetInterno
+      FROM tweets_gram tn
+      JOIN conceito c ON c.palavra = tn.palavra
+      WHERE c.sucesso = 1
+      GROUP BY 1,
+               2 ) AS louco
+     JOIN resource_type ty ON ty.resource = louco.resource
+     WHERE louco.idTweetInterno = t.idInterno
+   ) AS resources
 FROM tweets t")
 
 dados$resposta[is.na(dados$resposta)] <- 0

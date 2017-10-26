@@ -124,6 +124,17 @@ dbpediaTypesPageRank
 matrizDBPediaTypesPage <- getMatriz(dbpediaTypesPageRank, data_test)
 resultados <- addRow(resultados, "2 Gram dbpedia types page rank", matrizDBPediaTypesPage)
 
+load("2110/rdas/2-Gram-dbpedia-types-completo.Rda")
+maFinal$resposta <- as.factor(maFinal$resposta)
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
+
+dbpediaTypesCompleto <- treinar(data_train)
+dbpediaTypesCompleto
+matrizDBPediaCompleto <- getMatriz(dbpediaTypesCompleto, data_test)
+resultados <- addRow(resultados, "2 Gram dbpedia types (todos)", matrizDBPediaCompleto)
+
 save.image(file="2110/rdas/2gram-dbpedia.Rda")
 
 #load("2110/rdas/compare21.RData")
