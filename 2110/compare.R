@@ -146,7 +146,18 @@ twoGramEntidades25
 matrizTwoGramEntidades2 <- getMatriz(twoGramEntidades25, data_test)
 resultados <- addRow(resultados, "2 Gram 25% + entidades", matrizTwoGramEntidades2)
 
-save.image(file="2110/rdas/2gram-dbpedia.Rda")
+load("2110/rdas/2-Gram-dbpedia-subject.Rda")
+maFinal$resposta <- as.factor(maFinal$resposta)
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
+
+twoGramDBPediaSubject <- treinar(data_train)
+twoGramDBPediaSubject
+matrizTwoGramDBPediaSubject <- getMatriz(twoGramDBPediaSubject, data_test)
+resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGramDBPediaSubject)
+
+save.image(file="2110/rdas/compare21.RData")
 
 #load("2110/rdas/compare21.RData")
 #View(resultados)
