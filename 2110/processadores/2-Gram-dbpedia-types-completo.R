@@ -9,29 +9,23 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       t.idInterno,
        q1 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
        emoticonNeg,
-  ( SELECT GROUP_CONCAT(DISTINCT(REPLACE(type, 'http://dbpedia.org/class/', '')))
-   FROM
-     ( SELECT c.resource AS resource,
-              tn.idTweetInterno
-      FROM tweets_nlp tn
-      JOIN conceito c ON c.palavra = tn.palavra
-      WHERE c.sucesso = 1
-      UNION ALL SELECT c.resource AS resource,
-                       tn.idTweetInterno
-      FROM tweets_gram tn
-      JOIN conceito c ON c.palavra = tn.palavra
-      WHERE c.sucesso = 1
-      GROUP BY 1,
-               2 ) AS louco
-     JOIN resource_type ty ON ty.resource = louco.resource
-     WHERE louco.idTweetInterno = t.idInterno
+    (SELECT GROUP_CONCAT(ty.type)
+     FROM tweets_nlp tn
+     JOIN conceito c ON c.palavra = tn.palavra
+     JOIN resource_type ty ON ty.resource = c.resource
+     WHERE tn.idTweetInterno = t.idInterno
+     GROUP BY t.id) AS entidades,
+    (SELECT GROUP_CONCAT(ty.type)
+     FROM tweets_gram tn
+     JOIN conceito c ON c.palavra = tn.palavra
+     JOIN resource_type ty ON ty.resource = c.resource
+     WHERE tn.idTweetInterno = t.idInterno
          AND ty.`type` IN ('http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#SocialPerson',
                            'http://schema.org/Organization',
                            'http://dbpedia.org/ontology/Group',
@@ -62,7 +56,7 @@ dados <- query("SELECT t.id,
                            'http://dbpedia.org/class/yago/Stimulant104320126',
                            'http://dbpedia.org/class/yago/Ceramic102997391',
                            'http://dbpedia.org/class/yago/Biome107941945')
-   ) AS resources
+     GROUP BY t.id) AS resources
 FROM tweets t")
 
 dados$resposta[is.na(dados$resposta)] <- 0
@@ -146,4 +140,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameResource)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, resources))
 
-save(maFinal, file = "2110/rdas/2-Gram-dbpedia-types-page-rank.Rda")
+save(maFinal, file = "2110/rdas/2-Gram-dbpedia-types-completo.Rda")
