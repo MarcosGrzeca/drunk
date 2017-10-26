@@ -14,7 +14,7 @@ dados <- query("SELECT t.id,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
-       emoticonNeg
+       emoticonNeg,
     (SELECT GROUP_CONCAT(ty.type)
      FROM tweets_nlp tn
      JOIN conceito c ON c.palavra = tn.palavra
