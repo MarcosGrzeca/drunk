@@ -157,7 +157,7 @@ twoGramDBPediaSubject
 matrizTwoGramDBPediaSubject <- getMatriz(twoGramDBPediaSubject, data_test)
 resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGramDBPediaSubject)
 
-save.image(file="2110/rdas/compare21.RData")
+save.image(file="2110/rdas/compare22.RData")
 
 #load("2110/rdas/compare21.RData")
 #View(resultados)
