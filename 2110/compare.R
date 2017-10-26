@@ -33,7 +33,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  save.image(file="2110/rdas/compare21.RData")
+  save.image(file="2110/rdas/compare22.RData")
   return (newdf)
 }
 
@@ -159,5 +159,5 @@ resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGramDBPediaSubject
 
 save.image(file="2110/rdas/compare22.RData")
 
-#load("2110/rdas/compare21.RData")
+#load("2110/rdas/compare22.RData")
 #View(resultados)
