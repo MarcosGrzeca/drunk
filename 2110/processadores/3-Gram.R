@@ -66,24 +66,8 @@ clearConsole()
 library(rowr)
 library(RWeka)
 
-cols <- colnames(dataFrameTexto)
-aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
-manter <- round(length(aspectos) * 0.25)
-aspectosManter <- c()
-aspectosRemover <- c()
-
-for(i in 1:length(aspectos)) {
-  if (i <= manter) {
-    aspectosManter <- c(aspectosManter, aspectos[i])
-  } else {
-    aspectosRemover <- c(aspectosRemover, aspectos[i])
-  }
-}
-
-dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
-
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/rdas/3gram-25.Rda")
+save(maFinal, file = "2110/rdas/3gram.Rda")

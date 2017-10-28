@@ -203,6 +203,19 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
   resultados <- addRow(resultados, "2 Gram + 25% + Categoria da localização", matrizTwoGramCateogoriaLocalizacao)
 }
 
+if (!exists("matrizThreeGram")) {
+  load("2110/rdas/3gram.Rda")
+  maFinal$resposta <- as.factor(maFinal$resposta)
+  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+  data_test <- maFinal[-trainIndex,]
+
+  threeGram <- treinar(data_train)
+  threeGram
+  matrizThreeGram <- getMatriz(threeGram, data_test)
+  resultados <- addRow(resultados, "3 Gram", matrizThreeGram)
+}
+
 save.image(file="2110/rdas/compare22.RData")
 
 #load("2110/rdas/compare22.RData")
