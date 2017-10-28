@@ -18,3 +18,7 @@ Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
 Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
+  tentativa de especificar um atributo em um NULL
+Calls: treinar -> train -> train.default -> nominalTrainWorkflow
+Execução interrompida
