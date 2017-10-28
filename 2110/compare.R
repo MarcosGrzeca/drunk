@@ -16,7 +16,7 @@ CORES <- 5
 registerDoMC(CORES)
 
 treinar <- function(data_train){
-    registerDoMC(CORES)
+    # registerDoMC(CORES)
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
@@ -26,7 +26,7 @@ treinar <- function(data_train){
 }
 
 getMatriz <- function(fit, data_test) {
-  registerDoMC(CORES)
+  # registerDoMC(CORES)
   pred <- predict(fit, subset(data_test, select = -c(resposta)))
   matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
   return (matriz)
