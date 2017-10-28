@@ -1,0 +1,14 @@
+Carregando pacotes exigidos: lattice
+Carregando pacotes exigidos: ggplot2
+Carregando pacotes exigidos: doMC
+Carregando pacotes exigidos: foreach
+Carregando pacotes exigidos: iterators
+Carregando pacotes exigidos: parallel
+Loading required package: kernlab
+
+Attaching package: ‘kernlab’
+
+The following object is masked from ‘package:ggplot2’:
+
+    alpha
+
