@@ -89,7 +89,7 @@ if (!exists("matriz2GramEntidades")) {
   save.image(file="2110/rdas/compare22.RData")
 }
 
-if (!exists("matrizThreeGram")) {
+if (exists("matrizThreeGram")) {
   load("2110/rdas/3gram.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -103,7 +103,7 @@ if (!exists("matrizThreeGram")) {
   save.image(file="2110/rdas/compare22.RData")
 }
 
-if (!exists("matriz3Gram25")) {
+if (exists("matriz3Gram25")) {
   load("2110/rdas/3gram-25.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
