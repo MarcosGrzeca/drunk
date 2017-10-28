@@ -179,6 +179,19 @@ if (!exists("matrizTwoGramDBPediaSubject")) {
   resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGramDBPediaSubject)
 }
 
+if (!exists("matrizTwoGram25Hora")) {
+  load("2110/rdas/2gram-25-hora.Rda")
+  maFinal$resposta <- as.factor(maFinal$resposta)
+  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+  data_test <- maFinal[-trainIndex,]
+
+  twoGram25Hora <- treinar(data_train)
+  twoGram25Hora
+  matrizTwoGram25Hora <- getMatriz(twoGram25Hora, data_test)
+  resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGram25Hora)
+}
+
 save.image(file="2110/rdas/compare22.RData")
 
 #load("2110/rdas/compare22.RData")
