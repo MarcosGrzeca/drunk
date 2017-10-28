@@ -47,7 +47,6 @@ registerDoMC(CORES)
 set.seed(10)
 split=0.80
 
-#Baseline 2013
 
 load("2110/rdas/2gram.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
