@@ -86,6 +86,19 @@ if (!exists("matriz2GramEntidades")) {
   resultados <- addRow(resultados, "2GRAM entidades", matriz2GramEntidades)
 }
 
+if (!exists("matrizThreeGram")) {
+  load("2110/rdas/3gram.Rda")
+  maFinal$resposta <- as.factor(maFinal$resposta)
+  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+  data_test <- maFinal[-trainIndex,]
+
+  threeGram <- treinar(data_train)
+  threeGram
+  matrizThreeGram <- getMatriz(threeGram, data_test)
+  resultados <- addRow(resultados, "3 Gram", matrizThreeGram)
+}
+
 if (!exists("matriz3Gram25")) {
   load("2110/rdas/3gram-25.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
@@ -201,19 +214,6 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
   twoGramCategoriaLocalizacao
   matrizTwoGramCateogoriaLocalizacao <- getMatriz(twoGramCategoriaLocalizacao, data_test)
   resultados <- addRow(resultados, "2 Gram + 25% + Categoria da localização", matrizTwoGramCateogoriaLocalizacao)
-}
-
-if (!exists("matrizThreeGram")) {
-  load("2110/rdas/3gram.Rda")
-  maFinal$resposta <- as.factor(maFinal$resposta)
-  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-  data_test <- maFinal[-trainIndex,]
-
-  threeGram <- treinar(data_train)
-  threeGram
-  matrizThreeGram <- getMatriz(threeGram, data_test)
-  resultados <- addRow(resultados, "3 Gram", matrizThreeGram)
 }
 
 save.image(file="2110/rdas/compare22.RData")
