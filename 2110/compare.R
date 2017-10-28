@@ -20,7 +20,7 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 5, savePred=T),
+            trControl = trainControl(method = "cv", number = 10, savePred=T),
             preProc=c("center"))
     return (fit)
 }
@@ -38,7 +38,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  save.image(file="2110/rdas/compare22.RData")
+  #save.image(file="2110/rdas/compare22.RData")
   return (newdf)
 }
 
@@ -231,6 +231,7 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
 
 save.image(file="2110/rdas/compare22.RData")
 
-#load("2110/rdas/compare22.RData")
-#resultados
-#View(resultados)
+load("2110/rdas/compare22.RData")
+resultados
+View(resultados)
+resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
