@@ -13,9 +13,10 @@ library(doMC)
 library(mlbench)
 
 CORES <- 10
+registerDoMC(CORES)
 
 treinar <- function(data_train){
-    registerDoMC(CORES)
+    # registerDoMC(CORES)
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
@@ -25,7 +26,7 @@ treinar <- function(data_train){
 }
 
 getMatriz <- function(fit, data_test) {
-  registerDoMC(CORES)
+  # registerDoMC(CORES)
   pred <- predict(fit, subset(data_test, select = -c(resposta)))
   matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
   return (matriz)
@@ -42,9 +43,6 @@ addRow <- function(resultados, baseline, matriz, ...) {
 }
 
 library(magrittr)
-
-
-registerDoMC(CORES)
 
 set.seed(10)
 split=0.80
@@ -189,7 +187,20 @@ if (!exists("matrizTwoGram25Hora")) {
   twoGram25Hora <- treinar(data_train)
   twoGram25Hora
   matrizTwoGram25Hora <- getMatriz(twoGram25Hora, data_test)
-  resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGram25Hora)
+  resultados <- addRow(resultados, "2 Gram + 25% + local", matrizTwoGram25Hora)
+}
+
+if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
+  load("2110/rdas/2gram-25-categoria-localizacao.Rda")
+  maFinal$resposta <- as.factor(maFinal$resposta)
+  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+  data_test <- maFinal[-trainIndex,]
+
+  twoGramCategoriaLocalizacao <- treinar(data_train)
+  twoGramCategoriaLocalizacao
+  matrizTwoGramCateogoriaLocalizacao <- getMatriz(twoGramCategoriaLocalizacao, data_test)
+  resultados <- addRow(resultados, "2 Gram + 25% + Categoria da localização", matrizTwoGramCateogoriaLocalizacao)
 }
 
 save.image(file="2110/rdas/compare22.RData")

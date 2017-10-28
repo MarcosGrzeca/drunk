@@ -8,11 +8,10 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, hora FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
+dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100 WHERE textparser <> '' AND id <> 462478714693890048")
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$textParser <- enc2utf8(dados$textParser)
-dados <- discretizarHora(dados)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -82,8 +81,25 @@ for(i in 1:length(aspectos)) {
 
 dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
+dados$categoriaEstabelecimento = sub(" ", "_", dados$categoriaEstabelecimento)
+it_train = itoken(dados$categoriaEstabelecimento, 
+                  preprocessor = prep_fun,
+                  tokenizer = tok_fun,
+                  ids = dados$id, 
+                  progressbar = TRUE)
+vocabEstabelecimento = create_vocabulary(it_train, stopwords = stop_words)
+vocabEstabelecimento = prune_vocabulary(vocabEstabelecimento, 
+                                term_count_min = 5, 
+                                doc_proportion_max = 0.9,
+                                doc_proportion_min = 0.001)
+vectorizerEstabelecimento = vocab_vectorizer(vocabEstabelecimento)
+dataFrameEstabelecimento = create_dtm(it_train, vectorizerEstabelecimento)
+dataFrameEstabelecimento <- as.data.frame(as.matrix(dataFrameEstabelecimento))
+
+
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
+maFinal <- cbind.fill(maFinal, dataFrameEstabelecimento)
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, categoriaEstabelecimento))
 
-save(maFinal, file = "2110/rdas/2gram-25-hora.Rda")
+save(maFinal, file = "2110/rdas/2gram-25-categoria-localizacao.Rda")
