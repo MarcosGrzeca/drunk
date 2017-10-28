@@ -12,10 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-
-
-
-
-
-
-Execução interrompida
