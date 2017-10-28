@@ -58,6 +58,7 @@ if (!exists("matriz2Gram")) {
   twogram
   matriz2Gram <- getMatriz(twogram, data_test)
   resultados <- addRow(resultados, "2Gram", matriz2Gram)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matriz2Gram25")) {
@@ -71,6 +72,7 @@ if (!exists("matriz2Gram25")) {
   twogram25
   matriz2Gram25 <- getMatriz(twogram25, data_test)
   resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matriz2GramEntidades")) {
@@ -84,6 +86,7 @@ if (!exists("matriz2GramEntidades")) {
   twogramentidades
   matriz2GramEntidades <- getMatriz(twogramentidades, data_test)
   resultados <- addRow(resultados, "2GRAM entidades", matriz2GramEntidades)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizThreeGram")) {
@@ -97,6 +100,7 @@ if (!exists("matrizThreeGram")) {
   threeGram
   matrizThreeGram <- getMatriz(threeGram, data_test)
   resultados <- addRow(resultados, "3 Gram", matrizThreeGram)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matriz3Gram25")) {
@@ -110,6 +114,7 @@ if (!exists("matriz3Gram25")) {
   treegram25
   matriz3Gram25 <- getMatriz(treegram25, data_test)
   resultados <- addRow(resultados, "3GRAM 25", matriz3Gram25)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matriz2GramDBPedia")) {
@@ -123,6 +128,7 @@ if (!exists("matriz2GramDBPedia")) {
   twoGDBPedia
   matriz2GramDBPedia <- getMatriz(twoGDBPedia, data_test)
   resultados <- addRow(resultados, "2 Gram DBPedia Resource", matriz2GramDBPedia)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizWikipedia")) {
@@ -136,6 +142,7 @@ if (!exists("matrizWikipedia")) {
   wikipediaCategory
   matrizWikipedia <- getMatriz(wikipediaCategory, data_test)
   resultados <- addRow(resultados, "2 Gram Wikipedia", matrizWikipedia)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizDBPediaTypesPage")) {
@@ -149,6 +156,7 @@ if (!exists("matrizDBPediaTypesPage")) {
   dbpediaTypesPageRank
   matrizDBPediaTypesPage <- getMatriz(dbpediaTypesPageRank, data_test)
   resultados <- addRow(resultados, "2 Gram dbpedia types page rank", matrizDBPediaTypesPage)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizDBPediaCompleto")) {
@@ -162,6 +170,7 @@ if (!exists("matrizDBPediaCompleto")) {
   dbpediaTypesCompleto
   matrizDBPediaCompleto <- getMatriz(dbpediaTypesCompleto, data_test)
   resultados <- addRow(resultados, "2 Gram dbpedia types (todos)", matrizDBPediaCompleto)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizTwoGramEntidades2")) {
@@ -175,6 +184,7 @@ if (!exists("matrizTwoGramEntidades2")) {
   twoGramEntidades25
   matrizTwoGramEntidades2 <- getMatriz(twoGramEntidades25, data_test)
   resultados <- addRow(resultados, "2 Gram 25% + entidades", matrizTwoGramEntidades2)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizTwoGramDBPediaSubject")) {
@@ -188,6 +198,7 @@ if (!exists("matrizTwoGramDBPediaSubject")) {
   twoGramDBPediaSubject
   matrizTwoGramDBPediaSubject <- getMatriz(twoGramDBPediaSubject, data_test)
   resultados <- addRow(resultados, "2 Gram + subject", matrizTwoGramDBPediaSubject)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizTwoGram25Hora")) {
@@ -201,6 +212,7 @@ if (!exists("matrizTwoGram25Hora")) {
   twoGram25Hora
   matrizTwoGram25Hora <- getMatriz(twoGram25Hora, data_test)
   resultados <- addRow(resultados, "2 Gram + 25% + local", matrizTwoGram25Hora)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
@@ -214,9 +226,11 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
   twoGramCategoriaLocalizacao
   matrizTwoGramCateogoriaLocalizacao <- getMatriz(twoGramCategoriaLocalizacao, data_test)
   resultados <- addRow(resultados, "2 Gram + 25% + Categoria da localização", matrizTwoGramCateogoriaLocalizacao)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 save.image(file="2110/rdas/compare22.RData")
 
 #load("2110/rdas/compare22.RData")
+#resultados
 #View(resultados)
