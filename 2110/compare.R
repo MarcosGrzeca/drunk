@@ -271,7 +271,7 @@ if (!exists("matrizTwoGramEntidadesHora")) {
   })
 }
 
-save.image(file="2110/rdas/compare22.RData")
+#save.image(file="2110/rdas/compare22.RData")
 
 print("FIIMMMMMMMMMMMMMMMMMM")
 
