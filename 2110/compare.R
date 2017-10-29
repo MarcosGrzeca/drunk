@@ -12,7 +12,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 8
+CORES <- 10
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -131,7 +131,7 @@ if (!exists("matriz2GramDBPedia")) {
   save.image(file="2110/rdas/compare22.RData")
 }
 
-if (!exists("matrizWikipedia")) {
+if (exists("matrizWikipedia")) {
   load("2110/rdas/2gram-wikipedia.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -231,7 +231,6 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
 
 save.image(file="2110/rdas/compare22.RData")
 
-load("2110/rdas/compare22.RData")
-resultados
-View(resultados)
-resultados <- addRow(resultados, "2GRAM 25%", matriz2Gram25)
+#load("2110/rdas/compare22.RData")
+#resultados
+#View(resultados)
