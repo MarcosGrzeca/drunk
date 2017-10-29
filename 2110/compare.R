@@ -234,7 +234,7 @@ if (!exists("matrizTwoGram25Hora")) {
     twoGram25Hora <- treinar(data_train)
     twoGram25Hora
     matrizTwoGram25Hora <- getMatriz(twoGram25Hora, data_test)
-    resultados <- addRow(resultados, "2 Gram + 25% + local", matrizTwoGram25Hora)
+    resultados <- addRow(resultados, "2 Gram + 25% + Hora", matrizTwoGram25Hora)
     save.image(file="2110/rdas/compare22.RData")
   })
 }
@@ -255,7 +255,25 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
   })
 }
 
+if (!exists("matrizTwoGramEntidadesHora")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHora <- treinar(data_train)
+    twoGramEntidadesHora
+    matrizTwoGramEntidadesHora <- getMatriz(twoGramEntidadesHora, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora", matrizTwoGramEntidadesHora)
+    save.image(file="2110/rdas/compare22.RData")
+  })
+}
+
 save.image(file="2110/rdas/compare22.RData")
+
+print("FIIMMMMMMMMMMMMMMMMMM")
 
 #load("2110/rdas/compare22.RData")
 #resultados
