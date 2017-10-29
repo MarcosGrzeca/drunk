@@ -14,3 +14,7 @@ The following object is masked from ‘package:ggplot2’:
 
 Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
+  attempt to set an attribute on NULL
+Calls: treinar -> train -> train.default -> nominalTrainWorkflow
+Execution halted
