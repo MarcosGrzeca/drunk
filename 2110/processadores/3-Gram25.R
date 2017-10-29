@@ -12,6 +12,7 @@ dados <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$hashtags <- enc2utf8(dados$hashtags)
 clearConsole()
 
 if (!require("text2vec")) {

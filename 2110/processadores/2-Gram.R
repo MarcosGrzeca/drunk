@@ -71,14 +71,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/2gram.Rda")
-
-
-load("2110/compare21.RData")
-
-
-View(resultados)
-twogram
-twogram25
-
-
+save(maFinal, file = "2110/rdas/2gram.Rda")

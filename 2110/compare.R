@@ -114,7 +114,7 @@ if (exists("matrizThreeGram")) {
 if (exists("matriz3Gram25")) {
   try({
     load("2110/rdas/3gram-25.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
+    #maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
@@ -278,3 +278,6 @@ print("FIIMMMMMMMMMMMMMMMMMM")
 #load("2110/rdas/compare22.RData")
 #resultados
 #View(resultados)
+
+
+save.image(file="2110/rdas/three.RData")
