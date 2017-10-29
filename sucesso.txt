@@ -1,1 +1,2 @@
 [1] "2 Gram + 25% + local"
+[1] "2 Gram + 25% + Categoria da localização"
