@@ -4,7 +4,7 @@ Carregando pacotes exigidos: doMC
 Carregando pacotes exigidos: foreach
 Carregando pacotes exigidos: iterators
 Carregando pacotes exigidos: parallel
-Loading required package: kernlab
+Carregando pacotes exigidos: kernlab
 
 Attaching package: ‘kernlab’
 
@@ -12,7 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
