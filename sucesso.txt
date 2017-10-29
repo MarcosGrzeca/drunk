@@ -1,2 +1,2 @@
-[1] "2 Gram dbpedia types (todos)"
-[1] "2 Gram 25% + entidades"
+[1] "2 Gram + 25% + local"
+[1] "2 Gram + 25% + Categoria da localização"
