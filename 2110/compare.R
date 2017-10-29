@@ -287,6 +287,22 @@ if (!exists("matrizTwoGramErros")) {
   })
 }
 
+if (!exists("matrizTwoGramDiaSemana")) {
+  try({
+    load("2110/rdas/2gram-dia-semana.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramDiaSemana <- treinar(data_train)
+    twoGramDiaSemana
+    matrizTwoGramDiaSemana <- getMatriz(twoGramDiaSemana, data_test)
+    resultados <- addRow(resultados, "2 Gram + Erros", matrizTwoGramDiaSemana)
+    save.image(file="2110/rdas/compare22.RData")
+  })
+}
+
 #save.image(file="2110/rdas/compare22.RData")
 
 print("FIIMMMMMMMMMMMMMMMMMM")
