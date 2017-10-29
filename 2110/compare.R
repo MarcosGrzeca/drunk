@@ -187,7 +187,7 @@ if (!exists("matrizTwoGramEntidades2")) {
   save.image(file="2110/rdas/compare22.RData")
 }
 
-if (!exists("matrizTwoGramDBPediaSubject")) {
+if (exists("matrizTwoGramDBPediaSubject")) {
   load("2110/rdas/2-Gram-dbpedia-subject.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
