@@ -12,7 +12,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 7
+CORES <- 5
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -95,7 +95,7 @@ if (!exists("matriz2GramEntidades")) {
   })
 }
 
-if (exists("matrizThreeGram")) {
+if (!exists("matrizThreeGram")) {
   try({
     load("2110/rdas/3gram.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -113,7 +113,7 @@ if (exists("matrizThreeGram")) {
 
 if (exists("matriz3Gram25")) {
   try({
-    load("2110/rdas/3gram-25.Rda")
+    load("2110/rdas/3gram-25-teste.Rda")
     #maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -271,6 +271,22 @@ if (!exists("matrizTwoGramEntidadesHora")) {
   })
 }
 
+if (!exists("matrizTwoGramErros")) {
+  try({
+    load("2110/rdas/2gram-erros.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramErros <- treinar(data_train)
+    twoGramErros
+    matrizTwoGramErros <- getMatriz(twoGramErros, data_test)
+    resultados <- addRow(resultados, "2 Gram + Erros", matrizTwoGramErros)
+    save.image(file="2110/rdas/compare22.RData")
+  })
+}
+
 #save.image(file="2110/rdas/compare22.RData")
 
 print("FIIMMMMMMMMMMMMMMMMMM")
@@ -278,6 +294,3 @@ print("FIIMMMMMMMMMMMMMMMMMM")
 #load("2110/rdas/compare22.RData")
 #resultados
 #View(resultados)
-
-
-save.image(file="2110/rdas/three.RData")

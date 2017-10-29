@@ -8,11 +8,12 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
+dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, erroParseado as numeroErros FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$textParser <- enc2utf8(dados$textParser)
 dados$resposta <- as.factor(dados$resposta)
+dados$numeroErros[dados$numeroErros > 1] <- 1
 clearConsole()
 
 if (!require("text2vec")) {
@@ -73,14 +74,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/2gram.Rda")
-
-
-load("2110/compare21.RData")
-
-
-View(resultados)
-twogram
-twogram25
-
-
+save(maFinal, file = "2110/rdas/2gram-erros.Rda")
