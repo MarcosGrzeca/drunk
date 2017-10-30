@@ -204,7 +204,7 @@ if (!exists("matrizTwoGramEntidades2")) {
   })
 }
 
-if (exists("matrizTwoGramDBPediaSubject")) {
+if (!exists("matrizTwoGramDBPediaSubject")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-subject.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
