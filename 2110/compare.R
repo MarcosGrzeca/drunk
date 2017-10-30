@@ -111,7 +111,7 @@ if (!exists("matrizThreeGram")) {
   })
 }
 
-if (exists("matriz3Gram25")) {
+if (!exists("matriz3Gram25")) {
   try({
     load("2110/rdas/3gram-25-teste.Rda")
     #maFinal$resposta <- as.factor(maFinal$resposta)
