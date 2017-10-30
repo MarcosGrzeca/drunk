@@ -116,4 +116,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameResource)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, resources))
 
-save(maFinal, file = "2110/rdas/2-Gram-dbpedia-subject.Rda")
+save(maFinal, file = "2110/rdas/2Gramdbpediasubject.Rda")
