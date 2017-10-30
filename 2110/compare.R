@@ -126,7 +126,6 @@ if (exists("matriz3Gram25")) {
     save.image(file="2110/rdas/compare22.RData")
   })
 }
-
 if (!exists("matriz2GramDBPedia")) {
   try({
     load("2110/rdas/2gram-dbpedia.Rda")
@@ -143,20 +142,18 @@ if (!exists("matriz2GramDBPedia")) {
   })
 }
 
-if (exists("matrizWikipedia")) {
-  try({
-    load("2110/rdas/2gram-wikipedia.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+if (!exists("matrizWikipedia")) {
+  load("2110/rdas/2gram-wikipedia.Rda")
+  maFinal$resposta <- as.factor(maFinal$resposta)
+  trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+  data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+  data_test <- maFinal[-trainIndex,]
 
-    wikipediaCategory <- treinar(data_train)
-    wikipediaCategory
-    matrizWikipedia <- getMatriz(wikipediaCategory, data_test)
-    resultados <- addRow(resultados, "2 Gram Wikipedia", matrizWikipedia)
-    save.image(file="2110/rdas/compare22.RData")
-  })
+  wikipediaCategory <- treinar(data_train)
+  wikipediaCategory
+  matrizWikipedia <- getMatriz(wikipediaCategory, data_test)
+  resultados <- addRow(resultados, "2 Gram Wikipedia", matrizWikipedia)
+  save.image(file="2110/rdas/compare22.RData")
 }
 
 if (!exists("matrizDBPediaTypesPage")) {
