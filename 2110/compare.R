@@ -12,7 +12,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 5
+CORES <- 10
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -296,6 +296,22 @@ if (!exists("matrizTwoGramDiaSemana")) {
     twoGramDiaSemana
     matrizTwoGramDiaSemana <- getMatriz(twoGramDiaSemana, data_test)
     resultados <- addRow(resultados, "2 Gram + Dia Semana", matrizTwoGramDiaSemana)
+    save.image(file="2110/rdas/compare22.RData")
+  })
+}
+
+if (!exists("matrizTwoGramEntidadesHoraErro")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErro <- treinar(data_train)
+    twoGramEntidadesHoraErro
+    matrizTwoGramEntidadesHoraErro <- getMatriz(twoGramEntidadesHoraErro, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora", matrizTwoGramEntidadesHoraErro)
     save.image(file="2110/rdas/compare22.RData")
   })
 }
