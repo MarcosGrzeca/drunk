@@ -8,8 +8,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, diaSemana FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
-dados <- dadosQ1
+dados <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, diaSemana FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$textParser <- enc2utf8(dados$textParser)
 dados$resposta <- as.factor(dados$resposta)
@@ -60,6 +59,16 @@ dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
+
+it_train = itoken(dados$diaSemana, 
+                  ids = dados$id, 
+                  progressbar = TRUE)
+
+vocab = create_vocabulary(it_train)
+vectorizer = vocab_vectorizer(vocab)
+dataFrameDia = create_dtm(it_train, vectorizer)
+dataFrameDia <- as.data.frame(as.matrix(dataFrameDia))
+
 clearConsole()
 
 library(rowr)
@@ -67,6 +76,7 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
+maFinal <- cbind.fill(maFinal, dataFrameDia)
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, diaSemana))
 
 save(maFinal, file = "2110/rdas/2gram-dia-semana.Rda")

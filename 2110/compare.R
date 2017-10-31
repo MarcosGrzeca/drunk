@@ -295,7 +295,7 @@ if (!exists("matrizTwoGramDiaSemana")) {
     twoGramDiaSemana <- treinar(data_train)
     twoGramDiaSemana
     matrizTwoGramDiaSemana <- getMatriz(twoGramDiaSemana, data_test)
-    resultados <- addRow(resultados, "2 Gram + Erros", matrizTwoGramDiaSemana)
+    resultados <- addRow(resultados, "2 Gram + Dia Semana", matrizTwoGramDiaSemana)
     save.image(file="2110/rdas/compare22.RData")
   })
 }
