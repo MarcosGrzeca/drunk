@@ -311,7 +311,7 @@ if (!exists("matrizTwoGramEntidadesHoraErro")) {
     twoGramEntidadesHoraErro <- treinar(data_train)
     twoGramEntidadesHoraErro
     matrizTwoGramEntidadesHoraErro <- getMatriz(twoGramEntidadesHoraErro, data_test)
-    resultados <- addRow(resultados, "2 Gram + Entidades + Hora", matrizTwoGramEntidadesHoraErro)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro", matrizTwoGramEntidadesHoraErro)
     save.image(file="2110/rdas/compare22.RData")
   })
 }
