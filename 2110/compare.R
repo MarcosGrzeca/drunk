@@ -324,7 +324,7 @@ if (!exists("matrizTwoGramPalavroes")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    matrizTwoGramPalavroes <- treinar(data_train)
+    twoGramPalavroes <- treinar(data_train)
     twoGramPalavroes
     matrizTwoGramPalavroes <- getMatriz(twoGramPalavroes, data_test)
     resultados <- addRow(resultados, "2 Gram + Palavroes", matrizTwoGramPalavroes)
