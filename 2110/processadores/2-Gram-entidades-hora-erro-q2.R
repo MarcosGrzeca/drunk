@@ -8,10 +8,28 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dados <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, diaSemana FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048")
+dados <- query("SELECT t.id,
+       q2 AS resposta,
+       textParser,
+       textoParserEmoticom AS textoCompleto,
+       hashtags,
+       emoticonPos,
+       emoticonNeg,
+       hora,
+       erroParseado as numeroErros,
+
+    (SELECT GROUP_CONCAT(tn.palavra)
+     FROM tweets_nlp tn
+     WHERE tn.idTweetInterno = t.idInterno
+     GROUP BY tn.idTweetInterno) AS entidades
+FROM tweets t
+WHERE textparser <> ''
+    AND id <> 462478714693890048")
 dados$resposta[is.na(dados$resposta)] <- 0
-dados$textParser <- enc2utf8(dados$textParser)
 dados$resposta <- as.factor(dados$resposta)
+dados$textParser <- enc2utf8(dados$textParser)
+dados$numeroErros[dados$numeroErros > 1] <- 1
+dados <- discretizarHora(dados)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -57,18 +75,29 @@ vocabHashTags = create_vocabulary(it_train_hash)
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
-dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
-dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 
-it_train = itoken(dados$diaSemana, 
+it_train = itoken(strsplit(dados$entidades, ","), 
                   ids = dados$id, 
                   progressbar = TRUE)
 
 vocab = create_vocabulary(it_train)
 vectorizer = vocab_vectorizer(vocab)
-dataFrameDia = create_dtm(it_train, vectorizer)
-dataFrameDia <- as.data.frame(as.matrix(dataFrameDia))
+dataFrameEntidades = create_dtm(it_train, vectorizer)
+dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
 
+#it_train = itoken(strsplit(dados$grams, ","), 
+#                  ids = dados$id, 
+                  #progressbar = TRUE)
+
+#vocab = create_vocabulary(it_train)
+#vectorizer = vocab_vectorizer(vocab)
+#dataFrameGram = create_dtm(it_train, vectorizer)
+#dataFrameGram <- as.data.frame(as.matrix(dataFrameGram))
+
+
+#Concatenar resultados
+dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
+dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
 
 library(rowr)
@@ -76,9 +105,7 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- cbind.fill(maFinal, dataFrameDia)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, diaSemana))
+maFinal <- cbind.fill(maFinal, dataFrameEntidades)
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-View(maFinal)
-
-save(maFinal, file = "2110/rdas/2gram-dia-semana.Rda")
+save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-q2.Rda")
