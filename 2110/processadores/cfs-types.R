@@ -1,3 +1,5 @@
+#options(java.parameters = "-Xmx32g")
+options(java.parameters = "-Xmx39000m")
 options(max.print = 99999999)
 
 library(tools)
@@ -78,5 +80,4 @@ subset
 f <- as.simple.formula(subset, "resposta")
 print(f)
 
-
-#save(maFinal, file = "2110/rdas/2-Gram-dbpedia-types-completo.Rda")
+save.image(file="2110/rdas/cfs.RData")
