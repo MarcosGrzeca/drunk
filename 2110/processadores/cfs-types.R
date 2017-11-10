@@ -1,5 +1,5 @@
 #options(java.parameters = "-Xmx32g")
-options(java.parameters = "-Xmx39000m")
+options(java.parameters = "-Xmx50000m")
 options(max.print = 99999999)
 
 library(tools)
