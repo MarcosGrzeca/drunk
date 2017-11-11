@@ -1,3 +1,13 @@
 Loading required package: DBI
 Loading required package: methods
 Loading required package: text2vec
+Loading required package: FSelector
+Installing package into ‘/usr/lib64/R/library’
+(as ‘lib’ is unspecified)
+Error in contrib.url(repos, type) : 
+  trying to use CRAN without setting a mirror
+Calls: install.packages -> grep -> contrib.url
+In addition: Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘FSelector’
+Execution halted
