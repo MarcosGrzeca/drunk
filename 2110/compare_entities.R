@@ -13,6 +13,8 @@ library(mlbench)
 CORES <- 10
 registerDoMC(CORES)
 
+load("2110/rdas/compare_entities.RData")
+
 saveImg <- function() {
   save.image(file="2110/rdas/compare_entities.RData")
 }
