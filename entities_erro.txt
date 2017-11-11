@@ -4,19 +4,3 @@ Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
