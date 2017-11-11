@@ -13,6 +13,10 @@ library(mlbench)
 CORES <- 10
 registerDoMC(CORES)
 
+saveImg <- function() {
+  save.image(file="2110/rdas/compare_entities.RData")
+}
+
 treinar <- function(data_train){
     # registerDoMC(CORES)
     fit <- train(x = subset(data_train, select = -c(resposta)),
@@ -36,7 +40,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  #save.image(file="2110/rdas/compare_entities.RData")
+  #saveImg()
   return (newdf)
 }
 
@@ -57,7 +61,7 @@ if (!exists("matriz2Calais")) {
     twogramCalais
     matriz2Calais <- getMatriz(twogramCalais, data_test)
     resultados <- addRow(resultados, "Calais", matriz2Calais)
-    save.image(file="2110/rdas/compare_entities.RData")
+    saveImg()
   })
 }
 
@@ -73,7 +77,7 @@ if (!exists("matriz2AlchemyEntities")) {
     twogramAlchemyEntities
     matriz2AlchemyEntities <- getMatriz(twogramAlchemyEntities, data_test)
     resultados <- addRow(resultados, "Alchemy Entities", matriz2AlchemyEntities)
-    save.image(file="2110/rdas/compare_entities.RData")
+    saveImg()
   })
 }
 
@@ -89,7 +93,7 @@ if (!exists("matriz2AlchemyKeywords")) {
     twogramAlchemyKeywords
     matriz2AlchemyKeywords <- getMatriz(twogramAlchemyKeywords, data_test)
     resultados <- addRow(resultados, "Alchemy KeyWords", matriz2AlchemyKeywords)
-    save.image(file="2110/rdas/compare_entities.RData")
+    saveImg()
   })
 }
 
@@ -105,9 +109,26 @@ if (!exists("matriz2AlchemyConcepts")) {
     twogramAlchemyConcepts
     matriz2AlchemyConcepts <- getMatriz(twogramAlchemyConcepts, data_test)
     resultados <- addRow(resultados, "Alchemy Concepts", matriz2AlchemyConcepts)
-    save.image(file="2110/rdas/compare_entities.RData")
+    saveImg()
   })
 }
+
+if (!exists("matriz2GramEntidades")) {
+  try({
+    load("2110/rdas/2gram-entidades.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramentidades <- treinar(data_train)
+    twogramentidades
+    matriz2GramEntidades <- getMatriz(twogramentidades, data_test)
+    resultados <- addRow(resultados, "2GRAM entidades Todas", matriz2GramEntidades)
+    saveImg()
+  })
+}
+
 
 print("FIIMMMMMMMMMMMMMMMMMM")
 limpar <- function() {
