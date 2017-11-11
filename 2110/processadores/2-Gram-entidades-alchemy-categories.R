@@ -20,7 +20,7 @@ dados <- query("SELECT t.id,
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
      AND origem = 'A'
-     AND tipo = 'CO'
+     AND tipo = 'C'
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
 WHERE textparser <> ''
@@ -106,4 +106,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-concepts.Rda")
+save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories.Rda")

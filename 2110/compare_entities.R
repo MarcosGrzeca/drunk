@@ -1,5 +1,5 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
-names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
+names(resultados) <- c("Técnica", "F1", "Precisão", "Revocação")
 
 library(tools)
 library(caret)
@@ -115,6 +115,22 @@ if (!exists("matriz2AlchemyConcepts")) {
   })
 }
 
+if (!exists("matriz2AlchemyCategories")) {
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-categories.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramAlchemyCategories <- treinar(data_train)
+    twogramAlchemyCategories
+    matriz2AlchemyCategories <- getMatriz(twogramAlchemyCategories, data_test)
+    resultados <- addRow(resultados, "Alchemy Categories", matriz2AlchemyCategories)
+    saveImg()
+  })
+}
+
 if (!exists("matriz2GramEntidades")) {
   try({
     load("2110/rdas/2gram-entidades.Rda")
@@ -130,6 +146,7 @@ if (!exists("matriz2GramEntidades")) {
     saveImg()
   })
 }
+
 
 
 print("FIIMMMMMMMMMMMMMMMMMM")
