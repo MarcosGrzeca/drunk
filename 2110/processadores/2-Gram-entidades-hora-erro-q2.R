@@ -28,6 +28,7 @@ WHERE textparser <> ''
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$entidades <- enc2utf8(dados$entidades)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
 clearConsole()
