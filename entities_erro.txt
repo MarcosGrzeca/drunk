@@ -1,10 +1,10 @@
-Carregando pacotes exigidos: lattice
-Carregando pacotes exigidos: ggplot2
-Carregando pacotes exigidos: doMC
-Carregando pacotes exigidos: foreach
-Carregando pacotes exigidos: iterators
-Carregando pacotes exigidos: parallel
-Carregando pacotes exigidos: kernlab
+Loading required package: lattice
+Loading required package: ggplot2
+Loading required package: doMC
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: parallel
+Loading required package: kernlab
 
 Attaching package: ‘kernlab’
 
@@ -12,7 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in match.names(clabs, names(xi)) : 
-  nomes não correspondem aos nomes anteriores
-Além disso: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
