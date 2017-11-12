@@ -49,6 +49,8 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser = sub("'", "", dados$textParser)
+dados$textParser = sub("X", "XX", dados$textParser)
+dados$textParser = sub("x", "xx", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
