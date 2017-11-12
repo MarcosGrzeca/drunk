@@ -28,6 +28,7 @@ WHERE textparser <> ''
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$entidades <- enc2utf8(dados$entidades)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -46,6 +47,8 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser = sub("'", "", dados$textParser)
+dados$textParser = sub("X", "XX", dados$textParser)
+dados$textParser = sub("x", "xx", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
