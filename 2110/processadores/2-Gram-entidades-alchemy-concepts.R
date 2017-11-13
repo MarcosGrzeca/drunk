@@ -50,6 +50,10 @@ dados$textParser = sub("'", "", dados$textParser)
 dados$textParser = sub("X", "XX", dados$textParser)
 dados$textParser = sub("x", "xx", dados$textParser)
 
+dados$entidades = sub("X", "XX", dados$entidades)
+dados$entidades = sub("x", "xx", dados$entidades)
+
+
 prep_fun = tolower
 tok_fun = word_tokenizer
 

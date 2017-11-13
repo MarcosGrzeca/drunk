@@ -115,5 +115,5 @@ maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
 colnames(maFinal) = gsub("X", "XX", colnames(maFinal))
-colnames(maFinal) = gsub("x", "xx", colnames(maFinal))
+colnames(maFinal) = gsub("X", "XX", colnames(maFinal))
 save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-q2.Rda")
