@@ -16,7 +16,7 @@ dados <- query("SELECT t.id,
        emoticonPos,
        emoticonNeg,
 
-    (SELECT GROUP_CONCAT(tn.palavra)
+    (SELECT GROUP_CONCAT(CONCAT('Entidade', tn.palavra))
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
      AND origem = 'A'
@@ -52,6 +52,7 @@ dados$textParser = sub("x", "xx", dados$textParser)
 
 dados$entidades = sub("X", "XX", dados$entidades)
 dados$entidades = sub("x", "xx", dados$entidades)
+dados$entidades = sub(" ", "_", dados$entidades)
 
 
 prep_fun = tolower
