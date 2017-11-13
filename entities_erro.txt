@@ -12,9 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in match.names(clabs, names(xi)) : 
-  names do not match previous names
-In addition: Warning messages:
-1: In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
-  There were missing values in resampled performance measures.
-2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
