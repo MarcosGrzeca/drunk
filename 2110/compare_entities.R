@@ -10,7 +10,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 5
+CORES <- 10
 registerDoMC(CORES)
 
 load("2110/rdas/compare_entities.RData")
@@ -103,6 +103,7 @@ if (!exists("matriz2AlchemyConcepts")) {
   try({
     load("2110/rdas/2gram-entidades-alchemy-concepts.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
+    maFinal <- maFinal[, !duplicated(colnames(maFinal))]
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
