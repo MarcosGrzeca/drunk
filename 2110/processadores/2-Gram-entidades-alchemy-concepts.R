@@ -82,9 +82,11 @@ vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
 
-it_train = itoken(strsplit(dados$entidades, ","), 
+#it_train = itoken(strsplit(dados$entidades, ","), 
+it_train = itoken(dados$entidades, 
                   ids = dados$id, 
-                  progressbar = TRUE)
+                  progressbar = TRUE,
+                  tokenizer = ",")
 
 vocab = create_vocabulary(it_train)
 vectorizer = vocab_vectorizer(vocab)
