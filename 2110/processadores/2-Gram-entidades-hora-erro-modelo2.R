@@ -29,7 +29,7 @@ dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$numeroErros[dados$numeroErros > 1] <- 1
-dados <- discretizarTurno(dados)
+dados <- discretizarNight(dados)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -108,4 +108,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "2110/rdas/2gram-entidades-hora-diferente-erro.Rda")
+save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-modelo2.Rda")
