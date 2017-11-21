@@ -43,6 +43,14 @@ discretizarHora <- function(dados) {
   return (dados)
 }
 
+discretizarNight <- function(dados) {
+  dados$turno <- 0
+  dados$turno[dados$hora >= 23] <- 1
+  dados$turno[dados$hora <= 5] <- 1
+  dados <- subset(dados, select = -c(hora))
+  return (dados)
+}
+
 discretizarTurno <- function(dados) {
   dados$turno <- 0
   dados$turno[dados$hora >= 5] <- 1
