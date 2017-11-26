@@ -9,23 +9,23 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       q1 AS resposta,
-       textParser,
-       textoParserEmoticom AS textoCompleto,
-       hashtags,
-       emoticonPos,
-       emoticonNeg,
-       hora,
-       erroParseado as numeroErros,
-
-    (SELECT GROUP_CONCAT(tn.palavra)
-     FROM tweets_nlp tn
-     WHERE tn.idTweetInterno = t.idInterno
-     GROUP BY tn.idTweetInterno) AS entidades,
-     risada AS possuiRisada
-FROM tweets t
-WHERE textparser <> ''
-    AND id <> 462478714693890048")
+               q1 AS resposta,
+               textParser,
+               textoParserEmoticom AS textoCompleto,
+               hashtags,
+               emoticonPos,
+               emoticonNeg,
+               hora,
+               erroParseado as numeroErros,
+               
+               (SELECT GROUP_CONCAT(tn.palavra)
+               FROM tweets_nlp tn
+               WHERE tn.idTweetInterno = t.idInterno
+               GROUP BY tn.idTweetInterno) AS entidades,
+               risada AS possuiRisada
+               FROM tweets t
+               WHERE textparser <> ''
+               AND id <> 462478714693890048")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$possuiRisada <- as.factor(dados$possuiRisada)
@@ -74,7 +74,11 @@ it_train_hash = itoken(dados$hashtags,
                        progressbar = TRUE)
 
 vocabHashTags = create_vocabulary(it_train_hash)
-vectorizerHashTags = vocab_vectorizer(vocabHashTags)
+#vectorizerHashTags = vocab_vectorizer(vocabHashTags)
+
+pruned_vocab = prune_vocabulary(vocabHashTags, 
+                                term_count_min = 2)
+vectorizerHashTags = vocab_vectorizer(pruned_vocab)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
 
@@ -89,7 +93,7 @@ dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
 
 #it_train = itoken(strsplit(dados$grams, ","), 
 #                  ids = dados$id, 
-                  #progressbar = TRUE)
+#progressbar = TRUE)
 
 #vocab = create_vocabulary(it_train)
 #vectorizer = vocab_vectorizer(vocab)
