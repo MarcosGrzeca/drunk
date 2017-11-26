@@ -22,13 +22,13 @@ dados <- query("SELECT t.id,
                FROM tweets_nlp tn
                WHERE tn.idTweetInterno = t.idInterno
                GROUP BY tn.idTweetInterno) AS entidades,
-               risada AS possuiRisada
+               risada
                FROM tweets t
                WHERE textparser <> ''
                AND id <> 462478714693890048")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
-dados$possuiRisada <- as.factor(dados$possuiRisada)
+#dados$possuiRisada <- as.factor(dados$possuiRisada)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
@@ -115,3 +115,4 @@ maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
 save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-risada.Rda")
+
