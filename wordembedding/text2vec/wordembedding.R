@@ -1,5 +1,8 @@
 #http://dsnotes.com/post/glove-enwiki/
 
+library(session)
+
+
 #https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html
 library(text2vec)
 #data("movie_review")
@@ -42,15 +45,16 @@ word_vectors <- glove$get_word_vectors()
 #palavras <- c("drinking", "tequila", "wine", "vodka", "alcohol", "drunk", "liquor", "brew", "tour", "ale", "booze", "tasting", "cold", "alcoholic", "drink", "drinks", "hammered", "ipa", "beer", "champagne", "bud", "rum", "crawl", "brewing", "pong")
 #palavras
 
-results <- lapply(palavras,
-    function(x) {
+#results <- lapply(palavras,
+#    function(x) {
       #grep(as.character(x), pattern=paste0("\\<",word))
-      cos_sim = sim2(x = word_vectors, y = word_vectors[x, , drop = FALSE], method = "cosine", norm = "l2")
-      head(sort(cos_sim[,1], decreasing = TRUE), 10)
-    }
-)
+#      cos_sim = sim2(x = word_vectors, y = word_vectors[x, , drop = FALSE], method = "cosine", norm = "l2")
+#      head(sort(cos_sim[,1], decreasing = TRUE), 10)
+#    }
+#)
 
-results
+#results
 #dump(as.data.frame(results), "embedding.csv")
 
 save.image("model.Rda")
+save.session(file="session.Rda")
