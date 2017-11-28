@@ -1,7 +1,7 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
-load("2110/rdas/compare22.RData")
+#load("2110/rdas/compare22.RData")
 
 library(tools)
 library(caret)
@@ -336,6 +336,7 @@ if (!exists("matrizTwoGramEntidadesHoraErroRisada")) {
   try({
     load("2110/rdas/2gram-entidades-hora-erro-risada.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
+    maFinal <- subset(maFinal, select = -c(risada))
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
