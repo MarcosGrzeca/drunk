@@ -175,7 +175,6 @@ split=0.80
 
 load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro.Rda")
 maFinal$resposta <- as.factor(maFinal$resposta)
-maFinal <- subset(maFinal, select = -c(risada))
 trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
 data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
 data_test <- maFinal[-trainIndex,]
