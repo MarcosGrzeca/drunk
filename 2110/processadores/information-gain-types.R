@@ -77,7 +77,10 @@ if (!require("FSelector")) {
 library(FSelector)
 weights <- information.gain(resposta~., maFinal)
 print(weights)
-subset <- cutoff.k(weights, 2)
+subset <- cutoff.k(weights, 47)
 f <- as.simple.formula(subset, "resposta")
 print(f)
+
+dump(weights, "weights.csv")
+
 save.image(file="2110/rdas/information-gain.RData")
