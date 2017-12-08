@@ -26,6 +26,7 @@ v = create_vocabulary(it, stopwords = stop_words) %>% prune_vocabulary(term_coun
 
 # create co-occurrence vectorizer
 vectorizer = vocab_vectorizer(v, grow_dtm = F, skip_grams_window = 5)
+
 #vectorizer = vocab_vectorizer(v, grow_dtm = F)
 it = itoken(tokens)
 tcm = create_tcm(it, vectorizer, skip_grams_window = 5L)
@@ -42,16 +43,23 @@ word_vectors <- glove$get_word_vectors()
 #cos_sim = sim2(x = word_vectors, y = word_vectors["tasting", , drop = FALSE], method = "cosine", norm = "l2")
 #head(sort(cos_sim[,1], decreasing = TRUE), 10)
 
-#palavras <- c("drinking", "tequila", "wine", "vodka", "alcohol", "drunk", "liquor", "brew", "tour", "ale", "booze", "tasting", "cold", "alcoholic", "drink", "drinks", "hammered", "ipa", "beer", "champagne", "bud", "rum", "crawl", "brewing", "pong")
-#palavras
+palavras <- c("drinking", "tequila", "wine", "vodka", "alcohol", "drunk", "liquor", "brew", "tour", "ale", "booze", "tasting", "cold", "alcoholic", "drink", "drinks", "hammered", "ipa", "beer", "champagne", "bud", "rum", "crawl", "brewing", "pong")
 
-#results <- lapply(palavras,
-#    function(x) {
-      #grep(as.character(x), pattern=paste0("\\<",word))
-#      cos_sim = sim2(x = word_vectors, y = word_vectors[x, , drop = FALSE], method = "cosine", norm = "l2")
-#      head(sort(cos_sim[,1], decreasing = TRUE), 10)
-#    }
-#)
+palavras2 <- c("bar", "beverage", "beyonce", "bottle", "bottles", "breakfast", "bullandbearpub", "can", "company", "genesee", "get", "glass", "good", "house", "ice", "light", "max", "much", "nice", "one", "pale", "people", "pub", "qtyler1495", "really", "risada", "scotch", "shit", "still", "store", "turn", "two")
+
+palavras3 <- c("amp", "dinosaur", "grill", "que", "water", "fucked", "blast", "cans", "athletic", "rochester", "kids", "someone", "wait", "amellywood", "party", "wanna", "final", "cowles", "time", "great", "fucking", "tonight", "cream", "held", "marijuana", "pretty", "love", "better", "fall", "last", "irish")
+
+results <- lapply(palavras,
+    function(x) {
+    #grep(as.character(x), pattern=paste0("\\<",word))
+      cos_sim = sim2(x = word_vectors, y = word_vectors[x, , drop = FALSE], method = "cosine", norm = "l2")
+      head(sort(cos_sim[,1], decreasing = TRUE), 10)
+    }
+)
+
+initFileLog("marcosaa.txt")
+results
+finishFileLog("marcosaa.txt")
 
 #results
 #dump(as.data.frame(results), "embedding.csv")

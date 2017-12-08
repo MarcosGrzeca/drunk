@@ -1,3 +1,0 @@
-Loading required package: DBI
-Loading required package: methods
-Loading required package: text2vec
