@@ -29,7 +29,7 @@ dados <- query("SELECT t.id,
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 #dados$possuiRisada <- as.factor(dados$possuiRisada)
-dados$textParser <- enc2utf8(dados$textParser)
+#dados$textParser <- enc2utf8(dados$textParser)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
 clearConsole()
