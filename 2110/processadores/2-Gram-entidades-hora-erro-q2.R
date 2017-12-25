@@ -9,7 +9,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       q2 AS resposta,
+       q1 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
@@ -24,11 +24,12 @@ dados <- query("SELECT t.id,
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
 WHERE textparser <> ''
-    AND id <> 462478714693890048")
+    AND id <> 462478714693890048
+    AND q1 = 1
+    ")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
-dados$entidades <- enc2utf8(dados$entidades)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
 clearConsole()
@@ -49,11 +50,6 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser = sub("'", "", dados$textParser)
-dados$textParser = sub("X", "XX", dados$textParser)
-dados$textParser = sub("x", "xx", dados$textParser)
-
-dados$entidades = sub("X", "XX", dados$entidades)
-dados$entidades = sub("x", "xx", dados$entidades)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -114,6 +110,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-colnames(maFinal) = gsub("X", "XX", colnames(maFinal))
-colnames(maFinal) = gsub("X", "XX", colnames(maFinal))
 save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-q2.Rda")
