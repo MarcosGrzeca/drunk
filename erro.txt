@@ -16,23 +16,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
