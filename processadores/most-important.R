@@ -6,10 +6,19 @@ library(caret)
 library(mlbench)
 
 
+load("2110/rdas/most_important.RData")
+
 load("2110/rdas/compare22.RData")
 importance <- varImp(twoGramEntidadesHoraErro, scale=FALSE)
 # summarize importance
-print(importance)
+marcos <- print(importance, top = 30)
+
+
+str(marcos["importance"][1])
+
+View(marcos[[1]])
+
+View(marcos["importance"][])
 # plot importance
 plot(importance, top = 30)
 
