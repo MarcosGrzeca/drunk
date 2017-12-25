@@ -148,10 +148,19 @@ if (!exists("matriz2GramEntidades")) {
   })
 }
 
+if (!exists("matriz2GramCategoriesHoraErro")) {
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-categories-hora-erro.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
 
-
-print("FIIMMMMMMMMMMMMMMMMMM")
-limpar <- function() {
-  rm("aspectos","aspectosManter","aspectosRemover","dados","dadosQ1","data_test","data_train","dataFrameEntidades","dataFrameEstabelecimento","dataFrameGram","dataFrameHash","dataFrameTexto","dbpediaTypesCompleto","dbpediaTypesPageRank","dtm_train_hash_tags","dtm_train_texto","maFinal","matriz2Gram","matriz2Gram25","matriz2GramDBPedia","matriz2GramEntidades","matriz3Gram25","matrizDBPediaCompleto","matrizDBPediaTypesPage","matrizThreeGram","matrizTwoGram25Hora","matrizTwoGramCateogoriaLocalizacao","matrizTwoGramDBPediaSubject","matrizTwoGramDiaSemana","matrizTwoGramEntidades2","matrizTwoGramEntidadesHora","matrizTwoGramEntidadesHoraErro","matrizTwoGramErros","matrizWikipedia","threeGram","treegram25","twoGDBPedia","twogram","twogram25","twoGram25Hora","twoGramCategoriaLocalizacao","twoGramDBPediaSubject","twoGramDiaSemana","twogramentidades","twoGramEntidades25","twoGramEntidadesHora","twoGramEntidadesHoraErro", "twoGramErros","vectorizerEstabelecimento","vectorizerHashTags","vocab","vocabEstabelecimento","vocabHashTags","wikipediaCategory")
-  save.image(file="2110/rdas/compare22_resultado.RData")
+    twogramCategoriesHoraErro <- treinar(data_train)
+    twogramCategoriesHoraErro
+    matriz2GramCategoriesHoraErro <- getMatriz(twogramCategoriesHoraErro, data_test)
+    resultados <- addRow(resultados, "2GRAM Categorias + Hora + Erro ", matriz2GramCategoriesHoraErro)
+    saveImg()
+  })
 }
+print("FIIMMMMMMMMMMMMMMMMMM")

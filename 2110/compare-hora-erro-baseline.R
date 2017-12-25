@@ -22,8 +22,7 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 10, savePred=T),
-            preProc=c("center"))
+            trControl = trainControl(method = "cv", number = 5, savePred=T))
     return (fit)
 }
 
@@ -106,7 +105,7 @@ if (!exists("matriz2GramEntidadesHoraErroQ2")) {
     twoGramEntidadesHoraErroQ2 <- treinar(data_train)
     twoGramEntidadesHoraErroQ2
     matriz2GramEntidadesHoraErroQ2 <- getMatriz(twoGramEntidadesHoraErroQ2, data_test)
-    resultados <- addRow(resultados, "3 GRAM 25 Q2", matriz2GramEntidadesHoraErroQ2)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q2", matriz2GramEntidadesHoraErroQ2)
     save.image(file="2110/rdas/compare-baseline.RData")
   })
 }
@@ -136,7 +135,7 @@ if (!exists("matriz2GramEntidadesHoraErroQ3")) {
     twoGramEntidadesHoraErroQ3 <- treinar(data_train)
     twoGramEntidadesHoraErroQ3
     matriz2GramEntidadesHoraErroQ3 <- getMatriz(twoGramEntidadesHoraErroQ3, data_test)
-    resultados <- addRow(resultados, "3 GRAM 25 Q3", matriz2GramEntidadesHoraErroQ3)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q3", matriz2GramEntidadesHoraErroQ3)
     save.image(file="2110/rdas/compare-baseline.RData")
   })
 }
