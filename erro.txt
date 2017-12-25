@@ -1,3 +1,7 @@
+Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file '2110/rdas/compare-baseline.RData', probable reason 'No such file or directory'
 Loading required package: lattice
 Loading required package: ggplot2
 Loading required package: doMC
@@ -12,9 +16,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in limpar() : could not find function "limpar"
-Execution halted
