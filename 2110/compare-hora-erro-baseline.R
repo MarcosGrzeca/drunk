@@ -1,7 +1,9 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
-load("2110/rdas/compare-baseline.RData")
+try({
+  load("2110/rdas/compare-baseline.RData")
+})
 
 library(tools)
 library(caret)
@@ -12,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 10
+CORES <- 8
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -58,7 +60,7 @@ if (!exists("matriz3Gram25")) {
     treegram25 <- treinar(data_train)
     treegram25
     matriz3Gram25 <- getMatriz(treegram25, data_test)
-    resultados <- addRow(resultados, "3GRAM 25", matriz3Gram25)
+    resultados <- addRow(resultados, "3 GRAM 25", matriz3Gram25)
     save.image(file="2110/rdas/compare-baseline.RData")
   })
 }
@@ -78,4 +80,65 @@ if (!exists("matrizTwoGramEntidadesHoraErro")) {
     save.image(file="2110/rdas/compare-baseline.RData")
   })
 }
+
+if (!exists("matriz3Gram25Q2")) {
+  try({
+    load("2110/rdas/3gram-25-q2.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    treegram25Q2 <- treinar(data_train)
+    treegram25Q2
+    matriz3Gram25Q2 <- getMatriz(treegram25Q2, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q2", matriz3Gram25Q2)
+    save.image(file="2110/rdas/compare-baseline.RData")
+  })
+}
+
+if (!exists("matriz2GramEntidadesHoraErroQ2")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroQ2 <- treinar(data_train)
+    twoGramEntidadesHoraErroQ2
+    matriz2GramEntidadesHoraErroQ2 <- getMatriz(twoGramEntidadesHoraErroQ2, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q2", matriz2GramEntidadesHoraErroQ2)
+    save.image(file="2110/rdas/compare-baseline.RData")
+  })
+}
+
+if (!exists("matriz3Gram25Q3")) {
+  try({
+    load("2110/rdas/3gram-25-q3.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    treegram25Q3 <- treinar(data_train)
+    treegram25Q3
+    matriz3Gram25Q3 <- getMatriz(treegram25Q3, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q3", matriz3Gram25Q3)
+    save.image(file="2110/rdas/compare-baseline.RData")
+  })
+}
+
+if (!exists("matriz2GramEntidadesHoraErroQ3")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-q3.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroQ3 <- treinar(data_train)
+    twoGramEntidadesHoraErroQ3
+    matriz2GramEntidadesHoraErroQ3 <- getMatriz(twoGramEntidadesHoraErroQ3, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q3", matriz2GramEntidadesHoraErroQ3)
+    save.image(file="2110/rdas/compare-baseline.RData")
+  })
+}
+
 print("FIIMMMMMMMMMMMMMMMMMM")
