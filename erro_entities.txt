@@ -4,3 +4,15 @@ Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
+Loading required package: kernlab
+
+Attaching package: ‘kernlab’
+
+The following object is masked from ‘package:ggplot2’:
+
+    alpha
+
+Error in match.names(clabs, names(xi)) : 
+  names do not match previous names
+In addition: Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
