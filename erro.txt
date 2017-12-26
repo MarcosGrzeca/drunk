@@ -32,3 +32,7 @@ Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) :
   undefined columns selected
 In addition: Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
+  undefined columns selected
+In addition: Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
