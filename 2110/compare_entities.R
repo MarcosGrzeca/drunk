@@ -108,11 +108,11 @@ if (!exists("matriz2AlchemyConcepts")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twogramAlchemyConcepts <- treinar(data_train)
-    twogramAlchemyConcepts
-    matriz2AlchemyConcepts <- getMatriz(twogramAlchemyConcepts, data_test)
-    resultados <- addRow(resultados, "Alchemy Concepts", matriz2AlchemyConcepts)
-    saveImg()
+    #twogramAlchemyConcepts <- treinar(data_train)
+    #twogramAlchemyConcepts
+    #matriz2AlchemyConcepts <- getMatriz(twogramAlchemyConcepts, data_test)
+    #resultados <- addRow(resultados, "Alchemy Concepts", matriz2AlchemyConcepts)
+    #saveImg()
   })
 }
 
