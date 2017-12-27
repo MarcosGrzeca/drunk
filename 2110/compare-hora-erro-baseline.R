@@ -155,4 +155,19 @@ if (!exists("matriz3Gram25Q2NotNull")) {
   })
 }
 
+if (!exists("twoGramEntidadesHoraErroQ2NotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroQ2NotNull <- treinar(data_train)
+    twoGramEntidadesHoraErroQ2NotNull
+    matriz2GramEntidadesHoraErroQ2NotNull <- getMatriz(twoGramEntidadesHoraErroQ2NotNull, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q2 (Not Null)", matriz2GramEntidadesHoraErroQ2NotNull)
+    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+  })
+}
+
 print("FIIMMMMMMMMMMMMMMMMMM")
