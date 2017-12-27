@@ -170,4 +170,35 @@ if (!exists("twoGramEntidadesHoraErroQ2NotNull")) {
   })
 }
 
+if (!exists("matriz3Gram25Q3NotNull")) {
+  try({
+    load("2110/rdas/3gram-25-q3-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    treegram25Q3NotNull <- treinar(data_train)
+    treegram25Q3NotNull
+    matriz3Gram25Q3NotNull <- getMatriz(treegram25Q3NotNull, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull)
+    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+  })
+}
+
+if (!exists("matriz2GramEntidadesHoraErroQ3NotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-q3-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroQ3NotNull <- treinar(data_train)
+    twoGramEntidadesHoraErroQ3NotNull
+    matriz2GramEntidadesHoraErroQ3NotNull <- getMatriz(twoGramEntidadesHoraErroQ3NotNull, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q3 (Not Null)", matriz2GramEntidadesHoraErroQ3NotNull)
+    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+  })
+}
+
+
 print("FIIMMMMMMMMMMMMMMMMMM")
