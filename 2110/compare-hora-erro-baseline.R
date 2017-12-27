@@ -140,4 +140,19 @@ if (!exists("matriz2GramEntidadesHoraErroQ3")) {
   })
 }
 
+if (!exists("matriz3Gram25Q2NotNull")) {
+  try({
+    load("2110/rdas/3gram-25-q2-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    treegram25Q2NotNull <- treinar(data_train)
+    treegram25Q2NotNull
+    matriz3Gram25Q2NotNull <- getMatriz(treegram25Q2NotNull, data_test)
+    resultados <- addRow(resultados, "3 GRAM 25 Q2 (Not Null)", matriz3Gram25Q2NotNull)
+    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+  })
+}
+
 print("FIIMMMMMMMMMMMMMMMMMM")
