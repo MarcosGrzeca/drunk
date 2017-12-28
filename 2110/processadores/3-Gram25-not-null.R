@@ -8,30 +8,11 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dados <- query("SELECT t.id,
-       q1 AS resposta,
-       textParser,
-       textoParserEmoticom AS textoCompleto,
-       hashtags,
-       emoticonPos,
-       emoticonNeg,
-       hora,
-       erroParseado as numeroErros,
-
-    (SELECT GROUP_CONCAT(tn.palavra)
-     FROM tweets_nlp tn
-     WHERE tn.idTweetInterno = t.idInterno
-     AND origem = 'A'
-     AND tipo = 'C'
-     GROUP BY tn.idTweetInterno) AS entidades
-FROM tweets t
-WHERE textparser <> ''
-    AND id <> 462478714693890048")
+dados <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg FROM tweets t WHERE textparser <> '' AND id <> 462478714693890048 AND q1 IS NOT NULL")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
-dados$numeroErros[dados$numeroErros > 1] <- 1
-dados <- discretizarHora(dados)
+dados$hashtags <- enc2utf8(dados$hashtags)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -50,7 +31,6 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser = sub("'", "", dados$textParser)
-dados$entidades = sub(" ", "_", dados$entidades)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -62,9 +42,9 @@ it_train = itoken(dados$textParser,
                   ids = dados$id, 
                   progressbar = TRUE)
 
-
 stop_words = tm::stopwords("en")
-vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 2L))
+vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 3L))
+
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
 
@@ -75,40 +55,36 @@ it_train_hash = itoken(dados$hashtags,
                        progressbar = TRUE)
 
 vocabHashTags = create_vocabulary(it_train_hash)
+
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
-
-it_train = itoken(strsplit(dados$entidades, ","), 
-                  ids = dados$id, 
-                  progressbar = TRUE)
-
-vocab = create_vocabulary(it_train)
-vectorizer = vocab_vectorizer(vocab)
-dataFrameEntidades = create_dtm(it_train, vectorizer)
-dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
-
-#it_train = itoken(strsplit(dados$grams, ","), 
-#                  ids = dados$id, 
-                  #progressbar = TRUE)
-
-#vocab = create_vocabulary(it_train)
-#vectorizer = vocab_vectorizer(vocab)
-#dataFrameGram = create_dtm(it_train, vectorizer)
-#dataFrameGram <- as.data.frame(as.matrix(dataFrameGram))
-
-
-#Concatenar resultados
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
+
 clearConsole()
 
 library(rowr)
 library(RWeka)
 
+cols <- colnames(dataFrameTexto)
+aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
+manter <- round(length(aspectos) * 0.25)
+aspectosManter <- c()
+aspectosRemover <- c()
+
+for(i in 1:length(aspectos)) {
+  if (i <= manter) {
+    aspectosManter <- c(aspectosManter, aspectos[i])
+  } else {
+    aspectosRemover <- c(aspectosRemover, aspectos[i])
+  }
+}
+
+dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
+
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- cbind.fill(maFinal, dataFrameEntidades)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-hora-erro.Rda")
+save(maFinal, file = "2110/rdas/3gram-25-not-null.Rda")

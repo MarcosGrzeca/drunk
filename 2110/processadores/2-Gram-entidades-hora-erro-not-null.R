@@ -21,12 +21,11 @@ dados <- query("SELECT t.id,
     (SELECT GROUP_CONCAT(tn.palavra)
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
-     AND origem = 'A'
-     AND tipo = 'C'
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
 WHERE textparser <> ''
-    AND id <> 462478714693890048")
+    AND id <> 462478714693890048
+    AND q1 IS NOT NULL")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
@@ -50,7 +49,6 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser = sub("'", "", dados$textParser)
-dados$entidades = sub(" ", "_", dados$entidades)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -111,4 +109,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-hora-erro.Rda")
+save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-not-null.Rda")
