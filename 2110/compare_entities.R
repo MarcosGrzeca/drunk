@@ -40,7 +40,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   print(baseline)
   newRes <- data.frame(baseline, matriz$byClass["F1"], matriz$byClass["Precision"], matriz$byClass["Recall"])
   rownames(newRes) <- baseline
-  names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
+  names(newRes) <- c("Técnica", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
   #saveImg()
   return (newdf)
