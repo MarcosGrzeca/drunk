@@ -336,7 +336,6 @@ if (!exists("matrizTwoGramEntidadesHoraErroRisada")) {
   try({
     load("2110/rdas/2gram-entidades-hora-erro-risada.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
-    #maFinal <- subset(maFinal, select = -c(risada))
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
