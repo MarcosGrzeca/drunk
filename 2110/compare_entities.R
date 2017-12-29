@@ -196,4 +196,69 @@ if (!exists("matriz2GramCategoriesHoraErroNotNull")) {
   })
 }
 
+if (!exists("matriz2CalaisNotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-calais-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramCalaisNotNull <- treinar(data_train)
+    twogramCalaisNotNull
+    matriz2CalaisNotNull <- getMatriz(twogramCalaisNotNull, data_test)
+    resultados <- addRow(resultados, "Calais (Not NULL)", matriz2CalaisNotNull)
+    saveImg()
+  })
+}
+
+if (!exists("matriz2AlchemyEntitiesNotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-entities-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramAlchemyEntitiesNotNull <- treinar(data_train)
+    twogramAlchemyEntitiesNotNull
+    matriz2AlchemyEntitiesNotNull <- getMatriz(twogramAlchemyEntitiesNotNull, data_test)
+    resultados <- addRow(resultados, "Alchemy Entities (NOT NULL)", matriz2AlchemyEntitiesNotNull)
+    saveImg()
+  })
+}
+
+if (!exists("matriz2AlchemyKeywordsNotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-keywords-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramAlchemyKeywordsNotNull <- treinar(data_train)
+    twogramAlchemyKeywordsNotNull
+    matriz2AlchemyKeywordsNotNull <- getMatriz(twogramAlchemyKeywordsNotNull, data_test)
+    resultados <- addRow(resultados, "Alchemy KeyWords (Not NULL)", matriz2AlchemyKeywordsNotNull)
+    saveImg()
+  })
+}
+
+if (!exists("matriz2GramEntidadesNotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramentidadesNotNull <- treinar(data_train)
+    twogramentidadesNotNull
+    matriz2GramEntidadesNotNull <- getMatriz(twogramentidadesNotNull, data_test)
+    resultados <- addRow(resultados, "2GRAM entidades Todas (NOT NULL)", matriz2GramEntidadesNotNull)
+    saveImg()
+  })
+}
+
+
 print("FIIMMMMMMMMMMMMMMMMMM")
