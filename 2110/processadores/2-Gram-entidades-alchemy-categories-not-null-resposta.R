@@ -25,11 +25,11 @@ dados <- query("SELECT t.id,
 FROM tweets t
 WHERE textparser <> ''
     AND id <> 462478714693890048
-    AND q1 IS NOT NULL
 LIMIT 500
     ")
-dados$resposta[dados$resposta == 0] <- "No"
-dados$resposta[dados$resposta == 1] <- "Yes"
+#AND q1 IS NOT NULL
+
+dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 clearConsole()
