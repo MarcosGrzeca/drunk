@@ -1,4 +1,4 @@
-resultados <- data.frame(matrix(ncol = 4, nrow = 0))
+fresultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Técnica", "F1", "Precisão", "Revocação")
 
 library(tools)
@@ -24,8 +24,9 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 10, savePred=T),
-            preProc=c("center"))
+            trControl = trainControl(method = "cv", number = 10, savePred=T)
+            ,preProc=c("center")
+            )
     return (fit)
 }
 
@@ -166,7 +167,8 @@ if (!exists("matriz2GramCategoriesHoraErro")) {
 
 if (!exists("matriz2AlchemyCategoriesNotNull")) {
   try({
-    load("2110/rdas/2gram-entidades-alchemy-categories.Rda")
+    #Com center
+    load("2110/rdas/2gram-entidades-alchemy-categories-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -191,7 +193,7 @@ if (!exists("matriz2GramCategoriesHoraErroNotNull")) {
     twogramCategoriesHoraErroNotNull <- treinar(data_train)
     twogramCategoriesHoraErroNotNull
     matriz2GramCategoriesHoraErroNotNull <- getMatriz(twogramCategoriesHoraErroNotNull, data_test)
-    resultados <- addRow(resultados, "2GRAM Categorias + Hora + Erro (Not NULL) ", matriz2GramCategoriesHoraErroNotNull)
+    resultados <- addRow(resultados, "2GRAM Categorias + Hora + Erro (Not NULL) - CENTER", matriz2GramCategoriesHoraErroNotNull)
     saveImg()
   })
 }
@@ -207,7 +209,7 @@ if (!exists("matriz2CalaisNotNull")) {
     twogramCalaisNotNull <- treinar(data_train)
     twogramCalaisNotNull
     matriz2CalaisNotNull <- getMatriz(twogramCalaisNotNull, data_test)
-    resultados <- addRow(resultados, "Calais (Not NULL)", matriz2CalaisNotNull)
+    resultados <- addRow(resultados, "Calais (Not NULL) - CENTER", matriz2CalaisNotNull)
     saveImg()
   })
 }
