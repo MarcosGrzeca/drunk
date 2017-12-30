@@ -49,8 +49,11 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$textParser = sub("'", "", dados$textParser)
-dados$entidades = sub(" ", "_", dados$entidades)
+dados$entidades
+
+dados$textParser = gsub("'", "", dados$textParser)
+dados$entidades = gsub(" ", "_", dados$entidades)
+dados$entidades = gsub("/", "..", dados$entidades)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
