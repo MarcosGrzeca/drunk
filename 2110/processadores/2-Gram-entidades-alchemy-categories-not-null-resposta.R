@@ -133,10 +133,10 @@ dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
 
-mini <- round(length(aspectos) * 0.49)
+mini <- round(length(aspectos) * 0.48)
 
 print(mini)
-manter <- round(length(aspectos) * 0.50)
+manter <- round(length(aspectos) * 0.49)
 print(manter)
 
 aspectosManter <- c()
