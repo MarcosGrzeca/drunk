@@ -53,6 +53,8 @@ stem_tokenizer1 =function(x) {
 
 dados$textParser = gsub("'", "", dados$textParser)
 dados$textParser = gsub(":", " ", dados$textParser)
+dados$textParser = gsub(";", " ", dados$textParser)
+dados$textParser = gsub("(", "(MM", dados$textParser)
 dados$textParser = gsub("#", "", dados$textParser)
 dados$textParser = gsub("-", " ", dados$textParser)
 dados$textParser = gsub(" ", " MM", dados$textParser)
