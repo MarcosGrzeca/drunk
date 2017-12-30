@@ -9,7 +9,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       CONCAT('MM', textParser) as textParser,
+       textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
@@ -132,7 +132,7 @@ dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
-manter <- round(length(aspectos) * 0.25)
+manter <- round(length(aspectos) * 0.75)
 aspectosManter <- c()
 aspectosRemover <- c()
 
