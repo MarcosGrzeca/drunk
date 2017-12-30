@@ -123,6 +123,6 @@ library(RWeka)
 #maFinal <- cbind.fill(dataFrameTexto, dataFrameEntidades)
 #maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 
-maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
-maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
+#maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
+maFinal <- cbind.fill(dataFrameTexto, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-not-null-resposta.Rda")
