@@ -55,6 +55,8 @@ dados$textParser = gsub("'", "", dados$textParser)
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("/", "..", dados$entidades)
 
+dados$hashtags = gsub("#", "#tag_", dados$hashtags)
+
 prep_fun = tolower
 tok_fun = word_tokenizer
 
@@ -70,6 +72,12 @@ stop_words = tm::stopwords("en")
 vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 2L))
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
+
+#it_train_hash = itoken(dados$hashtags, 
+#                       preprocessor = prep_fun, 
+#                       tokenizer = tok_fun, 
+#                       ids = dados$id, 
+#                       progressbar = TRUE)
 
 it_train_hash = itoken(dados$hashtags, 
                        preprocessor = prep_fun, 
@@ -109,11 +117,9 @@ clearConsole()
 library(rowr)
 library(RWeka)
 
-maFinal <- cbind.fill(dataFrameTexto, dataFrameHash)
-maFinal <- cbind.fill(maFinal, dataFrameEntidades)
-maFinal <- cbind.fill(maFinal, dados)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
+#maFinal <- cbind.fill(dataFrameTexto, dataFrameHash)
+#maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 
-colnames(maFinal)
-
+maFinal <- cbind.fill(dataFrameTexto, dataFrameEntidades)
+maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-not-null-resposta.Rda")
