@@ -51,17 +51,27 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
+dados$textParser
+
 dados$textParser = gsub("'", "", dados$textParser)
+dados$textParser = gsub('"', "", dados$textParser)
 dados$textParser = gsub(":", " ", dados$textParser)
 dados$textParser = gsub(";", " ", dados$textParser)
-dados$textParser = gsub("(", "(MM", dados$textParser)
+#dados$textParser = gsub("(", " (MM", dados$textParser)
 dados$textParser = gsub("#", "", dados$textParser)
 dados$textParser = gsub("@", "", dados$textParser)
+dados$textParser = gsub("\n", " ", dados$textParser)
+dados$textParser = gsub("/", "", dados$textParser)
+dados$textParser
+#dados$textParser = gsub(".", " ", dados$textParser)
+dados$textParser
+
 dados$textParser = gsub("-", " ", dados$textParser)
 dados$textParser = gsub(" ", " MM", dados$textParser)
 dados$textParser
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("/", "..", dados$entidades)
+
 
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 
