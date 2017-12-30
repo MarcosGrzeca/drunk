@@ -9,7 +9,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       textParser,
+       CONCAT('MMMMM', textParser) as textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
@@ -52,6 +52,7 @@ stem_tokenizer1 =function(x) {
 dados$entidades
 
 dados$textParser = gsub("'", "", dados$textParser)
+dados$textParser = gsub(" ", " MMMMM", dados$textParser)
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("/", "..", dados$entidades)
 
