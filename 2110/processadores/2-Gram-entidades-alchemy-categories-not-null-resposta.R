@@ -16,7 +16,7 @@ dados <- query("SELECT t.id,
        emoticonNeg,
       q1 AS resposta,
 
-    (SELECT GROUP_CONCAT(tn.palavra)
+    (SELECT GROUP_CONCAT(CONCAT('eeee_', tn.palavra))
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
      AND origem = 'A'
