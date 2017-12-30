@@ -132,12 +132,18 @@ dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
+
+mini <- round(length(aspectos) * 0.49)
+
+print(mini)
 manter <- round(length(aspectos) * 0.50)
+print(manter)
+
 aspectosManter <- c()
 aspectosRemover <- c()
 
 for(i in 1:length(aspectos)) {
-  if (i <= manter) {
+  if (i >= mini && i <= manter) {
     aspectosManter <- c(aspectosManter, aspectos[i])
   } else {
     aspectosRemover <- c(aspectosRemover, aspectos[i])
