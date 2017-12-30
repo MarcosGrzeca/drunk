@@ -9,7 +9,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       CONCAT('MMMMM', textParser) as textParser,
+       CONCAT('MM', textParser) as textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
@@ -28,6 +28,8 @@ WHERE textparser <> ''
 LIMIT 500
     ")
 #AND q1 IS NOT NULL
+
+dados$textParser
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
@@ -49,10 +51,12 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$entidades
-
 dados$textParser = gsub("'", "", dados$textParser)
-dados$textParser = gsub(" ", " MMMMM", dados$textParser)
+dados$textParser = gsub(":", " ", dados$textParser)
+dados$textParser = gsub("#", "", dados$textParser)
+dados$textParser = gsub("-", " ", dados$textParser)
+dados$textParser = gsub(" ", " MM", dados$textParser)
+dados$textParser
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("/", "..", dados$entidades)
 
@@ -127,3 +131,5 @@ library(RWeka)
 #maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
 maFinal <- cbind.fill(dataFrameTexto, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-not-null-resposta.Rda")
+
+colnames(dataFrameTexto)
