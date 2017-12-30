@@ -183,6 +183,7 @@ if (!exists("matriz2AlchemyCategoriesNotNull")) {
 }
 
 if (!exists("matriz2GramCategoriesHoraErroNotNull")) {
+  #Sem center
   try({
     load("2110/rdas/2gram-entidades-alchemy-categories-hora-erro-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
