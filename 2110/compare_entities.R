@@ -10,7 +10,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 15
+CORES <- 7
 registerDoMC(CORES)
 
 load("2110/rdas/compare_entities.RData")
