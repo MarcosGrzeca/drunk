@@ -32,6 +32,8 @@ WHERE textparser <> ''
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
 clearConsole()
@@ -51,8 +53,8 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$textParser = sub("'", "", dados$textParser)
-dados$entidades = sub(" ", "_", dados$entidades)
+dados$textParser = gsub("'", "", dados$textParser)
+dados$entidades = gsub(" ", "_", dados$entidades)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
