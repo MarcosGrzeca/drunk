@@ -154,7 +154,7 @@ for(i in 1:length(aspectos)) {
   }
 }
 
-dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
+#dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
 
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
