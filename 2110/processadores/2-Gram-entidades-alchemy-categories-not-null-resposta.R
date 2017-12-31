@@ -51,32 +51,7 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$textParser
-#dados$textParser = gsub("fraîche", "fraiche", dados$textParser)
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
-
-
-
-#dados$textParser = gsub("'", "", dados$textParser)
-#dados$textParser = gsub('"', "", dados$textParser)
-#dados$textParser = gsub(":", " ", dados$textParser)
-#dados$textParser = gsub(";", " ", dados$textParser)
-#dados$textParser = gsub("(", " (MM", dados$textParser)
-#dados$textParser = gsub("#", "", dados$textParser)
-#dados$textParser = gsub("@", "", dados$textParser)
-#dados$textParser = gsub("\n", " ", dados$textParser)
-#dados$textParser = gsub("/", "", dados$textParser)
-#dados$textParser
-#dados$textParser = gsub(".", " ", dados$textParser)
-#dados$textParser
-
-#dados$textParser = gsub("-", " ", dados$textParser)
-#dados$textParser = gsub(" ", " MM", dados$textParser)
-#dados$textParser
-#dados$entidades = gsub(" ", "_", dados$entidades)
-#dados$entidades = gsub("/", "..", dados$entidades)
-
-
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 
 prep_fun = tolower
@@ -133,50 +108,18 @@ dataFrameEntidades <- as.data.frame(as.matrix(dataFrameEntidades))
 
 #Concatenar resultados
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
-
-cols <- colnames(dataFrameTexto)
-aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
-
-mini <- round(length(aspectos) * 0.49)
-
-print(mini)
-manter <- round(length(aspectos) * 0.50)
-print(manter)
-
-aspectosManter <- c()
-aspectosRemover <- c()
-
-for(i in 1:length(aspectos)) {
-  if (i >= mini && i <= manter) {
-    aspectosManter <- c(aspectosManter, aspectos[i])
-  } else {
-    aspectosRemover <- c(aspectosRemover, aspectos[i])
-  }
-}
-
-#dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
-
-
 dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 clearConsole()
 
 library(rowr)
 library(RWeka)
 
-#maFinal <- cbind.fill(dataFrameTexto, dataFrameHash)
-#maFinal <- cbind.fill(maFinal, dataFrameEntidades)
-
-#maFinal <- cbind.fill(dataFrameTexto, dataFrameEntidades)
-#maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
+maFinal <- cbind.fill(dataFrameTexto, dataFrameHash)
+maFinal <- cbind.fill(maFinal, dataFrameEntidades)
+maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 
 #dataFrameTexto <- subset(dataFrameTexto, select = -c(15,60))
 #drops <- c("15","60", 15, 60)
 #dataFrameTexto <- dataFrameTexto[ , !(names(dataFrameTexto) %in% drops)]
 #dataFrameTexto$"15"
-
-
-#maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
-maFinal <- cbind.fill(dataFrameTexto, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-not-null-resposta.Rda")
-
-colnames(maFinal)
