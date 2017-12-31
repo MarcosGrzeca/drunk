@@ -24,8 +24,8 @@ dados <- query("SELECT t.id,
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
 WHERE textparser <> ''
-    AND id <> 462478714693890048
-LIMIT 500
+AND id <> 462478714693890048
+AND q1 IS NOT NULL
     ")
 #AND q1 IS NOT NULL
 
