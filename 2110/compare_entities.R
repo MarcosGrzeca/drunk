@@ -284,10 +284,27 @@ if (!exists("matriz2GramCategoriesErroNotNull")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twogramCategoriesHoraErro <- treinar(data_train)
-    twogramCategoriesHoraErro
-    matriz2GramCategoriesErroNotNull <- getMatriz(twogramCategoriesHoraErro, data_test)
+    twogramCategoriesHoraErroNotNull <- treinar(data_train)
+    twogramCategoriesHoraErroNotNull
+    matriz2GramCategoriesErroNotNull <- getMatriz(twogramCategoriesHoraErroNotNull, data_test)
     resultados <- addRow(resultados, "2GRAM Categorias + Erro + NOT NULL", matriz2GramCategoriesErroNotNull)
+    saveImg()
+  })
+}
+
+if (!exists("matriz2GramCategoriesHoraNotNull")) {
+  print("matriz2GramCategoriesHoraNotNull")
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-categories-hora-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramCategoriesHoraNotNull <- treinar(data_train)
+    twogramCategoriesHoraNotNull
+    matriz2GramCategoriesHoraNotNull <- getMatriz(twogramCategoriesHoraNotNull, data_test)
+    resultados <- addRow(resultados, "2GRAM Categorias + Hora + NOT NULL", matriz2GramCategoriesHoraNotNull)
     saveImg()
   })
 }
