@@ -53,6 +53,7 @@ set.seed(10)
 split=0.80
 
 if (!exists("matriz2Calais")) {
+  print("matriz2Calais")
   try({
     load("2110/rdas/2gram-entidades-calais.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -69,6 +70,7 @@ if (!exists("matriz2Calais")) {
 }
 
 if (!exists("matriz2AlchemyEntities")) {
+  print("matriz2AlchemyEntities")
   try({
     load("2110/rdas/2gram-entidades-alchemy-entities.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -85,6 +87,7 @@ if (!exists("matriz2AlchemyEntities")) {
 }
 
 if (!exists("matriz2AlchemyKeywords")) {
+  print("matriz2AlchemyKeywords")
   try({
     load("2110/rdas/2gram-entidades-alchemy-keywords.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -101,6 +104,7 @@ if (!exists("matriz2AlchemyKeywords")) {
 }
 
 if (!exists("matriz2AlchemyConcepts")) {
+  print("matriz2AlchemyConcepts")
   try({
     load("2110/rdas/2gram-entidades-alchemy-concepts.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -118,6 +122,7 @@ if (!exists("matriz2AlchemyConcepts")) {
 }
 
 if (!exists("matriz2AlchemyCategories")) {
+  print("matriz2AlchemyCategories")
   try({
     load("2110/rdas/2gram-entidades-alchemy-categories.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -134,6 +139,7 @@ if (!exists("matriz2AlchemyCategories")) {
 }
 
 if (!exists("matriz2GramEntidades")) {
+  print("matriz2GramEntidades")
   try({
     load("2110/rdas/2gram-entidades.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -150,6 +156,7 @@ if (!exists("matriz2GramEntidades")) {
 }
 
 if (!exists("matriz2GramCategoriesHoraErro")) {
+  print("matriz2GramCategoriesHoraErro")
   try({
     load("2110/rdas/2gram-entidades-alchemy-categories-hora-erro.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -166,6 +173,7 @@ if (!exists("matriz2GramCategoriesHoraErro")) {
 }
 
 if (!exists("matriz2AlchemyCategoriesNotNull")) {
+  print("matriz2AlchemyCategoriesNotNull")
   try({
     #Com center
     load("2110/rdas/2gram-entidades-alchemy-categories-not-null.Rda")
@@ -183,6 +191,7 @@ if (!exists("matriz2AlchemyCategoriesNotNull")) {
 }
 
 if (!exists("matriz2GramCategoriesHoraErroNotNullCenter")) {
+  print("matriz2GramCategoriesHoraErroNotNullCenter")
   try({
     load("2110/rdas/2gram-entidades-alchemy-categories-hora-erro-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -199,6 +208,7 @@ if (!exists("matriz2GramCategoriesHoraErroNotNullCenter")) {
 }
 
 if (!exists("matriz2CalaisNotNull")) {
+  print("matriz2CalaisNotNull")
   try({
     load("2110/rdas/2gram-entidades-calais-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -215,6 +225,7 @@ if (!exists("matriz2CalaisNotNull")) {
 }
 
 if (!exists("matriz2AlchemyEntitiesNotNull")) {
+  print("matriz2AlchemyEntitiesNotNull")
   try({
     load("2110/rdas/2gram-entidades-alchemy-entities-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -231,6 +242,7 @@ if (!exists("matriz2AlchemyEntitiesNotNull")) {
 }
 
 if (!exists("matriz2AlchemyKeywordsNotNull")) {
+  print("matriz2AlchemyKeywordsNotNull")
   try({
     load("2110/rdas/2gram-entidades-alchemy-keywords-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -247,6 +259,7 @@ if (!exists("matriz2AlchemyKeywordsNotNull")) {
 }
 
 if (!exists("matriz2GramEntidadesNotNull")) {
+  print("matriz2GramEntidadesNotNull")
   try({
     load("2110/rdas/2gram-entidades-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)

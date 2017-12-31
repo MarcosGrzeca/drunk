@@ -31,6 +31,7 @@ dados$textParser <- enc2utf8(dados$textParser)
 dados$entidades <- enc2utf8(dados$entidades)
 
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 clearConsole()
 
@@ -49,13 +50,13 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$textParser = sub("'", "", dados$textParser)
-dados$textParser = sub("X", "XX", dados$textParser)
-dados$textParser = sub("x", "xx", dados$textParser)
+dados$textParser = gsub("'", "", dados$textParser)
+#dados$textParser = gsub("X", "XX", dados$textParser)
+#dados$textParser = gsub("x", "xx", dados$textParser)
 
-dados$entidades = sub("X", "XX", dados$entidades)
-dados$entidades = sub("x", "xx", dados$entidades)
-dados$entidades = sub(" ", "_", dados$entidades)
+#dados$entidades = gsub("X", "XX", dados$entidades)
+#dados$entidades = gsub("x", "xx", dados$entidades)
+dados$entidades = gsub(" ", "_", dados$entidades)
 
 
 prep_fun = tolower
