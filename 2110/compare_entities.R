@@ -1,4 +1,4 @@
-fresultados <- data.frame(matrix(ncol = 4, nrow = 0))
+resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Técnica", "F1", "Precisão", "Revocação")
 
 library(tools)
