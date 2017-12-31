@@ -207,8 +207,8 @@ if (!exists("matriz2GramCategoriesHoraErroNotNullCenter")) {
   })
 }
 
-if (!exists("matriz2CalaisNotNull")) {
-  print("matriz2CalaisNotNull")
+if (!exists("matriz2CalaisNotNullCenter")) {
+  print("matriz2CalaisNotNullCenter")
   try({
     load("2110/rdas/2gram-entidades-calais-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -216,10 +216,10 @@ if (!exists("matriz2CalaisNotNull")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twogramCalaisNotNull <- treinar(data_train)
-    twogramCalaisNotNull
-    matriz2CalaisNotNull <- getMatriz(twogramCalaisNotNull, data_test)
-    resultados <- addRow(resultados, "Calais (Not NULL)", matriz2CalaisNotNull)
+    twogramCalaisNotNullCenter <- treinar(data_train)
+    twogramCalaisNotNullCenter
+    matriz2CalaisNotNullCenter <- getMatriz(twogramCalaisNotNullCenter, data_test)
+    resultados <- addRow(resultados, "Calais (Not NULL)", matriz2CalaisNotNullCenter)
     saveImg()
   })
 }
