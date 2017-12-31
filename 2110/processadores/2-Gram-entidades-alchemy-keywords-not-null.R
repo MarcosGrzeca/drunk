@@ -30,6 +30,8 @@ AND q1 IS NOT NULL
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -47,7 +49,7 @@ stem_tokenizer1 =function(x) {
   lapply(tokens, SnowballC::wordStem, language="en")
 }
 
-dados$textParser = sub("'", "", dados$textParser)
+dados$textParser = gsub("'", "", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
