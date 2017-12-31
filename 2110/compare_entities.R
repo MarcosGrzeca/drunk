@@ -10,7 +10,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 10
+CORES <- 15
 registerDoMC(CORES)
 
 load("2110/rdas/compare_entities.RData")
@@ -109,11 +109,11 @@ if (!exists("matriz2AlchemyConcepts")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    #twogramAlchemyConcepts <- treinar(data_train)
-    #twogramAlchemyConcepts
-    #matriz2AlchemyConcepts <- getMatriz(twogramAlchemyConcepts, data_test)
-    #resultados <- addRow(resultados, "Alchemy Concepts", matriz2AlchemyConcepts)
-    #saveImg()
+    twogramAlchemyConcepts <- treinar(data_train)
+    twogramAlchemyConcepts
+    matriz2AlchemyConcepts <- getMatriz(twogramAlchemyConcepts, data_test)
+    resultados <- addRow(resultados, "Alchemy Concepts", matriz2AlchemyConcepts)
+    saveImg()
   })
 }
 
@@ -182,8 +182,7 @@ if (!exists("matriz2AlchemyCategoriesNotNull")) {
   })
 }
 
-if (!exists("matriz2GramCategoriesHoraErroNotNull")) {
-  #Sem center
+if (!exists("matriz2GramCategoriesHoraErroNotNullCenter")) {
   try({
     load("2110/rdas/2gram-entidades-alchemy-categories-hora-erro-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -191,10 +190,10 @@ if (!exists("matriz2GramCategoriesHoraErroNotNull")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twogramCategoriesHoraErroNotNull <- treinar(data_train)
-    twogramCategoriesHoraErroNotNull
-    matriz2GramCategoriesHoraErroNotNull <- getMatriz(twogramCategoriesHoraErroNotNull, data_test)
-    resultados <- addRow(resultados, "2GRAM Categorias + Hora + Erro (Not NULL) - CENTER", matriz2GramCategoriesHoraErroNotNull)
+    twogramCategoriesHoraErroNotNullCenter <- treinar(data_train)
+    twogramCategoriesHoraErroNotNullCenter
+    matriz2GramCategoriesHoraErroNotNullCenter <- getMatriz(twogramCategoriesHoraErroNotNullCenter, data_test)
+    resultados <- addRow(resultados, "2GRAM Categorias + Hora + Erro (Not NULL)", matriz2GramCategoriesHoraErroNotNullCenter)
     saveImg()
   })
 }
@@ -210,7 +209,7 @@ if (!exists("matriz2CalaisNotNull")) {
     twogramCalaisNotNull <- treinar(data_train)
     twogramCalaisNotNull
     matriz2CalaisNotNull <- getMatriz(twogramCalaisNotNull, data_test)
-    resultados <- addRow(resultados, "Calais (Not NULL) - CENTER", matriz2CalaisNotNull)
+    resultados <- addRow(resultados, "Calais (Not NULL)", matriz2CalaisNotNull)
     saveImg()
   })
 }
