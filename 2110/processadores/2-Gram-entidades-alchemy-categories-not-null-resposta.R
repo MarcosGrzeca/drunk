@@ -52,6 +52,7 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser
+dados$textParser = gsub("fraîche", "fraiche", dados$textParser)
 
 #dados$textParser = gsub("'", "", dados$textParser)
 #dados$textParser = gsub('"', "", dados$textParser)
@@ -171,9 +172,8 @@ dataFrameTexto <- dataFrameTexto[ , !(names(dataFrameTexto) %in% drops)]
 dataFrameTexto$"15"
 
 
-
 #maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
 maFinal <- cbind.fill(dataFrameTexto, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 save(maFinal, file = "2110/rdas/2gram-entidades-alchemy-categories-not-null-resposta.Rda")
 
-colnames(dataFrameTexto)
+colnames(maFinal)
