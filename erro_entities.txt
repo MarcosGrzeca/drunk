@@ -4,15 +4,3 @@ Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
