@@ -133,10 +133,10 @@ dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 cols <- colnames(dataFrameTexto)
 aspectos <- sort(colSums(dataFrameTexto), decreasing = TRUE)
 
-mini <- round(length(aspectos) * 0.48)
+mini <- round(length(aspectos) * 0.49)
 
 print(mini)
-manter <- round(length(aspectos) * 0.49)
+manter <- round(length(aspectos) * 0.50)
 print(manter)
 
 aspectosManter <- c()
@@ -164,6 +164,13 @@ library(RWeka)
 
 #maFinal <- cbind.fill(dataFrameTexto, dataFrameEntidades)
 #maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
+
+dataFrameTexto <- subset(dataFrameTexto, select = -c(15,60))
+drops <- c("15","60", 15, 60)
+dataFrameTexto <- dataFrameTexto[ , !(names(dataFrameTexto) %in% drops)]
+dataFrameTexto$"15"
+
+
 
 #maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
 maFinal <- cbind.fill(dataFrameTexto, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
