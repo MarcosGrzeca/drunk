@@ -275,5 +275,6 @@ if (!exists("matriz2GramEntidadesNotNull")) {
   })
 }
 
+dump(resultados, "compare_entities.csv")
 
 print("FIIMMMMMMMMMMMMMMMMMM")
