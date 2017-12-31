@@ -52,7 +52,10 @@ stem_tokenizer1 =function(x) {
 }
 
 dados$textParser
-dados$textParser = gsub("fraîche", "fraiche", dados$textParser)
+#dados$textParser = gsub("fraîche", "fraiche", dados$textParser)
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+
+
 
 #dados$textParser = gsub("'", "", dados$textParser)
 #dados$textParser = gsub('"', "", dados$textParser)
@@ -166,10 +169,10 @@ library(RWeka)
 #maFinal <- cbind.fill(dataFrameTexto, dataFrameEntidades)
 #maFinal <- cbind.fill(maFinal, subset(dados, select = -c(textParser, id, hashtags, textoCompleto, entidades)))
 
-dataFrameTexto <- subset(dataFrameTexto, select = -c(15,60))
-drops <- c("15","60", 15, 60)
-dataFrameTexto <- dataFrameTexto[ , !(names(dataFrameTexto) %in% drops)]
-dataFrameTexto$"15"
+#dataFrameTexto <- subset(dataFrameTexto, select = -c(15,60))
+#drops <- c("15","60", 15, 60)
+#dataFrameTexto <- dataFrameTexto[ , !(names(dataFrameTexto) %in% drops)]
+#dataFrameTexto$"15"
 
 
 #maFinal <- cbind.fill(dataFrameHash, dataFrameEntidades)
