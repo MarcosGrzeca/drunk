@@ -275,6 +275,23 @@ if (!exists("matriz2GramEntidadesNotNull")) {
   })
 }
 
+if (!exists("matriz2GramCategoriesErroNotNull")) {
+  print("matriz2GramCategoriesErroNotNull")
+  try({
+    load("2110/rdas/2gram-entidades-alchemy-categories-erro-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twogramCategoriesHoraErro <- treinar(data_train)
+    twogramCategoriesHoraErro
+    matriz2GramCategoriesErroNotNull <- getMatriz(twogramCategoriesHoraErro, data_test)
+    resultados <- addRow(resultados, "2GRAM Categorias + Erro + NOT NULL", matriz2GramCategoriesErroNotNull)
+    saveImg()
+  })
+}
+
 dump(resultados, "compare_entities.csv")
 
 print("FIIMMMMMMMMMMMMMMMMMM")
