@@ -51,7 +51,7 @@ split=0.80
 
 if (!exists("matriz2GramDBPedia")) {
   try({
-    load("2110/rdas/2gram-dbpedia-not-null")
+    load("2110/rdas/2gram-dbpedia-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
