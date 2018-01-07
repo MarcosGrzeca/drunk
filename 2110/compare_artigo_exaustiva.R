@@ -133,6 +133,7 @@ if (!exists("matrizTwoGramDBPediaSubject")) {
 }
 
 if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
+  #FEITO
   try({
     load("2110/rdas/2gram-25-categoria-localizacao-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)

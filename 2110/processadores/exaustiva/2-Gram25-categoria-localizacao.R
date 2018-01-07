@@ -8,16 +8,13 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 clearConsole();
 
-dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100 WHERE textparser <> '' AND t.id <> 462478714693890048 AND q1 IS NOT NULL")
-dados <- dadosQ1
+dados <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom AS textoCompleto, hashtags, emoticonPos,	emoticonNeg, tl.category as categoriaEstabelecimento FROM tweets t LEFT JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno AND distance = 100 WHERE textparser <> '' AND t.id <> 462478714693890048 AND q1 IS NOT NULL")
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$textParser <- enc2utf8(dados$textParser)
 
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
-dados$resources <- iconv(dados$resources, to='ASCII//TRANSLIT')
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 dados$textParser = gsub("'", "", dados$textParser)
-dados$resources = gsub(" ", "_", dados$resources)
 
 clearConsole()
 
@@ -62,6 +59,7 @@ vocabHashTags = create_vocabulary(it_train_hash)
 
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
+dataFrameHash <- as.data.frame(as.matrix(dtm_train_hash_tags))
 
 dataFrameTexto <- as.data.frame(as.matrix(dtm_train_texto))
 
@@ -86,7 +84,7 @@ for(i in 1:length(aspectos)) {
 
 dataFrameTexto <- dataFrameTexto[names(aspectosManter)]
 
-dados$categoriaEstabelecimento = sub(" ", "_", dados$categoriaEstabelecimento)
+dados$categoriaEstabelecimento = gsub(" ", "_", dados$categoriaEstabelecimento)
 it_train = itoken(dados$categoriaEstabelecimento, 
                   preprocessor = prep_fun,
                   tokenizer = tok_fun,
