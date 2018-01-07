@@ -82,6 +82,7 @@ if (!exists("matrizWikipedia")) {
 }
 
 if (!exists("matrizDBPediaTypesPage")) {
+  #FEITO
   try({
     load("2110/rdas/2-Gram-dbpedia-types-page-rank-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -98,6 +99,7 @@ if (!exists("matrizDBPediaTypesPage")) {
 }
 
 if (!exists("matrizDBPediaCompleto")) {
+  #FEITO
   try({
     load("2110/rdas/2-Gram-dbpedia-types-completo-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
