@@ -12,6 +12,13 @@ dadosQ1 <- query("SELECT t.id, q1 AS resposta, textParser, textoParserEmoticom A
 dados <- dadosQ1
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$textParser <- enc2utf8(dados$textParser)
+
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$resources <- iconv(dados$resources, to='ASCII//TRANSLIT')
+dados$hashtags = gsub("#", "#tag_", dados$hashtags)
+dados$textParser = gsub("'", "", dados$textParser)
+dados$resources = gsub(" ", "_", dados$resources)
+
 clearConsole()
 
 if (!require("text2vec")) {
@@ -28,8 +35,6 @@ stem_tokenizer1 =function(x) {
   tokens = word_tokenizer(x)
   lapply(tokens, SnowballC::wordStem, language="en")
 }
-
-dados$textParser = sub("'", "", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer

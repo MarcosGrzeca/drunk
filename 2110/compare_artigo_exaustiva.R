@@ -116,6 +116,7 @@ if (!exists("matrizDBPediaCompleto")) {
 }
 
 if (!exists("matrizTwoGramDBPediaSubject")) {
+  #FEITO
   try({
     load("2110/rdas/2-Gram-dbpedia-subject-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
