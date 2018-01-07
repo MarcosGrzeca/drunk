@@ -50,6 +50,7 @@ set.seed(10)
 split=0.80
 
 if (!exists("matriz2GramDBPedia")) {
+  #FEITO
   try({
     load("2110/rdas/2gram-dbpedia-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -66,6 +67,7 @@ if (!exists("matriz2GramDBPedia")) {
 }
 
 if (!exists("matrizWikipedia")) {
+  #FEITO
   load("2110/rdas/2gram-wikipedia-not-null.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)

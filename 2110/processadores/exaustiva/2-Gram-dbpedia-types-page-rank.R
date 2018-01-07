@@ -64,12 +64,18 @@ dados <- query("SELECT t.id,
                            'http://dbpedia.org/class/yago/Biome107941945')
    ) AS resources
 FROM tweets t
-WHER q1 IS NOT NULL")
+WHERE q1 IS NOT NULL")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$resources <- enc2utf8(dados$resources)
+
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$resources <- iconv(dados$resources, to='ASCII//TRANSLIT')
+dados$hashtags = gsub("#", "#tag_", dados$hashtags)
+dados$textParser = gsub("'", "", dados$textParser)
+dados$resources = gsub(" ", "_", dados$resources)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -86,8 +92,6 @@ stem_tokenizer1 =function(x) {
   tokens = word_tokenizer(x)
   lapply(tokens, SnowballC::wordStem, language="en")
 }
-
-dados$textParser = sub("'", "", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -148,3 +152,4 @@ maFinal <- cbind.fill(maFinal, dataFrameResource)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, resources))
 
 save(maFinal, file = "2110/rdas/2-Gram-dbpedia-types-page-rank-not-null.Rda")
+
