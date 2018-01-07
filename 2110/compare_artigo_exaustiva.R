@@ -1,7 +1,9 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
-load("2110/rdas/compare_artigo_exaustivo.RData")
+try({
+  load("2110/rdas/compare_artigo_exaustivo.RData")
+})
 
 library(tools)
 library(caret)
