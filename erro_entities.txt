@@ -12,5 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
