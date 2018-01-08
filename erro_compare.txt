@@ -26,3 +26,7 @@ Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
 Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
   attempt to set an attribute on NULL
+Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in limpar() : could not find function "limpar"
+Execution halted
