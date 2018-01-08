@@ -161,7 +161,24 @@ if (!exists("matrizTwoGramTypesCFS")) {
     twoGramTypesCFS <- treinar(data_train)
     twoGramTypesCFS
     matrizTwoGramTypesCFS <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + 25% + Types CFS", matrizTwoGramTypesCFS)
+    resultados <- addRow(resultados, "2 Gram + Types CFS", matrizTwoGramTypesCFS)
+    save.image(file="2110/rdas/compare_artigo_exaustivo.RData")
+  })
+}
+
+if (!exists("matrizTwoGramTypesInfoGain")) {
+  #FEITO OK
+  try({
+    load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramTypesInfoGain <- treinar(data_train)
+    twoGramTypesInfoGain
+    matrizTwoGramTypesInfoGain <- getMatriz(twoGramTypesInfoGain, data_test)
+    resultados <- addRow(resultados, "2 Gram + Info Gain", matrizTwoGramTypesInfoGain)
     save.image(file="2110/rdas/compare_artigo_exaustivo.RData")
   })
 }
