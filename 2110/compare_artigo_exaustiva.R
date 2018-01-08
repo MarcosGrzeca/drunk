@@ -50,7 +50,7 @@ set.seed(10)
 split=0.80
 
 if (!exists("matriz2GramDBPedia")) {
-  #FEITO
+  #FEITO OK
   try({
     load("2110/rdas/2gram-dbpedia-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -67,7 +67,7 @@ if (!exists("matriz2GramDBPedia")) {
 }
 
 if (!exists("matrizWikipedia")) {
-  #FEITO
+  #FEITO OK
   load("2110/rdas/2gram-wikipedia-not-null.Rda")
   maFinal$resposta <- as.factor(maFinal$resposta)
   trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -82,7 +82,7 @@ if (!exists("matrizWikipedia")) {
 }
 
 if (!exists("matrizDBPediaTypesPage")) {
-  #FEITO
+  #FEITO OK
   try({
     load("2110/rdas/2-Gram-dbpedia-types-page-rank-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -99,7 +99,7 @@ if (!exists("matrizDBPediaTypesPage")) {
 }
 
 if (!exists("matrizDBPediaCompleto")) {
-  #FEITO
+  #FEITO OK
   try({
     load("2110/rdas/2-Gram-dbpedia-types-completo-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -133,7 +133,7 @@ if (!exists("matrizTwoGramDBPediaSubject")) {
 }
 
 if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
-  #FEITO
+  #FEITO OK
   try({
     load("2110/rdas/2gram-25-categoria-localizacao-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -155,7 +155,7 @@ print("FIIMMMMMMMMMMMMMMMMMM")
 #resultados
 #View(resultados)
 
-limpar()
+#limpar()
 
 limpar <- function() {
   rm("aspectos","aspectosManter","aspectosRemover","dados","dadosQ1","data_test","data_train","dataFrameEntidades","dataFrameEstabelecimento","dataFrameGram","dataFrameHash","dataFrameTexto","dbpediaTypesCompleto","dbpediaTypesPageRank","dtm_train_hash_tags","dtm_train_texto","maFinal","matriz2Gram","matriz2Gram25","matriz2GramDBPedia","matriz2GramEntidades","matriz3Gram25","matrizDBPediaCompleto","matrizDBPediaTypesPage","matrizThreeGram","matrizTwoGram25Hora","matrizTwoGramCateogoriaLocalizacao","matrizTwoGramDBPediaSubject","matrizTwoGramDiaSemana","matrizTwoGramEntidades2","matrizTwoGramEntidadesHora","matrizTwoGramEntidadesHoraErro","matrizTwoGramErros","matrizWikipedia","threeGram","treegram25","twoGDBPedia","twogram","twogram25","twoGram25Hora","twoGramCategoriaLocalizacao","twoGramDBPediaSubject","twoGramDiaSemana","twogramentidades","twoGramEntidades25","twoGramEntidadesHora","twoGramEntidadesHoraErro", "twoGramErros","vectorizerEstabelecimento","vectorizerHashTags","vocab","vocabEstabelecimento","vocabHashTags","wikipediaCategory")

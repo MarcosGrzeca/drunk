@@ -34,7 +34,9 @@ dados <- query("SELECT t.id,
      WHERE louco.idTweetInterno = t.idInterno
    ) AS resources
 FROM tweets t
-WHERE q1 IS NOT NULL")
+WHERE q1 IS NOT NULL
+AND t.id <> 462478714693890048
+               ")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
