@@ -149,6 +149,23 @@ if (!exists("matrizTwoGramCateogoriaLocalizacao")) {
   })
 }
 
+if (!exists("matrizTwoGramTypesCFS")) {
+  #FEITO OK
+  try({
+    load("2110/rdas/2-Gram-dbpedia-types-cfs-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramTypesCFS <- treinar(data_train)
+    twoGramTypesCFS
+    matrizTwoGramTypesCFS <- getMatriz(twoGramTypesCFS, data_test)
+    resultados <- addRow(resultados, "2 Gram + 25% + Types CFS", matrizTwoGramTypesCFS)
+    save.image(file="2110/rdas/compare_artigo_exaustivo.RData")
+  })
+}
+
 print("FIIMMMMMMMMMMMMMMMMMM")
 
 #load("2110/rdas/compare_artigo_exaustivo.RData")
