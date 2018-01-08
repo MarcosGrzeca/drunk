@@ -65,3 +65,18 @@ bofPresence <- function(vetor) {
   vetor <- as.data.frame(as.matrix(vetor))
   return (vetor)
 }
+
+magica <- function(dados) {
+  dados$resposta[is.na(dados$resposta)] <- 0
+  dados$resposta <- as.factor(dados$resposta)
+  dados$textParser <- enc2utf8(dados$textParser)
+  dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+  dados$textParser = gsub("'", "", dados$textParser)
+
+  dados$entidades <- enc2utf8(dados$entidades)
+  dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
+  dados$entidades = gsub(" ", "_", dados$entidades)
+
+  dados$hashtags = gsub("#", "#tag_", dados$hashtags)
+  return (dados)
+}
