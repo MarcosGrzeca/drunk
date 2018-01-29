@@ -1,0 +1,10 @@
+predict(knnFit)
+predict(knnFit, type = "prob")
+
+bothModels <- list(knn = knnFit,
+                   tree = rdaFit)
+
+predict(bothModels)
+
+extractPrediction(bothModels, testX = iris[1:10, -5])
+extractProb(bothModels, testX = iris[1:10, -5])
