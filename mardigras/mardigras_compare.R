@@ -102,3 +102,6 @@ rm("treegram25")
 
 
 save.image(file = "mardigras/mardigras_compare.RData")
+
+
+#"mardigras/2gram-entidades-mesmas-colunas.Rda"
