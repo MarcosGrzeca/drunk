@@ -83,7 +83,7 @@ nrow(data_test)
 
 nrow(antigo)
 
-predict(twoGramEntidadesHoraErroNotNull, subset(maFinal,    select = -c(resposta)))
+predict(treegram25, subset(maFinal, select = -c(resposta)))
 
 predict(twoGramEntidadesHoraErroNotNull, subset(data_test, select = -c(resposta)))
 
@@ -91,3 +91,14 @@ predict(twoGramEntidadesHoraErroNotNull, subset(data_test, select = -c(resposta)
 
 load("2110/rdas/2gram-entidades-hora-erro-not-null-new-test.Rda")
 nrow(maFinal)
+
+load("2110/rdas/2gram-entidades-hora-erro-not-null-new-test.Rda")
+
+
+ls()
+treegram25
+
+rm("treegram25")
+
+
+save.image(file = "mardigras/mardigras_compare.RData")
