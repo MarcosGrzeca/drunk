@@ -9,23 +9,32 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
+       q1 AS resposta,
        textParser,
-       textOriginal AS textoCompleto,
+       textoParserEmoticom AS textoCompleto,
        hashtags,
        emoticonPos,
        emoticonNeg,
+       hora,
+       erroParseado as numeroErros,
 
     (SELECT GROUP_CONCAT(tn.palavra)
-     FROM semantic_tweets_nlp tn
-     WHERE tn.idTweet = t.id
-     GROUP BY tn.idTweet) AS entidades
-FROM semantic_tweets t
+     FROM tweets_nlp tn
+     WHERE tn.idTweetInterno = t.idInterno
+     GROUP BY tn.idTweetInterno) AS entidades
+FROM tweets t
 WHERE textparser <> ''
-")
-
+    AND id <> 462478714693890048
+    AND q1 IS NOT NULL")
+dados$resposta[is.na(dados$resposta)] <- 0
+dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
+dados$textParser = gsub("'", "", dados$textParser)
+
+dados$numeroErros[dados$numeroErros > 1] <- 1
+dados <- discretizarHora(dados)
 clearConsole()
 
 if (!require("text2vec")) {
@@ -42,8 +51,6 @@ stem_tokenizer1 =function(x) {
   tokens = word_tokenizer(x)
   lapply(tokens, SnowballC::wordStem, language="en")
 }
-
-dados$textParser = gsub("'", "", dados$textParser)
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -104,4 +111,4 @@ maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- cbind.fill(maFinal, dataFrameEntidades)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto, entidades))
 
-save(maFinal, file = "mardigras/2gram-entidades-completo.Rda")
+save(maFinal, file = "2110/rdas/2gram-entidades-hora-erro-conforme-artigo-not-null.Rda")

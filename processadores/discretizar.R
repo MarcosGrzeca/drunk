@@ -53,6 +53,14 @@ discretizarTurno <- function(dados) {
   return (dados)
 }
 
+discretizarTurnoConformeArtigo <- function(dados) {
+  dados$turno <- 0
+  dados$turno[dados$hora >= 21] <- 1
+  dados$turno[dados$hora <= 2] <- 1
+  dados <- subset(dados, select = -c(hora))
+  return (dados)
+}
+
 discretizarSentimentos <- function(dados) {
   #sentimentos
   dados$emotiom <- 0

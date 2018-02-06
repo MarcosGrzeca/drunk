@@ -6,7 +6,7 @@ load("2110/rdas/2gram-entidades-hora-erro-not-null-new-test.Rda")
 origem <- maFinal
 
 #LER DATASET VERIFICAR MODELO
-load("mardigras/2gram-entidades.Rda")
+load("mardigras/2gram-entidades-completo.Rda")
 destino <- maFinal
 
 colsOrigem <- colnames(origem)
@@ -27,4 +27,4 @@ for(i in 1:length(colsOrigem)) {
 #PARTE FINAL
 dataFrameTexto <- destino[aspectosManter]
 
-save(dataFrameTexto, file = "mardigras/2gram-entidades-mesmas-colunas.Rda")
+save(dataFrameTexto, file = "mardigras/2gram-entidades-mesmas-colunas-completo.Rda")
