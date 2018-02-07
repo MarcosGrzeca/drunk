@@ -85,7 +85,35 @@ for(i in files){
 sentimentsNrc
 
 
-GetSentimentNrc(files[5])
-
+tes <- GetSentimentNrc(files[4])
+tes$anger
+tes$anticipation
+tes$disgust
+tes$fear
+tes$joy
+tes$negative
+tes$positive
+tes$sadness
+tes$surprise
+tes$trust
 
 get_sentiments("nrc")
+
+
+
+text <- "I’m not feeling good."
+
+install.packages("devtools")
+devtools::install_github("exploratory-io/exploratory_func")
+library(exploratory)
+library(sentimentr)
+mutate(sentiment = get_sentiment(text))
+
+
+mytext <- c(
+  'do you like it?  But I hate really bad dogs',
+  'I am the best friend.',
+  'Do you really like it?  I\'m not a fan'
+)
+mytext <- get_sentences(mytext)
+sentiment(mytext)
