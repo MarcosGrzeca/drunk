@@ -35,7 +35,7 @@ dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 dados$textParser = gsub("'", "", dados$textParser)
 
 dados$numeroErros[dados$numeroErros > 1] <- 1
-dados <- discretizarHora(dados)
+dados <- discretizarTurnoConformeArtigo(dados)
 clearConsole()
 
 if (!require("text2vec")) {
