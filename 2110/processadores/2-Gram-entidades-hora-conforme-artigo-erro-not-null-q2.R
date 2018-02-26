@@ -27,14 +27,15 @@ WHERE textparser <> ''
     AND id <> 462478714693890048
     AND q1 = 1 
     AND q2 IS NOT NULL")
+
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
 dados$hashtags = gsub("#", "#tag_", dados$hashtags)
 dados$textParser = gsub("'", "", dados$textParser)
-
 dados$numeroErros[dados$numeroErros > 1] <- 1
+
 dados <- discretizarTurnoConformeArtigo(dados)
 clearConsole()
 
