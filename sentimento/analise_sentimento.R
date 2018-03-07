@@ -76,3 +76,5 @@ m %>%
   right_join(get_sentiments("nrc")) %>%
   filter(!is.na(sentiment)) %>%
   count(sentiment, sort = TRUE)
+
+remove.packages(c("exploratory"))

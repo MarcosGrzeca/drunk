@@ -8,7 +8,7 @@ library(doMC)
 library(mlbench)
 
 treinar <- function(data_train){
-    registerDoMC(6)
+    registerDoMC(10)
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
@@ -18,7 +18,7 @@ treinar <- function(data_train){
 }
 
 getMatriz <- function(fit, data_test) {
-  registerDoMC(6)
+  registerDoMC(10)
   pred <- predict(fit, subset(data_test, select = -c(resposta)))
   matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
   return (matriz)

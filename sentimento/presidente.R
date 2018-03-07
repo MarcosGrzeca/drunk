@@ -100,8 +100,42 @@ tes$trust
 get_sentiments("nrc")
 
 
+fileName <- glue("sentimento/presidentes/", files[4], sep = "")
+fileName
+# get rid of any sneaky trailing spaces
+fileName <- trimws(fileName)
+fileName
+# read in the new file
+fileText <- glue(read_file(fileName))
+fileText
 
-text <- "I’m not feeling good."
+
+fileText <- "I am actually very happy happy happy happy today"
+# remove any dollar signs (they're special characters in R)
+fileText <- gsub("\\$", "", fileText) 
+
+# tokenize
+tokens <- data_frame(text = fileText) %>% unnest_tokens(word, text)
+
+# get the sentiment from the first text: 
+sentiment <- tokens %>%
+  inner_join(get_sentiments("nrc")) %>% # pull out only sentimen words
+  count(sentiment) %>% # count the # of positive & negative words
+  spread(sentiment, n, fill = 0)# made data wide rather than narrow
+
+sentiment
+sentiment$disgust
+
+exists("sentiment$positive")
+length(sentiment$positive)
+length(sentiment$anger)
+
+if("positive" %in% colnames(sentiment)) {
+  print("EXISTIS")
+}
+
+
+text <- "I’m feeling good."
 
 install.packages("devtools")
 devtools::install_github("exploratory-io/exploratory_func")
@@ -117,3 +151,18 @@ mytext <- c(
 )
 mytext <- get_sentences(mytext)
 sentiment(mytext)
+
+
+library(syuzhet)
+get_nrc_sentiment("Basically this is a very silly test.")
+get_nrc_sentiment("I am actually very happy happy happy happy today")
+nrc_data
+
+get_nrc_sentiment("@Marcos JAOA")
+fileText <- gsub("\\$", "", fileText) 
+
+
+which(aa$positive > 0)
+
+
+pander::pandoc.table(nrc_data[, 1:8], split.table = Inf)
