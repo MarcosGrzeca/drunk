@@ -12,7 +12,7 @@ source(file_path_as_absolute("functions.R"))
 #Configuracoes
 DATABASE <- "icwsm"
 clearConsole();
-dados <- query("SELECT textoParserEmoticom FROM tweets t wHERE q1 = 1")
+dados <- query("SELECT textoParserEmoticom FROM tweets t wHERE q1 = 0")
 stop_words = tm::stopwords("en")
 
 library(wordcloud)
@@ -42,6 +42,7 @@ corpus=tm_map(corpus,tolower)
 corpus=tm_map(corpus,removePunctuation)
 corpus=tm_map(corpus,removeNumbers)
 corpus=tm_map(corpus,removeWords,stopwords("en"))
+#auxCorpus <- tm_map(auxCorpus, stemDocument)
 corpus=Corpus(VectorSource(corpus))
 tdm=TermDocumentMatrix(corpus)
 m=as.matrix(tdm)
