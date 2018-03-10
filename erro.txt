@@ -30,3 +30,9 @@ Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
 Warning message:
 In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
