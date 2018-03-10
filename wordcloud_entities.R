@@ -19,7 +19,7 @@ dados <- query("SELECT
                 WHERE tn.idTweetInterno = t.idInterno
                 GROUP BY tn.idTweetInterno) AS entidades
                FROM tweets t
-               WHERE q1 = 0")
+               WHERE q1 = 1")
 
 dados$entidades <- enc2utf8(dados$entidades)
 dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
@@ -59,6 +59,8 @@ corpus=Corpus(VectorSource(corpus))
 tdm=TermDocumentMatrix(corpus)
 m=as.matrix(tdm)
 v=sort(rowSums(m),decreasing=T)
-d=data.frame(words=names(v),freq=v)
+dneg=data.frame(words=names(v),freq=v)
 
 wordcloud(d$words,d$freq,max.words=100,colors=brewer.pal(8,"Dark2"),scale=c(3,0.5),random.order=F)
+
+head(dneg, 50)
