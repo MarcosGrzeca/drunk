@@ -1,8 +1,10 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
+#load("2110/rdas/compare-baseline-cross5.RData")
+
 try({
-  load("2110/rdas/compare-baseline-cross5.RData")
+  load("2110/rdas/compare-baseline-cross_verificar.RData")
 })
 
 library(tools)
@@ -39,7 +41,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  #save.image(file="2110/rdas/compare-baseline-cross5.RData")
+  #save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   return (newdf)
 }
 
@@ -60,7 +62,7 @@ if (!exists("matriz3Gram25")) {
     treegram25
     matriz3Gram25 <- getMatriz(treegram25, data_test)
     resultados <- addRow(resultados, "3 GRAM 25", matriz3Gram25)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -76,7 +78,7 @@ if (!exists("matrizTwoGramEntidadesHoraErro")) {
     twoGramEntidadesHoraErro
     matrizTwoGramEntidadesHoraErro <- getMatriz(twoGramEntidadesHoraErro, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro", matrizTwoGramEntidadesHoraErro)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -91,7 +93,7 @@ if (!exists("matriz3Gram25Q2")) {
     treegram25Q2
     matriz3Gram25Q2 <- getMatriz(treegram25Q2, data_test)
     resultados <- addRow(resultados, "3 GRAM 25 Q2", matriz3Gram25Q2)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -106,7 +108,7 @@ if (!exists("matriz2GramEntidadesHoraErroQ2")) {
     twoGramEntidadesHoraErroQ2
     matriz2GramEntidadesHoraErroQ2 <- getMatriz(twoGramEntidadesHoraErroQ2, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q2", matriz2GramEntidadesHoraErroQ2)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -121,7 +123,7 @@ if (!exists("matriz3Gram25Q3")) {
     treegram25Q3
     matriz3Gram25Q3 <- getMatriz(treegram25Q3, data_test)
     resultados <- addRow(resultados, "3 GRAM 25 Q3", matriz3Gram25Q3)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -136,7 +138,7 @@ if (!exists("matriz2GramEntidadesHoraErroQ3")) {
     twoGramEntidadesHoraErroQ3
     matriz2GramEntidadesHoraErroQ3 <- getMatriz(twoGramEntidadesHoraErroQ3, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q3", matriz2GramEntidadesHoraErroQ3)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -151,7 +153,7 @@ if (!exists("matriz3Gram25Q2NotNull")) {
     treegram25Q2NotNull
     matriz3Gram25Q2NotNull <- getMatriz(treegram25Q2NotNull, data_test)
     resultados <- addRow(resultados, "3 GRAM 25 Q2 (Not Null)", matriz3Gram25Q2NotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -166,7 +168,7 @@ if (!exists("twoGramEntidadesHoraErroQ2NotNull")) {
     twoGramEntidadesHoraErroQ2NotNull
     matriz2GramEntidadesHoraErroQ2NotNull <- getMatriz(twoGramEntidadesHoraErroQ2NotNull, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q2 (Not Null)", matriz2GramEntidadesHoraErroQ2NotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -181,7 +183,7 @@ if (!exists("matriz3Gram25Q3NotNull")) {
     treegram25Q3NotNull
     matriz3Gram25Q3NotNull <- getMatriz(treegram25Q3NotNull, data_test)
     resultados <- addRow(resultados, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -196,7 +198,7 @@ if (!exists("matriz2GramEntidadesHoraErroQ3NotNull")) {
     twoGramEntidadesHoraErroQ3NotNull
     matriz2GramEntidadesHoraErroQ3NotNull <- getMatriz(twoGramEntidadesHoraErroQ3NotNull, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q3 (Not Null)", matriz2GramEntidadesHoraErroQ3NotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -212,7 +214,7 @@ if (!exists("matriz3Gram25NotNull")) {
     treegram25NotNull
     matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
     resultados <- addRow(resultados, "3 GRAM 25 Not Null", matriz3Gram25NotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
@@ -228,7 +230,7 @@ if (!exists("matrizTwoGramEntidadesHoraErroNotNull")) {
     twoGramEntidadesHoraErroNotNull
     matrizTwoGramEntidadesHoraErroNotNull <- getMatriz(twoGramEntidadesHoraErroNotNull, data_test)
     resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro (Not Null)", matrizTwoGramEntidadesHoraErroNotNull)
-    save.image(file="2110/rdas/compare-baseline-cross5.RData")
+    save.image(file="2110/rdas/compare-baseline-cross_verificar.RData")
   })
 }
 
