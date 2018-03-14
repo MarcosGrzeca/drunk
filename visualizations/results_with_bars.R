@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 library(scales)
 theme_set(theme_classic())
-source_df <- read.csv("visualizations/gender2.csv")
+source_df <- read.csv("visualizations/results_bars.csv")
 
 # Define functions. Source: https://github.com/jkeirstead/r-slopegraph
 tufte_sort <- function(df, x="year", y="value", group="group", method="tufte", min.space=0.05) {
@@ -53,7 +53,7 @@ plot_slopegraph <- function(df) {
   gg <- ggplot(df,aes(x=x,y=ypos)) +
     geom_line(aes(group=group),colour="grey80") +
     geom_point(colour="white",size=8) +
-    geom_text(aes(label=y), size=fontSize, family="American Typewriter") +
+    geom_text(aes(label=y), size=fontSize, family="Arial") +
     scale_y_continuous(name="", breaks=yvals, labels=ylabs)
   return(gg)
 }    
@@ -67,12 +67,12 @@ df <- tufte_sort(source_df,
                  min.space=0.05)
 
 df <- transform(df, 
-                x=factor(x, levels=c(1,2,3,4), 
-                         labels=c("Total","Question 1+","Question 2+","Question 3+")), 
+                x=factor(x, levels=c(1,2), 
+                         labels=c("Baseline","Proposed Method")), 
                 y=round(y))
 
 ## Plot
-plot_slopegraph(df) + labs(title="Tweets by gender") + 
+plot_slopegraph(df) + labs(title="Comparative methods") + 
   theme(axis.title=element_blank(),
         axis.ticks = element_blank(),
         plot.title = element_text(hjust=0.5,
