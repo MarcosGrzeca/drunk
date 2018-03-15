@@ -9,9 +9,10 @@ try({
   #load("2110/rdas/compare-baseline-cross_verificar_1.RData") exp 3
   #load("2110/rdas/compare-baseline-cross_verificar_2.RData") exp 4
   #load("2110/rdas/compare-baseline-cross_verificar_5.RData") exp 5
+  #load("2110/rdas/compare-baseline-cross_verificar_6.RData") exp 6
 })
 
-fileName <- "2110/rdas/compare-baseline-cross_verificar_5.RData"
+fileName <- "2110/rdas/compare-baseline-cross_verificar_6.RData"
 
 library(tools)
 library(caret)
@@ -189,6 +190,22 @@ if (!exists("matrizTwoGramEntidadesHoraErroNotNull")) {
   })
 }
 
+if (!exists("matrizTwoGramEntidadesHoraErroNotNullSentiment")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-sentiment-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroNotNullSentiment <- treinar(data_train)
+    twoGramEntidadesHoraErroNotNullSentiment
+    matrizTwoGramEntidadesHoraErroNotNullSentiment <- getMatriz(twoGramEntidadesHoraErroNotNullSentiment, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro + Sentiment (Not Null)", matrizTwoGramEntidadesHoraErroNotNullSentiment)
+    save.image(file=fileName)
+  })
+}
+
 if (!exists("matriz3Gram25Q2NotNull")) {
   try({
     load("2110/rdas/3gram-25-q2-not-null.Rda")
@@ -249,6 +266,21 @@ if (!exists("matriz2GramEntidadesHoraErroQ3NotNull")) {
   })
 }
 
+if (!exists("matriz2GramEntidadesHoraErroSentimentQ3NotNull")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-sentiment-q3-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroSentimentQ3NotNull <- treinar(data_train)
+    twoGramEntidadesHoraErroSentimentQ3NotNull
+    matriz2GramEntidadesHoraErroSentimentQ3NotNull <- getMatriz(twoGramEntidadesHoraErroSentimentQ3NotNull, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro + Sentiment Q3 (Not Null)", matriz2GramEntidadesHoraErroSentimentQ3NotNull)
+    save.image(file=fileName)
+  })
+}
+
 if (!exists("twoGramEntidadesHoraErroQ2NotNullPoly")) {
   try({
     load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
@@ -259,7 +291,7 @@ if (!exists("twoGramEntidadesHoraErroQ2NotNullPoly")) {
     twoGramEntidadesHoraErroQ2NotNullPoly <- treinarPoly(data_train)
     twoGramEntidadesHoraErroQ2NotNullPoly
     matriz2GramEntidadesHoraErroQ2NotNullPoly <- getMatriz(twoGramEntidadesHoraErroQ2NotNullPoly, data_test)
-    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro Q2 + SVM poly (Not Null)", matriz2GramEntidadesHoraErroQ2NotNullPoly)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Erro + SVM poly + Q2 (Not Null)", matriz2GramEntidadesHoraErroQ2NotNullPoly)
     save.image(file=fileName)
   })
 }
@@ -279,4 +311,18 @@ if (!exists("twoGramEntidadesHoraErroQ2NotNullSentiment")) {
   })
 }
 
+if (!exists("twoGramEntidadesHoraErroQ2NotNullSentimentPoly")) {
+  try({
+    load("2110/rdas/2gram-entidades-hora-erro-sentiment-q2-not-null.Rda")
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramEntidadesHoraErroQ2NotNullSentimentPoly <- treinarPoly(data_train)
+    twoGramEntidadesHoraErroQ2NotNullSentimentPoly
+    matriz2GramEntidadesHoraErroQ2NotNullSentimentPoly <- getMatriz(twoGramEntidadesHoraErroQ2NotNullSentimentPoly, data_test)
+    resultados <- addRow(resultados, "2 Gram + Entidades + Hora + Sentiment + Erro + SVM poly Q2 (Not Null)", matriz2GramEntidadesHoraErroQ2NotNullSentimentPoly)
+    save.image(file=fileName)
+  })
+}
 print("FIIMMMMMMMMMMMMMMMMMM")
