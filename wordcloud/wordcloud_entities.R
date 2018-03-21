@@ -31,6 +31,8 @@ stop_words = tm::stopwords("en")
 library(wordcloud)
 require(tm)
 
+dados$entidades
+
 corp = Corpus(VectorSource(dados$entidades)) 
 corp <- tm_map(corp, removePunctuation)
 corp <- tm_map(corp, content_transformer(tolower))
@@ -38,7 +40,13 @@ corp <- tm_map(corp, content_transformer(tolower))
 corp <- tm_map(corp, function(x)removeWords(x,stopwords('english')))
 wordcloud(corp, max.words=100)
 
-wordcloud(corp, scale=c(2.5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"))
+#atribuit título
+layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
+par(mar=rep(0, 4))
+plot.new()
+text(x=0.5, y=0.5, "Title of my first plot")
+
+wordcloud(corp, scale=c(2.5,0.5), max.words=100, random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, colors=brewer.pal(8, "Dark2"), main="Title")
 
 
 
@@ -61,6 +69,13 @@ m=as.matrix(tdm)
 v=sort(rowSums(m),decreasing=T)
 dneg=data.frame(words=names(v),freq=v)
 
-wordcloud(d$words,d$freq,max.words=100,colors=brewer.pal(8,"Dark2"),scale=c(3,0.5),random.order=F)
+marcos <- wordcloud(d$words,d$freq,max.words=100,colors=brewer.pal(8,"Dark2"),scale=c(3,0.5),random.order=F)
 
 head(dneg, 50)
+
+library("cowplot")
+plot_grid(pieTotal, pieQ1, pieQ2, pieQ3, labels = c("Total", "Question 1", "Q2", "Q3"), ncol = 2, nrow = 2)
+
+#library(wordcloud2)
+#figPath = system.file("twitter.png",package = "wordcloud2")
+#wordcloud2(dneg, figPath = figPath, size = 1.5,color = "skyblue")
