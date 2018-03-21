@@ -27,6 +27,7 @@ dados$entidades <- enc2utf8(dados$entidades)
 dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("---", " ", dados$entidades)
+dados$entidades = gsub("/", " ", dados$entidades)
 
 stop_words = tm::stopwords("en")
 
@@ -44,17 +45,13 @@ docs <- Corpus(VectorSource(dados$entidades)) %>%
 
 tdm <- TermDocumentMatrix(docs) %>%
   as.matrix()
-
-View(tdm)
 colnames(tdm) <- c("Alcohol","Sober")
 
+par(mfrow=c(1,1))
+comparison.cloud(tdm, random.order=FALSE, colors = c("indianred3","blue3"),
+                 title.size=2, max.words=200)
 
-comparison.cloud(tdm, random.order=FALSE, colors = c("indianred3","lightsteelblue3"),
-                 title.size=2.5, max.words=400)
-
-
-tdmMatrix <- as.matrix(tfNeg)
-
-
-dados$entidades
-paste(unlist(dados$entidades), collapse =". ")
+warnings()
+#tdmMatrix <- as.matrix(tfNeg)
+#dados$entidades
+#paste(unlist(dados$entidades), collapse =". ")

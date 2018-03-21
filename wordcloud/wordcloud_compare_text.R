@@ -45,10 +45,12 @@ tdm <- TermDocumentMatrix(docs) %>%
 
 colnames(tdm) <- c("Alcohol","Sober")
 
-par(mfrow=c(1,2))
+#par(mfrow=c(1,2))
+
+par(mfrow=c(1,1))
 comparison.cloud(tdm, random.order=FALSE,
-                colors = c("indianred3","lightsteelblue3"),
-                title.size=2, max.words=400)
+                colors = c("indianred3","blue3"),
+                title.size=2, max.words=250)
 
 comparison.cloud(tdm, random.order=FALSE,
 #                 colors = c("indianred3","lightsteelblue3"),
