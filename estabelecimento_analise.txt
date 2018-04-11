@@ -1,0 +1,32 @@
+#Colégios
+
+SELECT t.id, t.textoParserEmoticom, t.dataConvertida, tl.category, tl.name
+FROM tweets t
+JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno
+WHERE q1 = 1
+AND category IN ("College & University");
+
+
+SELECT count(t.id), tl.name
+FROM tweets t
+JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno
+WHERE q1 = 1
+AND category IN ("College & University")
+GROUP by tl.name
+ORDER by 1 desc;
+
+Colégios mais citados
+56	The College at Brockport State University of New York
+43	SUNY Cortlandao
+42	Syracuse University
+33	Monroe Community College
+
+Organizações religiosas
+
+SELECT count(t.id), tl.name
+FROM tweets t
+JOIN tweet_localizacao tl ON tl.idTweetInterno = t.idInterno
+WHERE q1 = 1
+AND category IN ("Religious Organization")
+GROUP by tl.name
+ORDER by 1 desc;
