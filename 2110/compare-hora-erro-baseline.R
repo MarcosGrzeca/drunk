@@ -10,9 +10,13 @@ try({
   #load("2110/rdas/compare-baseline-cross_verificar_2.RData") exp 4
   #load("2110/rdas/compare-baseline-cross_verificar_5.RData") exp 5
   #load("2110/rdas/compare-baseline-cross_verificar_6.RData") exp 6
+  # "2110/rdas/compare-baseline-cross_verificar_7.RData" exp 7
 })
 
-fileName <- "2110/rdas/compare-baseline-cross_verificar_6.RData"
+fileName <- "2110/rdas/compare-baseline-cross_verificar_8.RData"
+
+#load(fileName)
+
 
 library(tools)
 library(caret)
