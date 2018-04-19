@@ -8,6 +8,8 @@ test_labels <- imdb$test$y
 
 str(train_data)
 
+str(train_labels)
+
 word_index <- dataset_imdb_word_index()
 reverse_word_index <- names(word_index)
 names(reverse_word_index) <- word_index
@@ -32,6 +34,7 @@ x_test <- vectorize_sequences(test_data)
 y_train <- as.numeric(train_labels)
 y_test <- as.numeric(test_labels)
 
+str(y_train)
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 16, activation = "relu", input_shape = c(10000)) %>%
