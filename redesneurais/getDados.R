@@ -34,3 +34,13 @@ processarDados <- function(textParser, maxlen, max_words) {
   cat("Shape of data tensor:", dim(data), "\n")
   return (data);
 }
+
+processarSequence <- function(textParser, maxlen, max_words) {
+  onlyTexts <- textParser
+  texts <- as.character(as.matrix(onlyTexts))
+  tokenizer <- text_tokenizer(num_words = max_words) %>%
+    fit_text_tokenizer(texts)
+  
+  sequences <- texts_to_sequences(tokenizer, texts)
+  return (sequences);
+}
