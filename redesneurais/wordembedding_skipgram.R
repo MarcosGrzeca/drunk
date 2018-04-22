@@ -1,10 +1,23 @@
-source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
+library(tools)
+
+source(file_path_as_absolute("redesneurais/getDados.R"))
 
 maxlen = 20
-
 dados <- getDados()
-data <- processarDados(dados$textParser, maxlen, 5000)
+
+onlyTexts <- dados$textParser
+texts <- as.character(as.matrix(onlyTexts))
+tokenizer <- text_tokenizer(num_words = maxlen) %>%
+  fit_text_tokenizer(texts)
+
+sequences <- texts_to_sequences(tokenizer, texts)
+
+word_index = tokenizer$word_index
+
+skipgrams(sequences, length(tokenizer$word_index), window_size = 4)
+
+#data <- processarDados(dados$textParser, maxlen, 5000)
 
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)

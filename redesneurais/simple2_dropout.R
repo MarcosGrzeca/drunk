@@ -30,10 +30,30 @@ y_test <- labels[validation_indices]
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 16, activation = "relu", input_shape = c(5000)) %>%
+  layer_dropout(rate = 0.2) %>%
   layer_dense(units = 16, activation = "relu") %>%
+  layer_dropout(rate = 0.2) %>%
   layer_dense(units = 16, activation = "relu") %>%
   layer_dense(units = 1, activation = "sigmoid")
 
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(5000)) %>%
+  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>%
+  #layer_dense(units = 16, activation = "relu") %>%
+  layer_dense(units = 1, activation = "sigmoid")
+
+#model <- keras_model_sequential() %>%
+#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu", input_shape = c(5000)) %>%
+#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>%
+  #layer_dense(units = 16, activation = "relu") %>%
+#  layer_dense(units = 1, activation = "sigmoid")
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu", input_shape = c(5000)) %>%
+  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu") %>%
+  layer_dense(units = 16, activation = "relu") %>%
+ layer_dense(units = 1, activation = "sigmoid")
 
 model %>% compile(
   optimizer = "rmsprop",

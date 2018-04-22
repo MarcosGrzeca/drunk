@@ -8,7 +8,8 @@ DATABASE <- "icwsm"
 
 getDados <- function() {
   dados <- query("SELECT q1 AS resposta,
-                 textParser
+                 textParser,
+                 textoParserRisadaEmoticom
                  FROM tweets t
                  WHERE textparser <> ''
                  AND id <> 462478714693890048
