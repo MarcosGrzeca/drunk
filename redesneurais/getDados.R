@@ -114,3 +114,43 @@ avaliacaoFinal <- function(model, x_test, y_test) {
   print(paste("F1 ", matriz$byClass["F1"] * 100, "Precisao ", matriz$byClass["Precision"] * 100, "Recall ", matriz$byClass["Recall"] * 100, "Acuracia ", matriz$overall["Accuracy"] * 100))
   return (results)
 }
+
+#library(tools)
+#library(keras)
+
+#set.seed(10)
+
+#source(file_path_as_absolute("redesneurais/getDados.R"))
+
+#resultados <- data.frame(matrix(ncol = 4, nrow = 0))
+#names(resultados) <- c("Técnica", "InputDim", "OutputDim", "Epochs", "Batch", "F1", "Precisão", "Revocação", "Acurácia")
+
+avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim, OutputDim, features) {
+  results <- model %>% evaluate(x_test, y_test)
+  print(results)
+  predictions <- model %>% predict_classes(x_test)
+ 
+  matriz <- confusionMatrix(data = as.factor(predictions), as.factor(y_test), positive="1")
+  print(paste("F1 ", matriz$byClass["F1"] * 100, "Precisao ", matriz$byClass["Precision"] * 100, "Recall ", matriz$byClass["Recall"] * 100, "Acuracia ", matriz$overall["Accuracy"] * 100))
+
+  resTreinamento <- as.data.frame(history$metrics)
+  treinamento_acc <- resTreinamento$acc[nrow(resTreinamento)]
+  treinamento_val_acc <- resTreinamento$val_acc[nrow(resTreinamento)]
+  treinamento_loss <- resTreinamento$loss[nrow(resTreinamento)]
+  treinamento_val_loss <- resTreinamento$val_loss[nrow(resTreinamento)]
+  epochs <- history$params$epochs
+  batch_size <- history$params$batch_size
+
+  resultados <- data.frame(matrix(ncol = 14, nrow = 0))
+  tableResultados <- data.frame(tecnica, InputDim, OutputDim, features, epochs, batch_size, matriz$byClass["F1"] * 100, matriz$byClass["Precision"] * 100, matriz$byClass["Recall"] * 100, matriz$overall["Accuracy"] * 100, treinamento_acc * 100, treinamento_val_acc * 100, treinamento_loss * 100, treinamento_val_loss * 100)
+  rownames(tableResultados) <- tecnica
+  names(tableResultados) <- c("Técnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisão", "Revocação", "Acurácia", "Acurácia treinamento", "Acurácia validação", "Loss treinamento", "Loss validação")
+
+  pathSave <- "redesneurais/resultados.csv"
+  if (file.exists(pathSave)) {
+    write.table(tableResultados, pathSave, sep = ";", col.names = F, append = T)
+  } else {
+    write.table(tableResultados, pathSave, sep = ";", col.names = T, append = T)
+  }
+  return (results)
+}
