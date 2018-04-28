@@ -4,7 +4,10 @@ source(file_path_as_absolute("redesneurais/getDados.R"))
 maxlen <- 20
 
 dados <- getDados()
-sequences <- processarSequence(dados$textParser, maxlen, 5000)
+
+dados$alvo <- paste(dados$textParser, " ", dados$hashtags)
+
+sequences <- processarSequence(dados$alvo, maxlen, 5000)
 labelsTmp <- as.numeric(dados$resposta)
 
 training_samples <- 3195
@@ -31,30 +34,11 @@ y_test <- labels[validation_indices]
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 16, activation = "relu", input_shape = c(5000)) %>%
-  layer_dropout(rate = 0.2) %>%
-  layer_dense(units = 16, activation = "relu") %>%
-  layer_dropout(rate = 0.2) %>%
-  layer_dense(units = 16, activation = "relu") %>%
-  layer_dense(units = 1, activation = "sigmoid")
-
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(5000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>%
-#  #layer_dense(units = 16, activation = "relu") %>%
-#  layer_dense(units = 1, activation = "sigmoid")
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu", input_shape = c(5000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>%
+  layer_dropout(rate = 0.1) %>%
   #layer_dense(units = 16, activation = "relu") %>%
-#  layer_dense(units = 1, activation = "sigmoid")
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu", input_shape = c(5000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu") %>%
-#  layer_dense(units = 16, activation = "relu") %>%
-# layer_dense(units = 1, activation = "sigmoid")
+  #layer_dropout(rate = 0.2) %>%
+  layer_dense(units = 8, activation = "relu") %>%
+  layer_dense(units = 1, activation = "sigmoid")
 
 model %>% compile(
   optimizer = "rmsprop",
@@ -65,8 +49,8 @@ model %>% compile(
 history <- model %>% fit(
   x_train,
   y_train,
-  epochs = 5,
-  batch_size = 64,
+  epochs = 10,
+  batch_size = 16,
   validation_split = 0.2
 )
 
