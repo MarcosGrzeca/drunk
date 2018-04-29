@@ -33,9 +33,6 @@ model %>% compile(
   metrics = c("acc")
 )
 
-library(tools)
-source(file_path_as_absolute("redesneurais/getDados.R"))
-
 tecnica <- "LSTM + HashTag + Enriquecimento Semantico"
 testes <- adicionarTeste(3, 16)
 testes <- adicionarTeste(3, 32)
@@ -50,3 +47,5 @@ testes <- adicionarTeste(10, 16)
 testes <- adicionarTeste(10, 32)
 testes <- adicionarTeste(10, 64)
 source(file_path_as_absolute("redesneurais/parteFinal.R"))
+
+asdsadsdsdasad
