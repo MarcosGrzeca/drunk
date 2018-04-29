@@ -5,7 +5,7 @@ source(file_path_as_absolute("redesneurais/getDados.R"))
 
 maxlen = 30
 max_features <- 5000
-outputDim = 30
+outputDim = 0
 
 dados <- getDados()
 data <- processarDados(dados$textParser, maxlen, max_features)
