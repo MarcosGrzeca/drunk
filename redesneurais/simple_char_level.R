@@ -2,6 +2,8 @@ library(keras)
 library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 maxlen <- 140
+max_features = 1115000
+outputDim = 0
 
 dados <- getDados()
 sequences <- processarSequenceByCharacter(dados$textParser, maxlen, 100)
@@ -35,42 +37,26 @@ model <- keras_model_sequential() %>%
   layer_dense(units = 32, activation = "relu") %>%
   layer_dense(units = 1, activation = "sigmoid")
 
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu", input_shape = c(40000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l2(0.001), activation = "relu") %>%
-  #layer_dense(units = 16, activation = "relu") %>%
-#  layer_dense(units = 1, activation = "sigmoid")
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu", input_shape = c(40000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1(0.001), activation = "relu") %>%
-  #layer_dense(units = 16, activation = "relu") %>%
-#  layer_dense(units = 1, activation = "sigmoid")
-
-#model <- keras_model_sequential() %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu", input_shape = c(40000)) %>%
-#  layer_dense(units = 16, kernel_regularizer = regularizer_l1_l2(l1 = 0.001, l2 = 0.001), activation = "relu") %>%
-#  layer_dense(units = 16, activation = "relu") %>%
-# layer_dense(units = 1, activation = "sigmoid")
-
 model %>% compile(
   optimizer = "rmsprop",
   loss = "binary_crossentropy",
   metrics = c("accuracy")
 )
 
-history <- model %>% fit(
-  x_train,
-  y_train,
-  epochs = 20,
-  batch_size = 32,
-  validation_split = 0.2
-)
-
-history
-
-plot(history)
-
-results <- model %>% evaluate(x_test, y_test)
-results
+tecnica <- "Char NN + dropout"
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 32)
+testes <- adicionarTeste(3, 64)
+testes <- adicionarTeste(5, 16)
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(7, 16)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(10, 16)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+testes <- adicionarTeste(20, 16)
+testes <- adicionarTeste(20, 32)
+testes <- adicionarTeste(20, 64)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))
