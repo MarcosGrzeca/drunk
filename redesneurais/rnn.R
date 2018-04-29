@@ -5,6 +5,8 @@ source(file_path_as_absolute("redesneurais/getDados.R"))
 
 max_features <- 5000
 maxlen = 20
+outputDim = 32
+
 dados <- getDados()
 data <- processarDados(dados$textParser, maxlen, max_features)
 
@@ -18,7 +20,7 @@ validation_samples <- 799
 source(file_path_as_absolute("redesneurais/separadorDados.R"))
 
 model <- keras_model_sequential() %>%
-  layer_embedding(input_dim = max_features, output_dim = 32) %>%
+  layer_embedding(input_dim = max_features, output_dim = outputDim) %>%
   layer_simple_rnn(units = 32) %>%
   layer_dense(units = 16, activation = "relu") %>%
   layer_dense(units = 16, activation = "relu") %>%
@@ -29,14 +31,18 @@ model %>% compile(
   loss = "binary_crossentropy",
   metrics = c("acc")
 )
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 5,
-  batch_size = 64,
-  validation_split = 0.2
-)
-history
-plot(history)
 
-results <- model %>% evaluate(x_test, y_test)
-results
+tecnica <- "RNN"
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 32)
+testes <- adicionarTeste(3, 64)
+testes <- adicionarTeste(5, 16)
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(7, 16)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(10, 16)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))

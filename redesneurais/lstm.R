@@ -20,7 +20,7 @@ validation_samples <- 799
 source(file_path_as_absolute("redesneurais/separadorDados.R"))
 
 model <- keras_model_sequential() %>%
-  layer_embedding(input_dim = max_features, output_dim = 32) %>%
+  layer_embedding(input_dim = max_features, output_dim = outputDim) %>%
   layer_lstm(units = 32) %>%
   layer_dense(units = 16, activation = "relu") %>%
   layer_dense(units = 16, activation = "relu") %>%
