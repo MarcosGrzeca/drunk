@@ -6,6 +6,7 @@ set.seed(10)
 
 maxlen = 40
 max_features = 9000
+outputDim = 16
 
 dados <- getDados()
 dados$alvo <- paste(dados$textParser, " ", dados$hashtags, " ", dados$entidades)
@@ -21,7 +22,7 @@ validation_samples <- 799
 source(file_path_as_absolute("redesneurais/separadorDados.R"))
 
 model <- keras_model_sequential() %>%
-  layer_embedding(input_dim = max_features, output_dim = 16) %>%
+  layer_embedding(input_dim = max_features, output_dim = outputDim) %>%
   layer_lstm(units = 16) %>%
   layer_dense(units = 16, activation = "relu") %>%
   layer_dense(units = 1, activation = "sigmoid")
@@ -32,14 +33,14 @@ model %>% compile(
   metrics = c("acc")
 )
 
-summary(model)
+library(tools)
+source(file_path_as_absolute("redesneurais/getDados.R"))
 
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 7,
-  batch_size = 64,
-  validation_split = 0.2
-)
-
-print("FINAL")
-final <- avaliacaoFinalSave(model, x_test, y_test, history, "LSTM", 0, 0, 9000)
+tecnica <- "LSTM hashtag + Enriquecimento Semantico"
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))

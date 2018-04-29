@@ -2,6 +2,7 @@ library(tools)
 library(keras)
 library(ROCR)
 library(caret)
+library(dplyr)
 source(file_path_as_absolute("functions.R"))
 source(file_path_as_absolute("processadores/discretizar.R"))
 
@@ -123,9 +124,9 @@ avaliacaoFinal <- function(model, x_test, y_test) {
 #source(file_path_as_absolute("redesneurais/getDados.R"))
 
 #resultados <- data.frame(matrix(ncol = 4, nrow = 0))
-#names(resultados) <- c("Técnica", "InputDim", "OutputDim", "Epochs", "Batch", "F1", "Precisão", "Revocação", "Acurácia")
+#names(resultados) <- c("Técnica", "InputDim", "OutputDim", "Epochs", "Batch", "F1", "Precisão", "Revocação", "Acuracia")
 
-avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim, OutputDim, features) {
+avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim, OutputDim, features, iteracao) {
   results <- model %>% evaluate(x_test, y_test)
   print(results)
   predictions <- model %>% predict_classes(x_test)
@@ -141,10 +142,10 @@ avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim
   epochs <- history$params$epochs
   batch_size <- history$params$batch_size
 
-  resultados <- data.frame(matrix(ncol = 14, nrow = 0))
-  tableResultados <- data.frame(tecnica, InputDim, OutputDim, features, epochs, batch_size, matriz$byClass["F1"] * 100, matriz$byClass["Precision"] * 100, matriz$byClass["Recall"] * 100, matriz$overall["Accuracy"] * 100, treinamento_acc * 100, treinamento_val_acc * 100, treinamento_loss * 100, treinamento_val_loss * 100)
+  resultados <- data.frame(matrix(ncol = 16, nrow = 0))
+  tableResultados <- data.frame(tecnica, InputDim, OutputDim, features, epochs, batch_size, matriz$byClass["F1"] * 100, matriz$byClass["Precision"] * 100, matriz$byClass["Recall"] * 100, matriz$overall["Accuracy"] * 100, treinamento_acc * 100, treinamento_val_acc * 100, treinamento_loss * 100, treinamento_val_loss * 100, iteracao, model_to_json(model))
   rownames(tableResultados) <- tecnica
-  names(tableResultados) <- c("Técnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisão", "Revocação", "Acurácia", "Acurácia treinamento", "Acurácia validação", "Loss treinamento", "Loss validação")
+  names(tableResultados) <- c("Tecnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisao", "Revocacao", "Acuracia", "Acuracia treinamento", "Acuracia validação", "Loss treinamento", "Loss validação", "Iteracao", "Texto")
 
   pathSave <- "redesneurais/resultados.csv"
   if (file.exists(pathSave)) {
@@ -153,4 +154,13 @@ avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim
     write.table(tableResultados, pathSave, sep = ";", col.names = T, append = T)
   }
   return (results)
+}
+
+testes <- data.frame(matrix(ncol = 2, nrow = 0))
+names(testes) <- c("epoca", "batch")
+
+adicionarTeste <- function(epocaParam, batchParam) {
+  linha <- data.frame(epoca=epocaParam, batch=batchParam)
+  testes <- rbind(testes, linha)
+  return (testes)
 }
