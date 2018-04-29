@@ -1,11 +1,14 @@
-source(file_path_as_absolute("redesneurais/getDados.R"))
+library(tools)
 library(keras)
+source(file_path_as_absolute("redesneurais/getDados.R"))
 
 maxlen = 40
+max_features = 9000
+outputDim = 32
 
 dados <- getDados()
 dados$alvo <- paste(dados$textParser, " ", dados$hashtags, " ", dados$entidades)
-data <- processarDados(dados$alvo, maxlen, 9000)
+data <- processarDados(dados$alvo, maxlen, max_features)
 
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)
@@ -17,7 +20,7 @@ validation_samples <- 799
 source(file_path_as_absolute("redesneurais/separadorDados.R"))
 
 model <- keras_model_sequential() %>%
-  layer_embedding(input_dim = 9000, output_dim = 32,
+  layer_embedding(input_dim = max_features, output_dim = outputDim,
                   input_length = maxlen) %>%
   layer_flatten() %>%
   layer_dense(units = 16, activation = "relu") %>%
@@ -29,18 +32,21 @@ model %>% compile(
   metrics = c("acc")
 )
 
-summary(model)
-
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 10,
-  batch_size = 128,
-  validation_split = 0.2
-)
-
-history
-
-plot(history)
-
-print("FINAL")
-final <- avaliacaoFinal(model, x_test, y_test)
+tecnica <- "Word Embedding + Hashtag + Enriquecimento Semantico"
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 32)
+testes <- adicionarTeste(3, 64)
+testes <- adicionarTeste(3, 128)
+testes <- adicionarTeste(5, 16)
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(5, 128)
+testes <- adicionarTeste(7, 16)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(7, 128)
+testes <- adicionarTeste(10, 16)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+testes <- adicionarTeste(10, 128)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))
