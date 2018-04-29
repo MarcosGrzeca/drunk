@@ -1,6 +1,6 @@
 library(tools)
-source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
+source(file_path_as_absolute("redesneurais/getDados.R"))
 
 set.seed(10)
 

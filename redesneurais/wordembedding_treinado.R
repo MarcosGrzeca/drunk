@@ -3,13 +3,15 @@ source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
 
 maxlen = 20
+max_features = 5000
+outputDim = 100
 
 dados <- getDados()
 #data <- processarDados(dados$textParser, maxlen, 5000)
 
 onlyTexts <- dados$textParser
 texts <- as.character(as.matrix(onlyTexts))
-tokenizer <- text_tokenizer(num_words = 5000) %>%
+tokenizer <- text_tokenizer(num_words = max_features) %>%
   fit_text_tokenizer(texts)
 
 sequences <- texts_to_sequences(tokenizer, texts)
@@ -39,10 +41,10 @@ for (i in 1:length(lines)) {
 cat("Found", length(embeddings_index), "word vectors.\n")
 
 embedding_dim <- 100
-embedding_matrix <- array(0, c(max_words, embedding_dim))
+embedding_matrix <- array(0, c(max_features, embedding_dim))
 for (word in names(word_index)) {
   index <- word_index[[word]]
-  if (index < max_words) {
+  if (index < max_features) {
     embedding_vector <- embeddings_index[[word]]
     if (!is.null(embedding_vector))
       embedding_matrix[index+1,] <- embedding_vector
@@ -50,10 +52,9 @@ for (word in names(word_index)) {
 }
 
 embedding_dim <- 100
-max_words <- 5000
 
 model <- keras_model_sequential() %>%
-  layer_embedding(input_dim = max_words, output_dim = embedding_dim,
+  layer_embedding(input_dim = max_features, output_dim = embedding_dim,
                   input_length = maxlen) %>%
   layer_flatten() %>%
   layer_dense(units = 16, activation = "relu") %>%
@@ -71,16 +72,25 @@ model %>% compile(
   loss = "binary_crossentropy",
   metrics = c("acc")
 )
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 20,
-  batch_size = 32,
-  #validation_data = list(x_val, y_val)
-  validation_split = 0.2
-)
-summary(model)
-history
-
-plot(history)
-
-results <- model %>% evaluate(x_test, y_test)
+tecnica <- "Word Embedding GLOVE"
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 32)
+testes <- adicionarTeste(3, 64)
+testes <- adicionarTeste(3, 128)
+testes <- adicionarTeste(5, 16)
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(5, 128)
+testes <- adicionarTeste(7, 16)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(7, 128)
+testes <- adicionarTeste(10, 16)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+testes <- adicionarTeste(10, 128)
+testes <- adicionarTeste(20, 16)
+testes <- adicionarTeste(20, 32)
+testes <- adicionarTeste(20, 64)
+testes <- adicionarTeste(20, 128)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))
