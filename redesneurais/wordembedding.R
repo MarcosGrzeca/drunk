@@ -33,7 +33,7 @@ model %>% compile(
   metrics = c("acc")
 )
 
-tecnica <- "Char NN + dropout"
+tecnica <- "Word Embedding"
 testes <- adicionarTeste(3, 16)
 testes <- adicionarTeste(3, 32)
 testes <- adicionarTeste(3, 64)
