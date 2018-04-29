@@ -2,9 +2,11 @@ source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
 
 maxlen = 30
+max_features <- 5000
+outputDim = 30
 
 dados <- getDados()
-data <- processarDados(dados$textParser, maxlen, 5000)
+data <- processarDados(dados$textParser, maxlen, max_features)
 
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)
@@ -30,18 +32,17 @@ model %>% compile(
   metrics = c("acc")
 )
 
-summary(model)
-
-history <- model %>% fit(
-  x_train, y_train,
-  epochs = 10,
-  batch_size = 32,
-  validation_split = 0.2
-)
-
-history
-
-plot(history)
-
-results <- model %>% evaluate(x_test, y_test)
-results
+tecnica <- "Simple"
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 32)
+testes <- adicionarTeste(3, 64)
+testes <- adicionarTeste(5, 16)
+testes <- adicionarTeste(5, 32)
+testes <- adicionarTeste(5, 64)
+testes <- adicionarTeste(7, 16)
+testes <- adicionarTeste(7, 32)
+testes <- adicionarTeste(7, 64)
+testes <- adicionarTeste(10, 16)
+testes <- adicionarTeste(10, 32)
+testes <- adicionarTeste(10, 64)
+source(file_path_as_absolute("redesneurais/parteFinal.R"))
