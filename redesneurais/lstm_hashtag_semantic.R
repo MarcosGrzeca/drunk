@@ -5,7 +5,7 @@ library(keras)
 set.seed(10)
 
 maxlen = 40
-max_features = 9000
+max_features = 5000
 outputDim = 16
 
 dados <- getDados()
