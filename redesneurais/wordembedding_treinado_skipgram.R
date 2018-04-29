@@ -36,11 +36,11 @@ dadosSkipGram <- getDados()
 tokens <- dadosSkipGram$textParser %>% tolower %>%  word_tokenizer
 # create vocabulary
 it = itoken(tokens)
-#v <- create_vocabulary(it, stopwords = tm::stopwords("en")) %>% prune_vocabulary(term_count_min = 2)
-v <- create_vocabulary(it)
+v <- create_vocabulary(it, stopwords = tm::stopwords("en")) %>% prune_vocabulary(term_count_min = 2)
+#v <- create_vocabulary(it)
 
-vectorizer <- vocab_vectorizer(v)
-#vectorizer = vocab_vectorizer(v, grow_dtm = F, skip_grams_window = 5)
+#vectorizer <- vocab_vectorizer(v)
+vectorizer = vocab_vectorizer(v, grow_dtm = F, skip_grams_window = 5)
 
 tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
 
