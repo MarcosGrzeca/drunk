@@ -47,5 +47,3 @@ testes <- adicionarTeste(10, 16)
 testes <- adicionarTeste(10, 32)
 testes <- adicionarTeste(10, 64)
 source(file_path_as_absolute("redesneurais/parteFinal.R"))
-
-asdsadsdsdasad
