@@ -4,7 +4,7 @@ library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 
 max_features <- 5000
-maxlen = 20
+maxlen = 30
 outputDim = 32
 
 dados <- getDados()

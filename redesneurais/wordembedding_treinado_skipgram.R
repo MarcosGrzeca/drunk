@@ -2,7 +2,7 @@ library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
 
-maxlen = 20
+maxlen = 30
 max_features = 5000
 outputDim = 100
 
@@ -36,11 +36,11 @@ dadosSkipGram <- getDados()
 tokens <- dadosSkipGram$textParser %>% tolower %>%  word_tokenizer
 # create vocabulary
 it = itoken(tokens)
-v <- create_vocabulary(it, stopwords = tm::stopwords("en")) %>% prune_vocabulary(term_count_min = 2)
-#v <- create_vocabulary(it)
+#v <- create_vocabulary(it, stopwords = tm::stopwords("en")) %>% prune_vocabulary(term_count_min = 2)
+v <- create_vocabulary(it)
 
-#vectorizer <- vocab_vectorizer(v)
-vectorizer = vocab_vectorizer(v, grow_dtm = F, skip_grams_window = 5)
+vectorizer <- vocab_vectorizer(v)
+#vectorizer = vocab_vectorizer(v, grow_dtm = F, skip_grams_window = 5)
 
 tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
 
@@ -69,11 +69,6 @@ for (word in names(word_index)) {
     })
   }
 }
-
-word_vectorsSkip["flash", , drop = FALSE]
-word_vectorsSkip
-
-str(embedding_matrix)
 
 model <- keras_model_sequential() %>%
   layer_embedding(input_dim = max_features, output_dim = embedding_dim,
@@ -117,3 +112,11 @@ testes <- adicionarTeste(20, 32)
 testes <- adicionarTeste(20, 64)
 testes <- adicionarTeste(20, 128)
 source(file_path_as_absolute("redesneurais/parteFinal.R"))
+
+
+history <- model %>% fit(
+  x_train, y_train,
+  epochs = 5,
+  batch_size = 32,
+  validation_split = 0.2
+)

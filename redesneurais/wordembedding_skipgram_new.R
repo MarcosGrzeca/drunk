@@ -4,20 +4,27 @@ library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 
 maxlen = 30
-dados <- getDados()
+max_features = 5000
 
+dados <- getDados()
 onlyTexts <- dados$textParser
 texts <- as.character(as.matrix(onlyTexts))
-tokenizer <- text_tokenizer(num_words = maxlen) %>%
+tokenizer <- text_tokenizer(num_words = max_features) %>%
   fit_text_tokenizer(texts)
 
 sequences <- texts_to_sequences(tokenizer, texts)
+teste <- pad_sequences(sequences, maxlen = 30)
+labels <- skipgrams(teste, length(tokenizer$word_index), window_size = 5)
+str(labels$labels)
+str(labels$couples)
 
-word_index = tokenizer$word_index
-
-sequencias <- skipgrams(texts, length(texts), window_size = 4)
-
-#data <- processarDados(dados$textParser, maxlen, 5000)
+vectorize_sequences <- function(sequences, dimension = max_features) {
+  results <- matrix(0, nrow = length(sequences), ncol = dimension)
+  for (i in 1:length(sequences))
+    results[i, sequences[[i]]] <- 1
+  results
+}
+data <- vectorize_sequences(labels$labels)
 
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)

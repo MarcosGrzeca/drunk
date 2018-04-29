@@ -2,7 +2,7 @@ library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
 
-maxlen = 20
+maxlen = 30
 max_features = 5000
 outputDim = 100
 
