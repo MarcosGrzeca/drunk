@@ -1,5 +1,7 @@
-source(file_path_as_absolute("redesneurais/getDados.R"))
 library(keras)
+library(tools)
+
+source(file_path_as_absolute("redesneurais/getDados.R"))
 
 maxlen = 30
 max_features <- 5000
