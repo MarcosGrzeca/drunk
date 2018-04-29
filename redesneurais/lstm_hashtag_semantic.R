@@ -36,7 +36,7 @@ model %>% compile(
 library(tools)
 source(file_path_as_absolute("redesneurais/getDados.R"))
 
-tecnica <- "LSTM hashtag + Enriquecimento Semantico"
+tecnica <- "LSTM + HashTag + Enriquecimento Semantico"
 testes <- adicionarTeste(3, 16)
 testes <- adicionarTeste(3, 32)
 testes <- adicionarTeste(3, 64)

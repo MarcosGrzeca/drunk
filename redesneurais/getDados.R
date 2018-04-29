@@ -1,6 +1,5 @@
 library(tools)
 library(keras)
-library(ROCR)
 library(caret)
 library(dplyr)
 source(file_path_as_absolute("functions.R"))
