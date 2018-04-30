@@ -12,6 +12,8 @@ dados <- getDados()
 dados$alvo <- paste(dados$textParser, " ", dados$hashtags, " ", dados$entidades)
 data <- processarDados(dados$alvo, maxlen, max_features)
 
+str(data)
+
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)
 cat('Shape of label tensor:', dim(labels), "\n")

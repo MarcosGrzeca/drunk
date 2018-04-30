@@ -10,7 +10,7 @@ DATABASE <- "icwsm"
 
 getDados <- function() {
   dados <- query("SELECT q1 AS resposta,
-                 textParser,
+                 CONCAT(textParser, ' marcos') as textParser,
                  textoParserRisadaEmoticom,
                  textoParserEmoticom,
                  hashtags,
@@ -26,10 +26,15 @@ getDados <- function() {
   dados$resposta[is.na(dados$resposta)] <- 0
   dados$textParser <- enc2utf8(dados$textParser)
   dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+  
+ 
   dados$textoParserRisadaEmoticom <- enc2utf8(dados$textoParserRisadaEmoticom)
   dados$textoParserRisadaEmoticom <- iconv(dados$textoParserRisadaEmoticom, to='ASCII//TRANSLIT')
   dados$textoParserEmoticom <- enc2utf8(dados$textoParserEmoticom)
   dados$textoParserEmoticom <- iconv(dados$textoParserEmoticom, to='ASCII//TRANSLIT')
+
+ 
+  #reviews <- stringi::stri_enc_toutf8(reviews)
 
   #dados$resposta[is.na(dados$resposta)] <- 0
   #dados$resposta <- as.factor(dados$resposta)
