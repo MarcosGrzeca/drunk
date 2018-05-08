@@ -151,7 +151,7 @@ avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim
   rownames(tableResultados) <- tecnica
   names(tableResultados) <- c("Tecnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisao", "Revocacao", "Acuracia", "Acuracia treinamento", "Acuracia validação", "Loss treinamento", "Loss validação", "Iteracao", "Texto")
 
-  pathSave <- "redesneurais/resultados.csv"
+  pathSave <- "redesneurais/resultados_hash.csv"
   if (file.exists(pathSave)) {
     write.table(tableResultados, pathSave, sep = ";", col.names = F, append = T)
   } else {
