@@ -35,7 +35,7 @@ vectorize_stories <- function(data, vocab, textParser_maxlen, hashTagg_maxlen){
 max_length <- 40
 embed_hidden_size <- 50
 batch_size <- 16
-epochs <- 5
+epochs <- 3
 
 # Data Preparation --------------------------------------------------------s
 max_features <- 5000
@@ -105,21 +105,16 @@ loco <- list(train_vec$new_textParser, train_vec$new_hashtags)
 loco <- as.array(loco)
 
 
-model %>% fit(
+result <- model %>% fit(
   x = list(train_vec$new_textParser, train_vec$new_hashtags),
   #y = labels,
   y = dados$resposta,
   batch_size = batch_size,
   epochs = epochs,
-  validation_split=0.05
+  validation_split=0.20
 )
 
-model
-
-
-str(list(train_vec$new_textParser, train_vec$new_hashtags))
-str(dados$resposta)
-str(labels)
+#model
 
 #evaluation <- model %>% evaluate(
 #  x = list(test_vec$stories, test_vec$questions),

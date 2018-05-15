@@ -168,3 +168,11 @@ adicionarTeste <- function(epocaParam, batchParam) {
   testes <- rbind(testes, linha)
   return (testes)
 }
+
+mapp <- function() {
+  marcosD <- questions %>%
+  mutate(
+    question = map(q, ~tokenize_words(.x))
+  ) %>%
+  select(question)
+}
