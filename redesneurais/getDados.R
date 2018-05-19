@@ -14,6 +14,7 @@ getDados <- function() {
                  textoParserRisadaEmoticom,
                  textoParserEmoticom,
                  hashtags,
+                 textEmbedding,
                  (SELECT GROUP_CONCAT(tn.palavra)
                    FROM tweets_nlp tn
                    WHERE tn.idTweetInterno = t.idInterno
@@ -49,6 +50,7 @@ getDados <- function() {
   dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
   dados$entidades = gsub(" ", "_", dados$entidades)
   dados$entidades = gsub(",", " ", dados$entidades)
+  dados$entidades[is.na(dados$entidades)] <- ""
   return (dados)
 }
 
@@ -151,7 +153,7 @@ avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim
   rownames(tableResultados) <- tecnica
   names(tableResultados) <- c("Tecnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisao", "Revocacao", "Acuracia", "Acuracia treinamento", "Acuracia validação", "Loss treinamento", "Loss validação", "Iteracao", "Texto")
 
-  pathSave <- "redesneurais/resultados_hash.csv"
+  pathSave <- "redesneurais/planilhas/resultados_1905.csv"
   if (file.exists(pathSave)) {
     write.table(tableResultados, pathSave, sep = ";", col.names = F, append = T)
   } else {
