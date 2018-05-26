@@ -22,7 +22,7 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 5, savePred=T),
+            trControl = trainControl(method = "cv", number = 10, savePred=T),
             preProc=c("center"))
     return (fit)
 }
