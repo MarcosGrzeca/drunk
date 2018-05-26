@@ -14,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 10
+CORES <- 5
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -22,6 +22,16 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
+            trControl = trainControl(method = "cv", number = 10, savePred=T),
+            preProc=c("center"))
+    return (fit)
+}
+
+treinarPoly <- function(data_train){
+    # registerDoMC(CORES)
+    fit <- train(x = subset(data_train, select = -c(resposta)),
+            y = data_train$resposta, 
+            method = "svmPoly", 
             trControl = trainControl(method = "cv", number = 10, savePred=T),
             preProc=c("center"))
     return (fit)
@@ -110,6 +120,38 @@ if (!exists("matrizTwoGramTypesInfoGain")) {
     twoGramTypesInfoGain
     matrizTwoGramTypesInfoGain <- getMatriz(twoGramTypesInfoGain, data_test)
     resultados <- addRow(resultados, "2 Gram + Info Gain + Q2", matrizTwoGramTypesInfoGain)
+    save.image(file="2110/rdas/testes2605.RData")
+  })
+}
+
+if (!exists("matrizTwoGramTypesCFSQ2Poly")) {
+  try({
+    load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramTypesCFS <- treinar(data_train)
+    twoGramTypesCFS
+    matrizTwoGramTypesCFSQ2Poly <- getMatriz(twoGramTypesCFS, data_test)
+    resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly)", matrizTwoGramTypesCFSQ2Poly)
+    save.image(file="2110/rdas/testes2605.RData")
+  })
+}
+
+if (!exists("matrizTwoGramTypesInfoGainPoly")) {
+  try({
+    load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramTypesInfoGain <- treinar(data_train)
+    twoGramTypesInfoGain
+    matrizTwoGramTypesInfoGainPoly <- getMatriz(twoGramTypesInfoGain, data_test)
+    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2 (Poly)", matrizTwoGramTypesInfoGainPoly)
     save.image(file="2110/rdas/testes2605.RData")
   })
 }
