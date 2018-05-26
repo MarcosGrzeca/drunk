@@ -108,7 +108,7 @@ if (!exists("matrizTwoGramTypesCFSQ2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGain")) {
+if (!exists("matrizTwoGramTypesInfoGainQ2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -118,8 +118,8 @@ if (!exists("matrizTwoGramTypesInfoGain")) {
 
     twoGramTypesInfoGain <- treinar(data_train)
     twoGramTypesInfoGain
-    matrizTwoGramTypesInfoGain <- getMatriz(twoGramTypesInfoGain, data_test)
-    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2", matrizTwoGramTypesInfoGain)
+    matrizTwoGramTypesInfoGainQ2 <- getMatriz(twoGramTypesInfoGain, data_test)
+    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2", matrizTwoGramTypesInfoGainQ2)
     save.image(file="2110/rdas/testes2605.RData")
   })
 }
