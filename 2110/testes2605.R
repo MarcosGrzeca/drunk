@@ -124,7 +124,7 @@ if (!exists("matrizTwoGramTypesInfoGainQ2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2Poly")) {
+if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -132,15 +132,15 @@ if (!exists("matrizTwoGramTypesCFSQ2Poly")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinar(data_train)
+    twoGramTypesCFS <- treinarPoly(data_train)
     twoGramTypesCFS
-    matrizTwoGramTypesCFSQ2Poly <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly)", matrizTwoGramTypesCFSQ2Poly)
+    matrizTwoGramTypesCFSQ2PolyV2 <- getMatriz(twoGramTypesCFS, data_test)
+    resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly V2)", matrizTwoGramTypesCFSQ2PolyV2)
     save.image(file="2110/rdas/testes2605.RData")
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainPoly")) {
+if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -148,10 +148,26 @@ if (!exists("matrizTwoGramTypesInfoGainPoly")) {
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
     data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesInfoGain <- treinar(data_train)
+    twoGramTypesInfoGain <- treinarPoly(data_train)
     twoGramTypesInfoGain
-    matrizTwoGramTypesInfoGainPoly <- getMatriz(twoGramTypesInfoGain, data_test)
-    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2 (Poly)", matrizTwoGramTypesInfoGainPoly)
+    matrizTwoGramTypesInfoGainPolyV2 <- getMatriz(twoGramTypesInfoGain, data_test)
+    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2 (Poly V2)", matrizTwoGramTypesInfoGainPolyV2)
+    save.image(file="2110/rdas/testes2605.RData")
+  })
+}
+
+if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
+  try({
+    load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-cfs-q2-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    twoGramTypesCFS <- treinar(data_train)
+    twoGramTypesCFS
+    matrizTwoGramTypesCFSQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
+    resultados <- addRow(resultados, "2 Gram + Types + entidades + CFS Q2", matrizTwoGramTypesCFSQ2Entidades)
     save.image(file="2110/rdas/testes2605.RData")
   })
 }
