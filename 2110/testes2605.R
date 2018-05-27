@@ -172,21 +172,6 @@ if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
   })
 }
 
-if (!exists("matriz3Gram")) {
-  try({
-    load("2110/rdas/3gram-25-q2.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
-
-    threeGram25 <- treinar(data_train)
-    threeGram25
-    matriz3Gram <- getMatriz(threeGram25, data_test)
-    resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
-  })
-}
-
 if (!exists("matriz2GramEntidadesHoraErro")) {
   try({
     load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
@@ -231,6 +216,21 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
     matrizTwoGramTypesInfoQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
     resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Q2 (Poly)", matrizTwoGramTypesInfoQ2Entidades)
     save.image(file="2110/rdas/testes2605.RData")
+  })
+}
+
+if (!exists("matriz3Gram")) {
+  try({
+    load("2110/rdas/3gram-25-q2.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    threeGram25 <- treinar(data_train)
+    threeGram25
+    matriz3Gram <- getMatriz(threeGram25, data_test)
+    resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
   })
 }
 
