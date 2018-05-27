@@ -95,11 +95,11 @@ encoded_sentence <- sentence %>%
   layer_lstm(units = embed_hidden_size) %>%
   layer_repeat_vector(n = entidades_maxlen)
 
-entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
-encoded_entidades <- entidades %>%
-  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size)
+#entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+#encoded_entidades <- entidades %>%
+#  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+#  layer_dropout(rate = 0.3) %>%
+#  layer_lstm(units = embed_hidden_size)
   #%>%   layer_repeat_vector(n = textParser_maxlen)
 
 merged <- list(encoded_sentence, encoded_entidades) %>%

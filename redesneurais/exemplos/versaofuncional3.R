@@ -102,7 +102,16 @@ encoded_entidades <- entidades %>%
   layer_lstm(units = embed_hidden_size)
   #%>%   layer_repeat_vector(n = textParser_maxlen)
 
-merged <- list(encoded_sentence, encoded_entidades) %>%
+entidadesTwo <- layer_input(shape = c(entidades_maxlen))  
+encoded_entidadesTwo <- entidadesTwo %>%
+  layer_dense(units = entidades_maxlen, activation = "relu") %>%
+  layer_dense(units = embed_hidden_size, activation = "relu")
+  #%>%   layer_repeat_vector(n = textParser_maxlen)
+
+encoded_entidadesTwo
+
+
+merged <- list(encoded_sentence, encoded_entidades, encoded_entidadesTwo) %>%
   layer_add() %>%
   layer_lstm(units = embed_hidden_size) %>%
   layer_dropout(rate = 0.3)
@@ -111,7 +120,7 @@ preds <- merged %>%
   #layer_dense(units = vocab_size, activation = "sigmoid")
   layer_dense(units = 1, activation = "sigmoid")
 
-model <- keras_model(inputs = list(sentence, entidades), outputs = preds)
+model <- keras_model(inputs = list(sentence, entidades, entidadesTwo), outputs = preds)
 model %>% compile(
   optimizer = "rmsprop",
   loss = "binary_crossentropy",
@@ -124,7 +133,7 @@ model %>% compile(
 #stop("Nao treinar")
 
 history <- model %>% fit(
-  x = list(train_vec$new_textParser, train_vec$new_entidades),
+  x = list(train_vec$new_textParser, train_vec$new_entidades, train_vec$new_entidades),
   y = y_train,
   batch_size = batch_size,
   epochs = 4,
@@ -136,7 +145,7 @@ history <- model %>% fit(
 test_vec <- vectorize_stories(dadosTransformadoTest, vocab, textParser_maxlen, entidades_maxlen)
 
 evaluation <- model %>% evaluate(
-  x = list(test_vec$new_textParser, test_vec$new_entidades),
+  x = list(test_vec$new_textParser, test_vec$new_entidades, test_vec$new_entidades),
   y = y_test,
   batch_size = batch_size
 )
@@ -145,7 +154,7 @@ evaluation
 #predictions <- model %>% predict_classes(list(test_vec$new_textParser, test_vec$new_entidades))
 
 
-predictions <- model %>% predict(list(test_vec$new_textParser, test_vec$new_entidades), type="class")
+predictions <- model %>% predict(list(test_vec$new_textParser, test_vec$new_entidades, test_vec$new_entidades), type="class")
 
 predictions
 

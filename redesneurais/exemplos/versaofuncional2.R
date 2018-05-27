@@ -82,33 +82,50 @@ vocab_size <- length(vocab) + 1
 textParser_maxlen <- map_int(all_data$textEmbedding, ~length(.x)) %>% max()
 entidades_maxlen <- map_int(all_data$entidades, ~length(.x)) %>% max()
 
-textParser_maxlen
-entidades_maxlen
-
 train_vec <- vectorize_stories(dadosTransformado, vocab, textParser_maxlen, entidades_maxlen)
+
 # Defining the model ------------------------------------------------------
 
 sentence <- layer_input(shape = c(textParser_maxlen), dtype = "int32")
-encoded_sentence <- sentence %>% 
-  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>% 
-  layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size) %>%
-  layer_repeat_vector(n = entidades_maxlen)
+normal <- function() {
+  encoded_sentence <- sentence %>% 
+    layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>% 
+    layer_lstm(units = embed_hidden_size) %>%
+    #bidirectional(layer_lstm(units = embed_hidden_size)) %>%
+    layer_dropout(rate = 0.1) %>%
+    layer_repeat_vector(n = entidades_maxlen)
+}
 
-entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+#layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+#layer_simple_rnn(units = embed_hidden_size) %>%
+
+padrao <- function() {
+  entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+  encoded_entidades <- entidades %>%
+    layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+    #layer_dropout(rate = 0.1) %>%
+    layer_lstm(units = embed_hidden_size) %>%
+    layer_dense(units = embed_hidden_size, activation = "relu")
+}
+
+entidades <- layer_input(shape = c(entidades_maxlen))  
 encoded_entidades <- entidades %>%
-  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size)
-  #%>%   layer_repeat_vector(n = textParser_maxlen)
-
+  #layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+  #layer_simple_rnn(units = embed_hidden_size) %>%
+  #layer_dropout(rate = 0.1) %>%
+  #layer_dense(units = embed_hidden_size, activation = "relu")
+  layer_dense(units = embed_hidden_size, activation = "relu") %>%
+  layer_dense(units = embed_hidden_size, activation = "relu")
+  
 merged <- list(encoded_sentence, encoded_entidades) %>%
   layer_add() %>%
   layer_lstm(units = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3)
+  #layer_flatten() %>%
+  layer_dense(units = 32, activation = "relu") %>%
+  layer_dropout(rate = 0.1)
 
 preds <- merged %>%
-  #layer_dense(units = vocab_size, activation = "sigmoid")
+  layer_dense(units = 16, activation = "relu") %>%
   layer_dense(units = 1, activation = "sigmoid")
 
 model <- keras_model(inputs = list(sentence, entidades), outputs = preds)
@@ -118,16 +135,13 @@ model %>% compile(
   metrics = c("acc")
 )
 
-#model
-
-# Training ----------------------------------------------------------------
-#stop("Nao treinar")
+#Training
 
 history <- model %>% fit(
   x = list(train_vec$new_textParser, train_vec$new_entidades),
   y = y_train,
   batch_size = batch_size,
-  epochs = 4,
+  epochs = 3,
   validation_split=0.20
 )
 
@@ -142,13 +156,7 @@ evaluation <- model %>% evaluate(
 )
 evaluation
 
-#predictions <- model %>% predict_classes(list(test_vec$new_textParser, test_vec$new_entidades))
-
-
 predictions <- model %>% predict(list(test_vec$new_textParser, test_vec$new_entidades), type="class")
-
-predictions
-
 round_df <- function(x, digits) {
   # round all numeric variables
   # x: data frame 
@@ -162,5 +170,6 @@ predictions <- round_df(predictions, 0)
 
 matriz <- confusionMatrix(data = as.factor(predictions), as.factor(y_test), positive="1")
 print(paste("F1 ", matriz$byClass["F1"] * 100, "Precisao ", matriz$byClass["Precision"] * 100, "Recall ", matriz$byClass["Recall"] * 100, "Acuracia ", matriz$overall["Accuracy"] * 100))
+
 
 #evaluation
