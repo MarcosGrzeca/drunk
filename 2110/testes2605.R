@@ -14,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 7
+CORES <- 10
 registerDoMC(CORES)
 
 treinar <- function(data_train){
