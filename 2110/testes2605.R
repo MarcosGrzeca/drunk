@@ -72,7 +72,7 @@ split=0.80
 
 if (!exists("matrizTwoGramTypesCFS")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-cfs-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -90,7 +90,7 @@ if (!exists("matrizTwoGramTypesCFS")) {
 
 if (!exists("matrizTwoGramTypesInfoGain")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -108,7 +108,7 @@ if (!exists("matrizTwoGramTypesInfoGain")) {
 
 if (!exists("matrizTwoGramTypesCFSQ2")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -126,7 +126,7 @@ if (!exists("matrizTwoGramTypesCFSQ2")) {
 
 if (!exists("matrizTwoGramTypesInfoGainQ2")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -144,7 +144,7 @@ if (!exists("matrizTwoGramTypesInfoGainQ2")) {
 
 if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -162,7 +162,7 @@ if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
 
 if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -180,7 +180,7 @@ if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
 
 if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-cfs-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -198,7 +198,7 @@ if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
 
 if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -216,7 +216,7 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
 
 if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -234,7 +234,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
 
 if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -252,7 +252,7 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
 
 if (!exists("matriz2GramEntidadesHoraErro")) {
   try({
-    for (indice in 1:nrow(5)){
+    for (indice in 1:5){
       load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
