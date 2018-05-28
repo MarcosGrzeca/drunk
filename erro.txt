@@ -1,22 +1,4 @@
-Loading required package: lattice
-Loading required package: ggplot2
-Loading required package: doMC
-Loading required package: foreach
-Loading required package: iterators
-Loading required package: parallel
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error: unexpected ')' in:
+"    load("2110/rdas/testes2705.RData")
+  })"
+Execution halted
