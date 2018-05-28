@@ -247,7 +247,7 @@ if (!exists("matriz2GramEntidadesHoraErroV2")) {
 
 if (!exists("matriz3GramV2")) {
   try({
-    load("2110/rdas/3gram-25-q2-not-null.Rda")
+    load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -258,7 +258,7 @@ if (!exists("matriz3GramV2")) {
     matriz3Gram <- getMatriz(threeGram25, data_test)
     resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
 
-    load("2110/rdas/3gram-25-q2-not-null.Rda")
+    load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
     trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
     data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
