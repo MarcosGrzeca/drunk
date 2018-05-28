@@ -1,0 +1,85 @@
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 81,
+    "features": 4
+  },
+  "language": "en",
+  "keywords": [
+    {
+      "text": "Turnup",
+      "sentiment": {
+        "score": 0.0
+      },
+      "relevance": 0.932468,
+      "emotion": {
+        "sadness": 0.0,
+        "joy": 0.0,
+        "fear": 0.0,
+        "disgust": 0.0,
+        "anger": 0.0
+      }
+    },
+    {
+      "text": "Class",
+      "sentiment": {
+        "score": 0.0
+      },
+      "relevance": 0.884051,
+      "emotion": {
+        "sadness": 0.0,
+        "joy": 0.0,
+        "fear": 0.0,
+        "disgust": 0.0,
+        "anger": 0.0
+      }
+    }
+  ],
+  "entities": [
+    {
+      "type": "Location",
+      "text": "Turnup",
+      "sentiment": {
+        "score": 0.325842
+      },
+      "relevance": 0.723743,
+      "emotion": {
+        "sadness": 0.365734,
+        "joy": 0.232582,
+        "fear": 0.155672,
+        "disgust": 0.094044,
+        "anger": 0.022707
+      },
+      "disambiguation": {
+        "subtype": [
+          "City"
+        ]
+      },
+      "count": 3
+    },
+    {
+      "type": "Hashtag",
+      "text": "#mention",
+      "sentiment": {
+        "score": 0.0
+      },
+      "relevance": 0.723743,
+      "count": 1
+    }
+  ],
+  "concepts": [],
+  "categories": [
+    {
+      "score": 0.705753,
+      "label": "/education/graduate school"
+    },
+    {
+      "score": 0.6402,
+      "label": "/education/alumni and reunions"
+    },
+    {
+      "score": 0.10845,
+      "label": "/art and entertainment/dance/pole dancing"
+    }
+  ]
+}
