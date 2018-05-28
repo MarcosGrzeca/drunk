@@ -2,19 +2,17 @@ resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-  for (indice in 1:nrow(5)){
     load("2110/rdas/testes2705.RData")
-  })
+})
 
-  library(tools)
-  library(caret)
+library(tools)
+library(caret)
 
-  if (!require("doMC")) {
-    install.packages("doMC")
-  }
-  library(doMC)
-  library(mlbench)
+if (!require("doMC")) {
+  install.packages("doMC")
 }
+library(doMC)
+library(mlbench)
 
 CORES <- 10
 registerDoMC(CORES)
