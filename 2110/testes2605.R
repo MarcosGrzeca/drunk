@@ -2,17 +2,19 @@ resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-  load("2110/rdas/testes2605.RData")
-})
+  for (indice in 1:nrow(5)){
+    load("2110/rdas/testes2705.RData")
+  })
 
-library(tools)
-library(caret)
+  library(tools)
+  library(caret)
 
-if (!require("doMC")) {
-  install.packages("doMC")
+  if (!require("doMC")) {
+    install.packages("doMC")
+  }
+  library(doMC)
+  library(mlbench)
 }
-library(doMC)
-library(mlbench)
 
 CORES <- 10
 registerDoMC(CORES)
@@ -22,7 +24,7 @@ treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 10, savePred=T),
+            trControl = trainControl(method = "cv", number = 5, savePred=T),
             preProc=c("center"))
     return (fit)
 }
@@ -60,7 +62,7 @@ addRow <- function(resultados, baseline, matriz, ...) {
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
   newdf <- rbind(resultados, newRes)
-  #save.image(file="2110/rdas/testes2605.RData")
+  #save.image(file="2110/rdas/testes2705.RData")
   return (newdf)
 }
 
@@ -70,205 +72,229 @@ set.seed(10)
 split=0.80
 
 
-if (!exists("matrizTwoGramTypesCFSV2")) {
+if (!exists("matrizTwoGramTypesCFS")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-cfs-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-cfs-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinar(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesCFS <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types CFS", matrizTwoGramTypesCFS)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinar(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesCFS <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types CFS", matrizTwoGramTypesCFS)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainV2")) {
+if (!exists("matrizTwoGramTypesInfoGain")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesInfoGain <- treinar(data_train)
-    twoGramTypesInfoGain
-    matrizTwoGramTypesInfoGain <- getMatriz(twoGramTypesInfoGain, data_test)
-    resultados <- addRow(resultados, "2 Gram + Info Gain", matrizTwoGramTypesInfoGain)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesInfoGain <- treinar(data_train)
+      twoGramTypesInfoGain
+      matrizTwoGramTypesInfoGain <- getMatriz(twoGramTypesInfoGain, data_test)
+      resultados <- addRow(resultados, "2 Gram + Info Gain", matrizTwoGramTypesInfoGain)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2V2")) {
+if (!exists("matrizTwoGramTypesCFSQ2")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinar(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesCFSQ2 <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types CFS Q2", matrizTwoGramTypesCFSQ2)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinar(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesCFSQ2 <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types CFS Q2", matrizTwoGramTypesCFSQ2)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainQ2V2")) {
+if (!exists("matrizTwoGramTypesInfoGainQ2")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesInfoGain <- treinar(data_train)
-    twoGramTypesInfoGain
-    matrizTwoGramTypesInfoGainQ2 <- getMatriz(twoGramTypesInfoGain, data_test)
-    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2", matrizTwoGramTypesInfoGainQ2)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesInfoGain <- treinar(data_train)
+      twoGramTypesInfoGain
+      matrizTwoGramTypesInfoGainQ2 <- getMatriz(twoGramTypesInfoGain, data_test)
+      resultados <- addRow(resultados, "2 Gram + Info Gain + Q2", matrizTwoGramTypesInfoGainQ2)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2PolyV2V2")) {
+if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinarPoly(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesCFSQ2PolyV2 <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly V2)", matrizTwoGramTypesCFSQ2PolyV2)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinarPoly(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesCFSQ2PolyV2 <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly V2)", matrizTwoGramTypesCFSQ2PolyV2)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainPolyV2V2")) {
+if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesInfoGain <- treinarPoly(data_train)
-    twoGramTypesInfoGain
-    matrizTwoGramTypesInfoGainPolyV2 <- getMatriz(twoGramTypesInfoGain, data_test)
-    resultados <- addRow(resultados, "2 Gram + Info Gain + Q2 (Poly V2)", matrizTwoGramTypesInfoGainPolyV2)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesInfoGain <- treinarPoly(data_train)
+      twoGramTypesInfoGain
+      matrizTwoGramTypesInfoGainPolyV2 <- getMatriz(twoGramTypesInfoGain, data_test)
+      resultados <- addRow(resultados, "2 Gram + Info Gain + Q2 (Poly V2)", matrizTwoGramTypesInfoGainPolyV2)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2EntidadesV2")) {
+if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-cfs-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-cfs-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinar(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesCFSQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types + entidades + CFS Q2", matrizTwoGramTypesCFSQ2Entidades)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinar(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesCFSQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types + entidades + CFS Q2", matrizTwoGramTypesCFSQ2Entidades)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesV2")) {
+if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinar(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesInfoQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2", matrizTwoGramTypesInfoQ2Entidades)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinar(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesInfoQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2", matrizTwoGramTypesInfoQ2Entidades)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesPolyV2")) {
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinarPoly(data_train)
-    twoGramTypesCFS
-    matrizTwoGramTypesInfoQ2EntidadesPoly <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesPoly)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinarPoly(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesInfoQ2EntidadesPoly <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesPoly)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2Entidades5V2")) {
+if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
   try({
-    load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twoGramTypesCFS <- treinarFolds(data_train, 5)
-    twoGramTypesCFS
-    matrizTwoGramTypesInfoQ2Entidades5 <- getMatriz(twoGramTypesCFS, data_test)
-    resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (5 folds)", matrizTwoGramTypesInfoQ2Entidades5)
-    save.image(file="2110/rdas/testes2605.RData")
+      twoGramTypesCFS <- treinarFolds(data_train, 5)
+      twoGramTypesCFS
+      matrizTwoGramTypesInfoQ2Entidades5 <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (5 folds)", matrizTwoGramTypesInfoQ2Entidades5)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matriz2GramEntidadesHoraErroV2")) {
+if (!exists("matriz2GramEntidadesHoraErro")) {
   try({
-    load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:nrow(5)){
+      load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    twogramEntidadesHoraErro <- treinar(data_train)
-    twogramEntidadesHoraErro
-    matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
-    resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
+      twogramEntidadesHoraErro <- treinar(data_train)
+      twogramEntidadesHoraErro
+      matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
+      resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
   })
 }
 
-if (!exists("matriz3GramV2")) {
+if (!exists("matriz3Gram")) {
   try({
-    load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:5) {
+      load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    threeGram25 <- treinar(data_train)
-    threeGram25
-    matriz3Gram <- getMatriz(threeGram25, data_test)
-    resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
+      threeGram25 <- treinar(data_train)
+      threeGram25
+      matriz3Gram <- getMatriz(threeGram25, data_test)
+      resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
+      
+      load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
-
-    threeGram25 <- treinarFolds(data_train, 5)
-    threeGram25
-    matriz3Gram <- getMatriz(threeGram25, data_test)
-    resultados <- addRow(resultados, "3 Gram + 25% + Bow # (5)", matriz3Gram)
-
+      threeGram25 <- treinarFolds(data_train, 5)
+      threeGram25
+      matriz3Gram <- getMatriz(threeGram25, data_test)
+      resultados <- addRow(resultados, "3 Gram + 25% + Bow # (5)", matriz3Gram)
+    }
   })
 }
 
