@@ -14,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 10
+CORES <- 2
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -70,7 +70,7 @@ set.seed(10)
 split=0.80
 
 
-if (!exists("matrizTwoGramTypesCFS")) {
+if (!exists("matrizTwoGramTypesCFSV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-cfs-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -86,7 +86,7 @@ if (!exists("matrizTwoGramTypesCFS")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGain")) {
+if (!exists("matrizTwoGramTypesInfoGainV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -102,7 +102,7 @@ if (!exists("matrizTwoGramTypesInfoGain")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2")) {
+if (!exists("matrizTwoGramTypesCFSQ2V2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -118,7 +118,7 @@ if (!exists("matrizTwoGramTypesCFSQ2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainQ2")) {
+if (!exists("matrizTwoGramTypesInfoGainQ2V2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -134,7 +134,7 @@ if (!exists("matrizTwoGramTypesInfoGainQ2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
+if (!exists("matrizTwoGramTypesCFSQ2PolyV2V2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -150,7 +150,7 @@ if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
+if (!exists("matrizTwoGramTypesInfoGainPolyV2V2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-information-gain-hora-erro-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -166,7 +166,7 @@ if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
+if (!exists("matrizTwoGramTypesCFSQ2EntidadesV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-cfs-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -182,7 +182,7 @@ if (!exists("matrizTwoGramTypesCFSQ2Entidades")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -198,7 +198,7 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesPolyV2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -214,7 +214,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
+if (!exists("matrizTwoGramTypesInfoQ2Entidades5V2")) {
   try({
     load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -230,7 +230,7 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
   })
 }
 
-if (!exists("matriz2GramEntidadesHoraErro")) {
+if (!exists("matriz2GramEntidadesHoraErroV2")) {
   try({
     load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -245,7 +245,7 @@ if (!exists("matriz2GramEntidadesHoraErro")) {
   })
 }
 
-if (!exists("matriz3Gram")) {
+if (!exists("matriz3GramV2")) {
   try({
     load("2110/rdas/3gram-25-q2.Rda")
     maFinal$resposta <- as.factor(maFinal$resposta)
@@ -257,6 +257,18 @@ if (!exists("matriz3Gram")) {
     threeGram25
     matriz3Gram <- getMatriz(threeGram25, data_test)
     resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
+
+    load("2110/rdas/3gram-25-q2.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
+
+    threeGram25 <- treinarFolds(data_train, 5)
+    threeGram25
+    matriz3Gram <- getMatriz(threeGram25, data_test)
+    resultados <- addRow(resultados, "3 Gram + 25% + Bow # (5)", matriz3Gram)
+
   })
 }
 
