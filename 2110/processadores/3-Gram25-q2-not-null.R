@@ -12,7 +12,11 @@ dados <- query("SELECT t.id, q2 AS resposta, textParser, textoParserEmoticom AS 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+
 dados$hashtags <- enc2utf8(dados$hashtags)
+dados$hashtags <- iconv(dados$hashtags, to='ASCII//TRANSLIT')
+
 clearConsole()
 
 if (!require("text2vec")) {
@@ -87,4 +91,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags, textoCompleto))
 
-save(maFinal, file = "2110/rdas/3gram-25-q2-not-null.Rda")
+save(maFinal, file = "2110/rdas/3gram-25-q2-v2-not-null.Rda")
