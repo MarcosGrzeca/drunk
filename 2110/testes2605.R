@@ -160,6 +160,24 @@ if (!exists("matrizTwoGramTypesCFSQ2PolyV2")) {
   })
 }
 
+if (!exists("matrizTwoGramTypesCFSQ2PolyV24")) {
+  try({
+    for (indice in 1:2){
+      load("2110/rdas/2-Gram-dbpedia-types-cfs-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
+
+      twoGramTypesCFS <- treinarPoly(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesCFSQ2PolyV24 <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types CFS Q2 (Poly V2)", matrizTwoGramTypesCFSQ2PolyV24)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
+  })
+}
+
 if (!exists("matrizTwoGramTypesInfoGainPolyV2")) {
   try({
     for (indice in 1:5){
@@ -227,6 +245,24 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesPoly")) {
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesPoly <- getMatriz(twoGramTypesCFS, data_test)
       resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesPoly)
+      save.image(file="2110/rdas/testes2705.RData")
+    }
+  })
+}
+
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesPolyV2")) {
+  try({
+    for (indice in 1:3){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
+
+      twoGramTypesCFS <- treinarPoly(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesInfoQ2EntidadesPolyV2 <- getMatriz(twoGramTypesCFS, data_test)
+      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesPolyV2)
       save.image(file="2110/rdas/testes2705.RData")
     }
   })
