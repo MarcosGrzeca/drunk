@@ -25,3 +25,7 @@ Warning messages:
 3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
 4: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
 5: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
+  undefined columns selected
+In addition: Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
