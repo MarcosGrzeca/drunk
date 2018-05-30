@@ -14,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 7
+CORES <- 6
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -289,7 +289,7 @@ if (!exists("matrizTwoGramTypesInfoQ2Entidades5")) {
 if (!exists("matriz2GramEntidadesHoraErro")) {
   try({
     for (indice in 1:5){
-      load("2110/rdas/2gram-entidades-hora-erro-q2.Rda")
+      load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
       data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
@@ -317,18 +317,7 @@ if (!exists("matriz3Gram")) {
       threeGram25
       matriz3Gram <- getMatriz(threeGram25, data_test)
       resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
-      
-      load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      threeGram25 <- treinarFolds(data_train, 5)
-      threeGram25
-      matriz3Gram <- getMatriz(threeGram25, data_test)
-      resultados <- addRow(resultados, "3 Gram + 25% + Bow # (5)", matriz3Gram)
-    }
+      }
   })
 }
 
