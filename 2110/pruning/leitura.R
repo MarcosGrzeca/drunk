@@ -4,9 +4,13 @@ weights
 
 
 library(FSelector)
-subset <- cutoff.k(weights, 55)
+subset <- cutoff.k(weights, 4)
 subset
 f <- as.simple.formula(subset, "resposta")
+
+subset <- cutoff.biggest.diff(weights)
+subset
+
 print(f)
 
 
