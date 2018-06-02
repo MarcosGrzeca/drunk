@@ -11,7 +11,7 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-       q1 AS resposta,
+       q2 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
