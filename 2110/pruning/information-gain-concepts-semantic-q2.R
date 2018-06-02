@@ -17,7 +17,7 @@ dados <- query("SELECT t.id,
      WHERE tn.idTweetInterno = t.idInterno
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
-WHERE q1 = 1 AND q2 IS NOT NULL")
+WHERE q2 IS NOT NULL")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
@@ -82,6 +82,6 @@ subset <- cutoff.k(weights, 100)
 f <- as.simple.formula(subset, "resposta")
 print(f)
 
-dump(weights, "2110/pruning/planilhas/conceptsq2.csv")
+dump(weights, "2110/pruning/planilhas/conceptsq2v2.csv")
 
-save.image(file="2110/pruning/rda/information-gain-concept-semantic-q2.RData")
+save.image(file="2110/pruning/rda/information-gain-concept-semantic-q2v2.RData")

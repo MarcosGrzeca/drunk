@@ -41,9 +41,10 @@ dados <- query("SELECT t.id,
      WHERE tn.idTweetInterno = t.idInterno
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
-WHERE q2 IS NOT NULL
-AND id <> 462478714693890048")
-
+WHERE textparser <> ''
+AND id <> 462478714693890048
+AND q1 = 1
+AND q2 IS NOT NULL")
 
 #AND ty.type IN ('http://dbpedia.org/class/yago/Property104916342', 'http://dbpedia.org/class/yago/Manner104928903', 'http://dbpedia.org/class/yago/WikicatBeerStyles', 'http://dbpedia.org/class/yago/Attribute100024264', 'http://dbpedia.org/class/yago/Agent114778436', 'http://dbpedia.org/class/yago/Drug103247620', 'http://dbpedia.org/ontology/Beverage', 'http://dbpedia.org/class/yago/WikicatDrugs', 'http://dbpedia.org/class/yago/Carcinogen114793812', 'http://dbpedia.org/class/yago/WikicatDrugsActingOnTheNervousSystem', 'http://dbpedia.org/class/yago/WikicatIARCGroup1Carcinogens', 'http://dbpedia.org/class/yago/Substance100020090', 'http://dbpedia.org/ontology/Food', 'http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#FunctionalSubstance', 'http://www.wikidata.org/entity/Q2095', 'http://dbpedia.org/class/yago/Matter100020827', 'http://dbpedia.org/class/yago/Abstraction100002137', 'http://dbpedia.org/class/yago/DrugOfAbuse103248958', 'http://dbpedia.org/class/yago/Fluid114939900', 'http://dbpedia.org/class/yago/WikicatDistilledBeverages', 'http://dbpedia.org/class/yago/Liquid114940386', 'http://dbpedia.org/class/yago/CausalAgent100007347', 'http://dbpedia.org/class/yago/Beverage107881800', 'http://dbpedia.org/class/yago/Alcohol107884567', 'http://dbpedia.org/class/yago/Food100021265', 'http://www.w3.org/2002/07/owl#Thing', 'http://umbel.org/umbel/rc/AilmentCondition', 'http://dbpedia.org/class/yago/YagoLegalActorGeo', 'http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity', 'http://dbpedia.org/class/yago/Substance100019613', 'http://www.wikidata.org/entity/Q12136', 'http://dbpedia.org/ontology/Disease', 'http://dbpedia.org/class/yago/Location100027167', 'http://dbpedia.org/class/yago/Part113809207', 'http://dbpedia.org/class/yago/AdministrativeDistrict108491826', 'http://dbpedia.org/class/yago/YagoGeoEntity', 'http://dbpedia.org/class/yago/District108552138', 'http://dbpedia.org/class/yago/WikicatEthnicGroups', 'http://dbpedia.org/class/yago/Region108630985', 'http://dbpedia.org/ontology/EthnicGroup', 'http://dbpedia.org/class/yago/WikicatEthnicGroupsInTheUnitedStates', 'http://dbpedia.org/class/yago/WikicatEthnicGroupsInCanada', 'http://www.wikidata.org/entity/Q41710', 'http://dbpedia.org/class/yago/Wine107891726', 'http://dbpedia.org/class/yago/WikicatWineStyles', 'http://dbpedia.org/class/yago/SparklingWine107893528', 'http://dbpedia.org/class/yago/WikicatSparklingWines')
 
