@@ -19,14 +19,12 @@ dados <- query("SELECT t.id,
        emoticonNeg,
        hora,
        erroParseado as numeroErros,
-
     (SELECT GROUP_CONCAT(tn.palavra)
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
-WHERE q1 = 1 
-    AND q2 IS NOT NULL")
+WHERE q1 = 1 AND q2 IS NOT NULL")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
