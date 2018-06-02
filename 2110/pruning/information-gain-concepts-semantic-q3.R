@@ -12,13 +12,6 @@ clearConsole();
 
 dados <- query("SELECT t.id,
        q3 AS resposta,
-       textParser,
-       textoParserEmoticom AS textoCompleto,
-       hashtags,
-       emoticonPos,
-       emoticonNeg,
-       hora,
-       erroParseado as numeroErros,
     (SELECT GROUP_CONCAT(tn.palavra)
      FROM tweets_nlp tn
      WHERE tn.idTweetInterno = t.idInterno
