@@ -23,10 +23,10 @@ dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$entidades <- enc2utf8(dados$entidades)
 dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
-dados$entidades = gsub(" / ", "/", dados$entidades)
-dados$entidades = gsub("/ ", "/", dados$entidades)
-dados$entidades = gsub(" /", "/", dados$entidades)
-dados$entidades = gsub(" ", "_", dados$entidades)
+#dados$entidades = gsub(" / ", "/", dados$entidades)
+#dados$entidades = gsub("/ ", "/", dados$entidades)
+#dados$entidades = gsub(" /", "/", dados$entidades)
+#dados$entidades = gsub(" ", "_", dados$entidades)
 
 clearConsole()
 
