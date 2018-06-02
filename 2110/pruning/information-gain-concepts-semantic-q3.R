@@ -24,7 +24,7 @@ dados <- query("SELECT t.id,
      WHERE tn.idTweetInterno = t.idInterno
      GROUP BY tn.idTweetInterno) AS entidades
 FROM tweets t
-WHERE q1 = 2 AND q3 IS NOT NULL")
+WHERE q2 = 1 AND q3 IS NOT NULL")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
