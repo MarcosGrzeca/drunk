@@ -1,0 +1,4 @@
+https://tensorflow.rstudio.com/blog/keras-for-r.html
+https://tensorflow.rstudio.com/keras/articles/examples/babi_rnn.html
+https://tensorflow.rstudio.com/keras/articles/examples/conv_lstm.html
+https://tensorflow.rstudio.com/keras/articles/examples/imdb_bidirectional_lstm.html

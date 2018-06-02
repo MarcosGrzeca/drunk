@@ -32,7 +32,7 @@ plotQ1 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
   theme_tufte() +  # Tufte theme from ggfortify
   theme(plot.title = element_text(hjust = .5), 
         axis.ticks = element_blank()) +   # Centre plot title
-  labs(title="Drinking alcohol",
+  labs(title="Q1 - Drinking alcohol",
        x="Age group",
        y="Total of users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
@@ -44,7 +44,7 @@ plotQ2 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
   theme_tufte() +  # Tufte theme from ggfortify
   theme(plot.title = element_text(hjust = .5), 
         axis.ticks = element_blank()) +   # Centre plot title
-  labs(title="User drinking alcohol",
+  labs(title="Q2 - User drinking alcohol",
        x="Age group",
        y="Total of users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
@@ -56,7 +56,7 @@ plotQ3 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
   theme_tufte() +  # Tufte theme from ggfortify
   theme(plot.title = element_text(hjust = .5), 
         axis.ticks = element_blank()) +   # Centre plot title
-  labs(title="User tweeting while drunk",
+  labs(title="Q3 - User tweeting while drunk",
        x="Age group",
        y="Total of users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
