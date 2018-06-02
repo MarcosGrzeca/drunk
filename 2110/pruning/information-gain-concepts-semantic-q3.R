@@ -11,30 +11,26 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("SELECT t.id,
-               q2 AS resposta,
-               ( SELECT GROUP_CONCAT(DISTINCT(REPLACE(type, 'http://dbpedia.org/class/', '')))
-               FROM
-               ( SELECT c.resource AS resource,
-               tn.idTweetInterno
-               FROM tweets_nlp tn
-               JOIN conceito c ON c.palavra = tn.palavra
-               WHERE c.sucesso = 1
-               UNION ALL SELECT c.resource AS resource,
-               tn.idTweetInterno
-               FROM tweets_gram tn
-               JOIN conceito c ON c.palavra = tn.palavra
-               WHERE c.sucesso = 1
-               GROUP BY 1,
-               2 ) AS louco
-               JOIN resource_type ty ON ty.resource = louco.resource
-               WHERE louco.idTweetInterno = t.idInterno
-               ) AS resources
-               FROM tweets t
-               WHERE q1 = 1 AND q2 IS NOT NULL")
+       q3 AS resposta,
+       textParser,
+       textoParserEmoticom AS textoCompleto,
+       hashtags,
+       emoticonPos,
+       emoticonNeg,
+       hora,
+       erroParseado as numeroErros,
+    (SELECT GROUP_CONCAT(tn.palavra)
+     FROM tweets_nlp tn
+     WHERE tn.idTweetInterno = t.idInterno
+     GROUP BY tn.idTweetInterno) AS entidades
+FROM tweets t
+WHERE q1 = 2 AND q3 IS NOT NULL")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
-dados$resources <- enc2utf8(dados$resources)
+dados$entidades <- enc2utf8(dados$entidades)
+dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
+
 clearConsole()
 
 if (!require("text2vec")) {
@@ -43,6 +39,13 @@ if (!require("text2vec")) {
 library(text2vec)
 library(data.table)
 library(SnowballC)
+
+if (!require("doMC")) {
+  install.packages("doMC")
+}
+library(doMC)
+library(mlbench)
+registerDoMC(8)
 
 setDT(dados)
 setkey(dados, id)
@@ -57,7 +60,7 @@ tok_fun = word_tokenizer
 
 stop_words = tm::stopwords("en")
 
-it_train = itoken(strsplit(dados$resources, ","), 
+it_train = itoken(strsplit(dados$entidades, ","), 
                   ids = dados$id, 
                   progressbar = TRUE)
 
@@ -70,7 +73,7 @@ library(rowr)
 library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameResource)
-maFinal <- subset(maFinal, select = -c(id, resources))
+maFinal <- subset(maFinal, select = -c(id, entidades))
 
 if (!require("FSelector")) {
   install.packages("FSelector")
@@ -82,5 +85,6 @@ subset <- cutoff.k(weights, 100)
 f <- as.simple.formula(subset, "resposta")
 print(f)
 
-dump(weights, "2110/pruning/planilhas/typessq2.csv")
-save.image(file="2110/pruning/rda/information-gain-types-semantic-q2.RData")
+dump(weights, "2110/pruning/planilhas/conceptsq3.csv")
+
+save.image(file="2110/pruning/rda/information-gain-concept-semantic-q3.RData")
