@@ -72,7 +72,7 @@ if (!require("FSelector")) {
   install.packages("FSelector")
 }
 library(FSelector)
-weights <- information.gain(resposta~., maFinal)
+weights <- cfs(resposta~., maFinal)
 print(weights)
 subset <- cutoff.k(weights, 100)
 f <- as.simple.formula(subset, "resposta")
