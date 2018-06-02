@@ -85,6 +85,6 @@ subset <- cutoff.k(weights, 100)
 f <- as.simple.formula(subset, "resposta")
 print(f)
 
-dump(weights, "planilhas/q2")
+dump(weights, "planilhas/q2.csv")
 
 save.image(file="2110/rdas/information-gain-concept-semantic.RData")
