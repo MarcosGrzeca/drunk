@@ -10,7 +10,6 @@ f <- as.simple.formula(subset, "resposta")
 print(f)
 
 
-
 data <- as.data.frame(weights)
 newdata <- data[order(attr_importance),] 
 
