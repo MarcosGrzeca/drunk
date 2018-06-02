@@ -44,7 +44,7 @@ treinarPoly <- function(data_train){
     return (fit)
 }
 
-getMatriz <- function(fit, data_test) 
+getMatriz <- function(fit, data_test) {
   pred <- predict(fit, subset(data_test, select = -c(resposta)))
   matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
   return (matriz)
