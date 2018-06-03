@@ -65,25 +65,6 @@ library(magrittr)
 set.seed(10)
 split=0.80
 
-
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q3-not-null_info_entidades.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFS <- treinarPoly(data_train)
-      twoGramTypesCFS
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
-      resultados3 <- addRow(resultados3, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
-      save.image(file="webintelligence/comparenew.RData")
-    }
-  })
-}
-
 if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1")) {
   try({
     for (indice in 1:5){
@@ -114,7 +95,7 @@ if (!exists("matriz3Gram25NotNull")) {
       treegram25NotNull <- treinar(data_train)
       treegram25NotNull
       matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
-      resultados <- addRow(resultados, "3 GRAM 25 Not Null", matriz3Gram25NotNull)
+      resultados3 <- addRow(resultados3, "3 GRAM 25 Not Null", matriz3Gram25NotNull)
       save.image(file="webintelligence/comparenew.RData")
     }
   })

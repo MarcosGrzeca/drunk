@@ -95,7 +95,7 @@ if (!exists("matriz3Gram25Q3NotNull")) {
       treegram25Q3NotNull <- treinar(data_train)
       treegram25Q3NotNull
       matriz3Gram25Q3NotNull <- getMatriz(treegram25Q3NotNull, data_test)
-      resultados <- addRow(resultados, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull)
+      resultados3 <- addRow(resultados3, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull)
       save.image(file="webintelligence/compareq3_new.RData")
     }
   })
