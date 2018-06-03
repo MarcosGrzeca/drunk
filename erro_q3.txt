@@ -16,3 +16,13 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
+Warning messages:
+1: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+4: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+5: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
+Error in addRow(resultados, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull) : 
+  object 'resultados' not found
+In addition: Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
