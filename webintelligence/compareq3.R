@@ -84,7 +84,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ!")) {
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1")) {
   try({
     for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q1-not-null_info_entidades.Rda")
@@ -95,8 +95,8 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ!")) {
 
       twoGramTypesCFSQ1 <- treinarPoly(data_train)
       twoGramTypesCFSQ1
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ! <- getMatriz(twoGramTypesCFSQ1, data_test)
-      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ!)
+      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1 <- getMatriz(twoGramTypesCFSQ1, data_test)
+      resultados2 <- addRow(resultados2, "(Q1) 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q1 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1)
       save.image(file="webintelligence/compare2.RData")
     }
   })
