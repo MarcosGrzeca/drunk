@@ -3,6 +3,8 @@ options(max.print = 99999999)
 load("webintelligence/compare_estatistico.RData")
 View(resultados)
 
+dump(resultados, "estatistico.csv")
+
 #Q1
 load("webintelligence/comparenew.RData")
 load("webintelligence/compareq1.RData")

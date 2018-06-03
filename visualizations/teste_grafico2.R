@@ -1,7 +1,7 @@
 library(ggplot2)
 df1 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),
-                  len=c(89.709, 88.913, 89.309, 91.946, 90.131, 91.029))
+                  len=c(88.322,  88.254,  88.288, 86.906, 91.643, 89.274))
 
 df2 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),
@@ -20,7 +20,7 @@ df3$metric <- factor(df3$metric, levels = c("Recall", "Precision", "F1-Measure")
 
 
 
-ggplot(data=df2, aes(x=metric, y=len, fill=supp)) +
+ggplot(data=df1, aes(x=metric, y=len, fill=supp)) +
   geom_bar(stat="identity", position=position_dodge()) +
   geom_text(aes(label=len), vjust=1.6, color="white",
           position = position_dodge(0.9), size=3.5) +
