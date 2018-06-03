@@ -1,7 +1,3 @@
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning message:
-In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file 'webintelligence/compare_q3.RData', probable reason 'No such file or directory'
 Loading required package: lattice
 Loading required package: ggplot2
 Loading required package: doMC
@@ -16,7 +12,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)",  : 
-  object 'resultados2' not found
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
