@@ -1,0 +1,4 @@
+SVM
+Naive Bayes naive_bayes or nb
+Random Forest ranger, Rborist, rf
+Generalized Linear Model glm

@@ -34,13 +34,62 @@ dados <- query("SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
                WHERE tn.tipo = 'E'
                ")
 
+dados <- query("SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'C'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'K'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'CO'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'E'
+               AND q1 = 1
+               ")
+
+
+dadosD <- query("SELECT GROUP_CONCAT(SUBSTRING(tn.palavra, 0, 30) SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'C'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(SUBSTRING(tn.palavra, 0, 30) SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'K'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(SUBSTRING(tn.palavra, 0, 30) SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'CO'
+               AND q1 = 1
+               UNION ALL
+               SELECT GROUP_CONCAT(SUBSTRING(tn.palavra, 0, 30) SEPARATOR '---') as entidades
+               FROM tweets_nlp tn
+               JOIN tweets t ON tn.idTweetInterno = t.idInterno
+               WHERE tn.tipo = 'E'
+               AND q1 = 1
+               ")
+
 dados$entidades <- enc2utf8(dados$entidades)
 dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
 dados$entidades = gsub(" ", "_", dados$entidades)
 dados$entidades = gsub("---", " ", dados$entidades)
 #dados$entidades = gsub("/", " ", dados$entidades)
-
-nrow(dados)
 
 library(tm)
 library(dplyr)
@@ -53,6 +102,7 @@ docs <- Corpus(VectorSource(dados$entidades)) %>%
   # tm_map(removeNumbers) %>%
   tm_map(tolower)  %>%
   tm_map(removeWords, stopwords("english")) %>%
+  tm_map(removeWords, c("url", "media", "mention")) %>%
   tm_map(stripWhitespace)
   #%>% tm_map(PlainTextDocument)
 
@@ -69,3 +119,6 @@ warnings()
 #tdmMatrix <- as.matrix(tfNeg)
 #dados$entidades
 #paste(unlist(dados$entidades), collapse =". ")
+
+
+#https://stackoverflow.com/questions/26937960/creating-word-cloud-of-phrases-not-individual-words-in-r/26938383

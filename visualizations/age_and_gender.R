@@ -22,7 +22,7 @@ plotPai <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill 
         axis.ticks = element_blank()) +   # Centre plot title
   labs(title="Sober",
        x="Age group",
-       y="Total of users")+
+       y="Total users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
 
 email_campaign_funnel$TotalUsers = email_campaign_funnel$totalUsersQ1
@@ -34,7 +34,7 @@ plotQ1 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
         axis.ticks = element_blank()) +   # Centre plot title
   labs(title="Q1 - Drinking alcohol",
        x="Age group",
-       y="Total of users")+
+       y="Total users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
 
 email_campaign_funnel$TotalUsers = email_campaign_funnel$totalUsersQ2
@@ -46,7 +46,7 @@ plotQ2 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
         axis.ticks = element_blank()) +   # Centre plot title
   labs(title="Q2 - User drinking alcohol",
        x="Age group",
-       y="Total of users")+
+       y="Total users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
 
 email_campaign_funnel$TotalUsers = email_campaign_funnel$totalUsersQ3
@@ -58,7 +58,7 @@ plotQ3 <- ggplot(email_campaign_funnel, aes(x = agegroup, y = TotalUsers, fill =
         axis.ticks = element_blank()) +   # Centre plot title
   labs(title="Q3 - User tweeting while drunk",
        x="Age group",
-       y="Total of users")+
+       y="Total users")+
   scale_fill_brewer(palette = "Dark2")  # Color palette
 
 library("cowplot")
