@@ -2,7 +2,7 @@ resultados3 <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados3) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-    load("webintelligence/comparenew.RData")
+    load("webintelligence/compareq3_new.RData")
 })
 
 library(tools)
@@ -79,43 +79,24 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
       resultados3 <- addRow(resultados3, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
-      save.image(file="webintelligence/comparenew.RData")
+      save.image(file="webintelligence/compareq3_new.RData")
     }
   })
 }
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1")) {
+if (!exists("matriz3Gram25Q3NotNull")) {
   try({
     for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q1-not-null_info_entidades.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
+      load("2110/rdas/3gram-25-q3-not-null.Rda")
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
       data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
       data_test <- maFinal[-trainIndex,]
 
-      twoGramTypesCFSQ1 <- treinarPoly(data_train)
-      twoGramTypesCFSQ1
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1 <- getMatriz(twoGramTypesCFSQ1, data_test)
-      resultados3 <- addRow(resultados3, "(Q1) 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q1 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1)
-      save.image(file="webintelligence/comparenew.RData")
-    }
-  })
-}
-
-if (!exists("matriz3Gram25NotNull")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/3gram-25-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      treegram25NotNull <- treinar(data_train)
-      treegram25NotNull
-      matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
-      resultados <- addRow(resultados, "3 GRAM 25 Not Null", matriz3Gram25NotNull)
-      save.image(file="webintelligence/comparenew.RData")
+      treegram25Q3NotNull <- treinar(data_train)
+      treegram25Q3NotNull
+      matriz3Gram25Q3NotNull <- getMatriz(treegram25Q3NotNull, data_test)
+      resultados <- addRow(resultados, "3 GRAM 25 Q3 (Not Null)", matriz3Gram25Q3NotNull)
+      save.image(file="webintelligence/compareq3_new.RData")
     }
   })
 }
