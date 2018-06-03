@@ -65,6 +65,17 @@ library(magrittr)
 set.seed(10)
 split=0.80
 
+load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
+trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+data_test <- maFinal[-trainIndex,]
+
+twogramEntidadesHoraErro <- treinar(data_train)
+twogramEntidadesHoraErro
+matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
+resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
+resultados
+
 if (!exists("matriz2GramEntidadesHoraErro")) {
   try({
     for (indice in 1:5){

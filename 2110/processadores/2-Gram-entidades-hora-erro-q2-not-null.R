@@ -28,6 +28,8 @@ WHERE textparser <> ''
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
+dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados$entidades <- enc2utf8(dados$entidades)
 dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
