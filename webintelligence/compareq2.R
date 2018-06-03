@@ -186,7 +186,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda")) {
       twoGramTypesCFS <- treinar(data_train)
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda <- getMatriz(twoGramTypesCFS, data_test)
-      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
+      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
       save.image(file="webintelligence/compare.RData")
     }
   })
@@ -204,7 +204,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
       twoGramTypesCFS <- treinarPoly(data_train)
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
-      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
+      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
       save.image(file="webintelligence/compare.RData")
     }
   })
@@ -222,7 +222,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2")) {
       twoGramTypesCFSV2 <- treinarPoly(data_train)
       twoGramTypesCFSV2
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2 <- getMatriz(twoGramTypesCFSV2, data_test)
-      resultados2 <- addRow(resultados2, "V2 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2)
+      resultados <- addRow(resultados, "V2 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2)
       save.image(file="webintelligence/compare.RData")
     }
   })
