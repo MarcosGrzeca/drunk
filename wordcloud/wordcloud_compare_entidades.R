@@ -16,7 +16,7 @@ clearConsole();
 dados <- query("SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
                FROM tweets_nlp tn
                JOIN tweets t ON tn.idTweetInterno = t.idInterno
-               WHERE q1 = 1
+               WHERE q2 = 1
                UNION
                SELECT GROUP_CONCAT(tn.palavra SEPARATOR '---') as entidades
                FROM tweets_nlp tn
@@ -45,7 +45,7 @@ docs <- Corpus(VectorSource(dados$entidades)) %>%
 
 tdm <- TermDocumentMatrix(docs) %>%
   as.matrix()
-colnames(tdm) <- c("Alcohol","Sober")
+colnames(tdm) <- c("Drunk","Sober")
 
 par(mfrow=c(1,1))
 comparison.cloud(tdm, random.order=FALSE, colors = c("indianred3","blue3"),

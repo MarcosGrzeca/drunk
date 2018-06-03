@@ -15,7 +15,7 @@ clearConsole();
 
 dados <- query("SELECT GROUP_CONCAT(textoParserEmoticom SEPARATOR ' ') as entidades
                FROM tweets t
-               WHERE q1 = 1
+               WHERE q2 = 1
                UNION
                SELECT GROUP_CONCAT(textoParserEmoticom SEPARATOR ' ') as entidades
                FROM tweets t
@@ -43,11 +43,11 @@ docs <- Corpus(VectorSource(dados$entidades)) %>%
 tdm <- TermDocumentMatrix(docs) %>%
   as.matrix()
 
-colnames(tdm) <- c("Alcohol","Sober")
+colnames(tdm) <- c("Drunk","Sober")
 
 #par(mfrow=c(1,2))
 
-par(mfrow=c(1,1))
+#par(mfrow=c(1,1))
 comparison.cloud(tdm, random.order=FALSE,
                 colors = c("indianred3","blue3"),
                 title.size=2, max.words=250)
