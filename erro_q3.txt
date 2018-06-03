@@ -1,0 +1,18 @@
+Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
+In addition: Warning message:
+In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file 'webintelligence/compareq3_new.RData', probable reason 'No such file or directory'
+Loading required package: lattice
+Loading required package: ggplot2
+Loading required package: doMC
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: parallel
+Loading required package: kernlab
+
+Attaching package: ‘kernlab’
+
+The following object is masked from ‘package:ggplot2’:
+
+    alpha
+
