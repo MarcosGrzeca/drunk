@@ -16,3 +16,7 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
+Error in addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2",  : 
+  object 'resultados2' not found
+In addition: Warning message:
+In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
