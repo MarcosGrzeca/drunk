@@ -9,7 +9,7 @@ subset
 f <- as.simple.formula(subset, "resposta")
 
 subset <- cutoff.biggest.diff(weights)
-subset
+View(subset)
 
 print(f)
 
