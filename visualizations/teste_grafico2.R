@@ -5,7 +5,7 @@ df1 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
 
 df2 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),
-                  len=c(89.343, 81.663, 85.503, 96.131, 80.733, 88.432))
+                  len=c(89.343, 81.663, 85.503, 96.715, 81.398,89.057))
 
 df3 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),
