@@ -187,7 +187,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda")) {
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda <- getMatriz(twoGramTypesCFS, data_test)
       resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
-      save.image(file="webintelligence/compare2.RData")
+      save.image(file="webintelligence/compare.RData")
     }
   })
 }
@@ -205,7 +205,25 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
       resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
-      save.image(file="webintelligence/compare2.RData")
+      save.image(file="webintelligence/compare.RData")
+    }
+  })
+}
+
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2")) {
+  try({
+    for (indice in 1:5){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
+
+      twoGramTypesCFSV2 <- treinarPoly(data_train)
+      twoGramTypesCFSV2
+      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2 <- getMatriz(twoGramTypesCFSV2, data_test)
+      resultados2 <- addRow(resultados2, "V2 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2)
+      save.image(file="webintelligence/compare.RData")
     }
   })
 }
