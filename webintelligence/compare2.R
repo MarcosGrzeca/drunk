@@ -1,5 +1,5 @@
-resultados2 <- data.frame(matrix(ncol = 4, nrow = 0))
-names(resultados2) <- c("Baseline", "F1", "Precisão", "Revocação")
+resultados22 <- data.frame(matrix(ncol = 4, nrow = 0))
+names(resultados22) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
     load("webintelligence/compare2.RData")
@@ -50,12 +50,12 @@ getMatriz <- function(fit, data_test) {
   return (matriz)
 }
 
-addRow <- function(resultados2, baseline, matriz, ...) {
+addRow <- function(resultados22, baseline, matriz, ...) {
   print(baseline)
   newRes <- data.frame(baseline, matriz$byClass["F1"], matriz$byClass["Precision"], matriz$byClass["Recall"])
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
-  newdf <- rbind(resultados2, newRes)
+  newdf <- rbind(resultados22, newRes)
   #save.image(file="webintelligence/compare2.RData")
   return (newdf)
 }
@@ -78,7 +78,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda")) {
       twoGramTypesCFS <- treinar(data_train)
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
+      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
       save.image(file="webintelligence/compare2.RData")
     }
   })
@@ -96,7 +96,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
       twoGramTypesCFS <- treinarPoly(data_train)
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
+      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
       save.image(file="webintelligence/compare2.RData")
     }
   })
