@@ -1,0 +1,35 @@
+Baseline;Baseline;F1;Precisão;Revocação;;
+3 Gram + 25% + Bow # (Poly);87,67123288;82,58064516;93,43065693;;;
+3 Gram + 25% + Bow # (Poly);86,01769912;83,50515464;88,68613139;;;
+3 Gram + 25% + Bow # (Poly);85;83,21678322;86,86131387;;;
+3 Gram + 25% + Bow # (Poly);85,86387435;82,27424749;89,7810219;;;
+3 Gram + 25% + Bow # (Poly);88,08290155;83,60655738;93,06569343;;;
+3 Gram + 25% + Bow #;86,15384615;81,02893891;91,97080292;85,51483421;81,81818182;89,41605839
+3 Gram + 25% + Bow #;84,49197861;82,57839721;86,49635036;;;
+3 Gram + 25% + Bow #;83,8028169;80,95238095;86,86131387;;;
+3 Gram + 25% + Bow #;85,51483421;81,93979933;89,41605839;;;
+3 Gram + 25% + Bow #;86,59793814;81,81818182;91,97080292;;;
+2 Gram + Types + entidades + Info Gain Q2 (Poly);88,74172185;81,21212121;97,81021898;;;
+2 Gram + Types + entidades + Info Gain Q2 (Poly);88,13559322;82,27848101;94,89051095;;;
+2 Gram + Types + entidades + Info Gain Q2 (Poly);85,76388889;81,78807947;90,1459854;;;
+2 Gram + Types + entidades + Info Gain Q2 (Poly);87,24137931;82,67973856;92,33576642;;;
+2 Gram + Types + entidades + Info Gain Q2 (Poly);88,85245902;80,6547619;98,90510949;;;
+2 Gram + Types + entidades + Info Gain Q2;86,95652174;83,05647841;91,24087591;;;
+2 Gram + Types + entidades + Info Gain Q2;85,86206897;81,37254902;90,87591241;;;
+2 Gram + Types + entidades + Info Gain Q2;87,37201365;82,05128205;93,43065693;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly);87,88368336;78,84057971;99,27007299;87,83783784;80,99688474;95,62043796
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly);87,39495798;80,99688474;94,89051095;;-1,163115265;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly);87,83783784;81,76100629;94,89051095;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly);88,36424958;82,13166144;95,62043796;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly);87,2305141;79,93920973;95,98540146;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2;86,29441624;80,44164038;93,06569343;85,35714286;81,93979933;89,05109489
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2;85,35714286;83,56643357;87,22627737;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2;85,51483421;81,93979933;89,41605839;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2;85,31468531;81,87919463;89,05109489;;;
+2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2;84,60176991;82,13058419;87,22627737;;;
+2 GRAM + entidades + hora + erro (Poly);87,90459966;82,42811502;94,16058394;87,90459966;82,1086262;93,79562044
+2 GRAM + entidades + hora + erro (Poly);87,98646362;82,01892744;94,89051095;;;
+2 GRAM + entidades + hora + erro (Poly);87,95811518;84,28093645;91,97080292;;;
+2 GRAM + entidades + hora + erro (Poly);86,15384615;81,02893891;91,97080292;;;
+2 GRAM + entidades + hora + erro (Poly);87,56388416;82,1086262;93,79562044;;;
+2 GRAM + entidades + hora + erro;86,98630137;81,93548387;92,70072993;;;
