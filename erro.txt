@@ -1,65 +1,6 @@
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning message:
-In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file 'webintelligence/compare.RData', probable reason 'No such file or directory'
 Loading required package: lattice
 Loading required package: ggplot2
 Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in `[.data.frame`(newdata, , object$method$center, drop = FALSE) : 
-  undefined columns selected
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning messages:
-1: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-4: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-5: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Warning messages:
-1: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-4: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-5: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning messages:
-1: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-4: In read.dcf(file.path(p, "DESCRIPTION"), c("Package", "Version")) :
-  cannot open compressed file '/usr/lib64/R/library/caret/DESCRIPTION', probable reason 'No such file or directory'
-5: In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '', probable reason 'No such file or directory'
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning messages:
-1: In read.dcf(file.path(p, "DESCRIPTION"), c("Package", "Version")) :
-  cannot open compressed file '/usr/lib64/R/library/caret/DESCRIPTION', probable reason 'No such file or directory'
-2: In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '', probable reason 'No such file or directory'
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning messages:
-1: In read.dcf(file.path(p, "DESCRIPTION"), c("Package", "Version")) :
-  cannot open compressed file '/usr/lib64/R/library/caret/DESCRIPTION', probable reason 'No such file or directory'
-2: In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '', probable reason 'No such file or directory'
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning messages:
-1: In read.dcf(file.path(p, "DESCRIPTION"), c("Package", "Version")) :
-  cannot open compressed file '/usr/lib64/R/library/caret/DESCRIPTION', probable reason 'No such file or directory'
-2: In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '', probable reason 'No such file or directory'
