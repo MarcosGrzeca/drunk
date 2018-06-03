@@ -12,11 +12,3 @@ Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
 In addition: Warning message:
 In readChar(con, 5L, useBytes = TRUE) :
   cannot open compressed file '2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q3-not-null_info_entidades.RdaAAA', probable reason 'No such file or directory'
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
