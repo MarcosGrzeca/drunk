@@ -26,7 +26,7 @@ tmp <- transform(source_df, transform=totalTweetsQ2/12)
 vals <- c(tmp$transform)
 val_names <- sprintf("%s (%s)", header, scales::percent(round(vals/sum(vals), 2)))
 names(vals) <- val_names
-plotQ2 <- waffle::waffle(vals,  title="User drinking alcohol")
+plotQ2 <- waffle::waffle(vals,  title="Drunk")
 
 tmp <- transform(source_df, transform=totalTweetsQ3/12)
 vals <- c(tmp$transform)
@@ -40,7 +40,7 @@ plotQ3 <- waffle::waffle(vals, title="User tweeting while drunk", pad=1)
 library("cowplot")
 #plot_grid(plotTweetsNaoAlcoolizados, plotQ1, plotQ2, plotQ3, labels = c("Question 1-", "Question 1+", "Question 2+", "Question 3+"), ncol = 2, nrow = 2)
 
-plot_grid(plotTweetsNaoAlcoolizados, plotQ1, plotQ2, plotQ3, ncol = 2, nrow = 2)
+plot_grid(plotTweetsNaoAlcoolizados, plotQ2, ncol = 1, nrow = 2)
 
 
 
