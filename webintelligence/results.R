@@ -1,5 +1,5 @@
-load("webintelligence/compare.RData")
-View(resultados)
+load("webintelligence/comparenew.RData")
+View(resultados3)
 
 dump(resultados, "resultados/jurandir.csv")
 dump(resultados2, "resultados/jurandir2.csv")
