@@ -1,8 +1,8 @@
-resultados2 <- data.frame(matrix(ncol = 4, nrow = 0))
-names(resultados2) <- c("Baseline", "F1", "Precisão", "Revocação")
+resultados <- data.frame(matrix(ncol = 4, nrow = 0))
+names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-    load("webintelligence/compare2.RData")
+    load("webintelligence/compare_q3.RData")
 })
 
 library(tools)
@@ -50,13 +50,13 @@ getMatriz <- function(fit, data_test) {
   return (matriz)
 }
 
-addRow <- function(resultados2, baseline, matriz, ...) {
+addRow <- function(resultados, baseline, matriz, ...) {
   print(baseline)
   newRes <- data.frame(baseline, matriz$byClass["F1"], matriz$byClass["Precision"], matriz$byClass["Recall"])
   rownames(newRes) <- baseline
   names(newRes) <- c("Baseline", "F1", "Precisão", "Revocação")
-  newdf <- rbind(resultados2, newRes)
-  #save.image(file="webintelligence/compare2.RData")
+  newdf <- rbind(resultados, newRes)
+  #save.image(file="webintelligence/compare_q3.RData")
   return (newdf)
 }
 
@@ -64,3 +64,22 @@ library(magrittr)
 
 set.seed(10)
 split=0.80
+
+
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
+  try({
+    for (indice in 1:5){
+      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q3-not-null_info_entidades.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
+
+      twoGramTypesCFS <- treinarPoly(data_train)
+      twoGramTypesCFS
+      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
+      resultados2 <- addRow(resultados2, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
+      save.image(file="webintelligence/compare2.RData")
+    }
+  })
+}
