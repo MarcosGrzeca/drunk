@@ -14,7 +14,7 @@ clearConsole();
 
 dados <- query("SELECT t.id,
        t.idInterno,
-       q3 AS resposta,
+       q1 AS resposta,
        textParser,
        textoParserEmoticom AS textoCompleto,
        hashtags,
