@@ -2,7 +2,7 @@ resultados3 <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados3) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-    load("webintelligence/compare_q3q1.RData")
+    load("webintelligence/comparenew.RData")
 })
 
 library(tools)
@@ -79,7 +79,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
       twoGramTypesCFS
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
       resultados3 <- addRow(resultados3, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q3 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
-      save.image(file="webintelligence/compare2.RData")
+      save.image(file="webintelligence/comparenew.RData")
     }
   })
 }
@@ -97,7 +97,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1")) {
       twoGramTypesCFSQ1
       matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1 <- getMatriz(twoGramTypesCFSQ1, data_test)
       resultados3 <- addRow(resultados3, "(Q1) 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q1 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1)
-      save.image(file="webintelligence/compare2.RData")
+      save.image(file="webintelligence/comparenew.RData")
     }
   })
 }
