@@ -1,5 +1,5 @@
-resultados <- data.frame(matrix(ncol = 4, nrow = 0))
-names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
+resultados3 <- data.frame(matrix(ncol = 4, nrow = 0))
+names(resultados3) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
     load("webintelligence/compare_estatistico_q3.RData")
