@@ -67,7 +67,7 @@ split=0.80
 
 if (!exists("matriz3Gram")) {
   try({
-    for (indice in 1:5) {
+    for (indice in 1:30) {
       load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -85,7 +85,7 @@ if (!exists("matriz3Gram")) {
 
 if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
   try({
-    for (indice in 1:5){
+    for (indice in 1:30){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
@@ -103,7 +103,7 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
 
 if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2")) {
   try({
-    for (indice in 1:5){
+    for (indice in 1:30){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
       maFinal$resposta <- as.factor(maFinal$resposta)
       trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
