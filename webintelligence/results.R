@@ -1,3 +1,7 @@
+load("webintelligence/compare_estatistico.RData")
+View(resultados)
+
+#Q1
 load("webintelligence/comparenew.RData")
 View(resultados3)
 
@@ -13,7 +17,7 @@ library(mlbench)
 
 importance <- varImp(twoGramTypesCFS, scale=FALSE)
 # summarize importance
-marcos <- print(importance, top = 31)
+marcos <- print(importance, top = 50)
 marcos
 
 ls()

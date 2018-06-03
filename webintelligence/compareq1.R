@@ -2,7 +2,7 @@ resultados3 <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados3) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-    load("webintelligence/comparenew.RData")
+    load("webintelligence/compareq1.RData")
 })
 
 library(tools)
@@ -65,7 +65,7 @@ library(magrittr)
 set.seed(10)
 split=0.80
 
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1V2")) {
+if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1")) {
   try({
     for (indice in 1:5){
       load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q1-not-null_info_entidades.Rda")
@@ -76,9 +76,9 @@ if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1V2")) {
 
       twoGramTypesCFSQ1 <- treinarPoly(data_train)
       twoGramTypesCFSQ1
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1V2 <- getMatriz(twoGramTypesCFSQ1, data_test)
-      resultados3 <- addRow(resultados3, "(Q1) 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q1 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1V2)
-      save.image(file="webintelligence/comparenew.RData")
+      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1 <- getMatriz(twoGramTypesCFSQ1, data_test)
+      resultados3 <- addRow(resultados3, "(Q1) 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q1 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyQ1)
+      save.image(file="webintelligence/compareq1.RData")
     }
   })
 }
@@ -96,7 +96,7 @@ if (!exists("matriz3Gram25NotNull")) {
       treegram25NotNull
       matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
       resultados3 <- addRow(resultados3, "3 GRAM 25 Not Null", matriz3Gram25NotNull)
-      save.image(file="webintelligence/comparenew.RData")
+      save.image(file="webintelligence/compareq1.RData")
     }
   })
 }
