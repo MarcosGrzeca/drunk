@@ -1,17 +1,13 @@
 Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
 In addition: Warning message:
 In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file 'webintelligence/comparenew.RData', probable reason 'No such file or directory'
+  cannot open compressed file 'webintelligence/compareq1_v30.RData', probable reason 'No such file or directory'
 Loading required package: lattice
 Loading required package: ggplot2
 Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning message:
-In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q3-not-null_info_entidades.RdaAAA', probable reason 'No such file or directory'
 Loading required package: kernlab
 
 Attaching package: ‘kernlab’
@@ -20,7 +16,3 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
-In addition: Warning message:
-In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
