@@ -2,7 +2,7 @@ resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
 try({
-    load("webintelligence/compare_estatistico_0406.RData")
+    load("webintelligence/compareq1_v30.RData")
 })
 
 library(tools)
@@ -67,17 +67,19 @@ split=0.80
 
 if (!exists("matriz3Gram25NotNull")) {
   try({
-    load("2110/rdas/3gram-25-not-null.Rda")
-    maFinal$resposta <- as.factor(maFinal$resposta)
-    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-    data_test <- maFinal[-trainIndex,]
+    for (indice in 1:20){ 
+      load("2110/rdas/3gram-25-not-null.Rda")
+      maFinal$resposta <- as.factor(maFinal$resposta)
+      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+      data_test <- maFinal[-trainIndex,]
 
-    treegram25NotNull <- treinar(data_train)
-    treegram25NotNull
-    matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
-    resultados <- addRow(resultados, "(Q1) 3 GRAM 25 Not Null", matriz3Gram25NotNull)
-    save.image(file=fileName)
+      treegram25NotNull <- treinar(data_train)
+      treegram25NotNull
+      matriz3Gram25NotNull <- getMatriz(treegram25NotNull, data_test)
+      resultados <- addRow(resultados, "(Q1) 3 GRAM 25 Not Null", matriz3Gram25NotNull)
+      save.image(file="webintelligence/compareq1_v30.RData")
+    }
   })
 }
 
