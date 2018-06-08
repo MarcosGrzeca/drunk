@@ -12,3 +12,4 @@ The following object is masked from ‘package:ggplot2’:
 
     alpha
 
+There were 30 warnings (use warnings() to see them)
