@@ -1,25 +1,6 @@
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-In addition: Warning message:
-In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file 'webintelligence/compareq1_v30.RData', probable reason 'No such file or directory'
 Loading required package: lattice
 Loading required package: ggplot2
 Loading required package: doMC
 Loading required package: foreach
 Loading required package: iterators
 Loading required package: parallel
-Loading required package: kernlab
-
-Attaching package: ‘kernlab’
-
-The following object is masked from ‘package:ggplot2’:
-
-    alpha
-
-There were 20 warnings (use warnings() to see them)
-Error in names(resamples) <- gsub("^\\.", "", names(resamples)) : 
-  attempt to set an attribute on NULL
-In addition: Warning messages:
-1: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-2: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
-3: In .local(x, ...) : Variable(s) `' constant. Cannot scale data.
