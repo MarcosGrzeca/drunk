@@ -77,6 +77,10 @@ magica <- function(dados) {
   dados$entidades <- iconv(dados$entidades, to='ASCII//TRANSLIT')
   dados$entidades = gsub(" ", "_", dados$entidades)
 
+  dados$entidadesDBPedia <- enc2utf8(dados$entidadesDBPedia)
+  dados$entidadesDBPedia <- iconv(dados$entidadesDBPedia, to='ASCII//TRANSLIT')
+  dados$entidadesDBPedia = gsub(" ", "_", dados$entidadesDBPedia)
+
   dados$hashtags = gsub("#", "#tag_", dados$hashtags)
   return (dados)
 }

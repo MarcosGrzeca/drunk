@@ -178,3 +178,14 @@ mapp <- function() {
   ) %>%
   select(question)
 }
+
+
+vectorize_sequences <- function(sequences, dimension = max_features) {
+  results <- matrix(0, nrow = length(sequences), ncol = dimension)
+  for (i in 1:length(sequences)) {
+    if (length(sequences[[i]])) {
+      results[i, sequences[[i]]] <- 1
+    }
+  }
+  return (results)
+}

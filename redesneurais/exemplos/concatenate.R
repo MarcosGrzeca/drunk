@@ -92,24 +92,69 @@ sentence <- layer_input(shape = c(textParser_maxlen), dtype = "int32")
 encoded_sentence <- sentence %>% 
   layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>% 
   layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size) %>%
-  layer_repeat_vector(n = entidades_maxlen)
+  layer_lstm(units = 32)
 
-entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")
 encoded_entidades <- entidades %>%
   layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
   layer_dropout(rate = 0.3) %>%
   layer_lstm(units = embed_hidden_size)
-  #%>%   layer_repeat_vector(n = textParser_maxlen)
 
-merged <- list(encoded_sentence, encoded_entidades) %>%
-  layer_add() %>%
-  layer_lstm(units = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3)
+entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")
+output_tensor <- entidades %>%
+  layer_dense(units = 32, activation = "relu") %>%
+  layer_dense(units = 32, activation = "relu")
 
+entidades
+output_tensor
+
+
+#Example funcional API
+#https://cran.r-project.org/web/packages/keras/vignettes/functional_api.html
+main_input <- layer_input(shape = c(100), dtype = 'int32', name = 'main_input')
+
+lstm_out <- main_input %>% 
+  layer_embedding(input_dim = 10000, output_dim = 512, input_length = 100) %>% 
+  layer_lstm(units = 32)
+
+auxiliary_input <- layer_input(shape = c(32), name = 'aux_input')
+auxiliary_input
+
+lstm_out
+
+main_output <- layer_concatenate(c(encoded_sentence, auxiliary_input)) %>%  
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 1, activation = 'sigmoid')
+
+model <- keras_model(
+  inputs = c(sentence, auxiliary_input), 
+  outputs = main_output
+)
+#Fim Example funcional API
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 16, activation = "relu", input_shape = c(max_features)) %>%
+  layer_dense(units = 16, activation = "relu") %>%
+  layer_flatten()
+  
+
+
+
+merged <- layer_concatenate(c(encoded_sentence, encoded_entidades)) %>%  
+      layer_dense(units = 64, activation = 'relu') %>% 
+      layer_dense(units = 64, activation = 'relu')
+
+merged <- layer_concatenate(c(encoded_sentence, output_tensor)) %>%  
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 64, activation = 'relu')
+  
 preds <- merged %>%
   #layer_dense(units = vocab_size, activation = "sigmoid")
   layer_dense(units = 1, activation = "sigmoid")
+
+list(sentence, entidades)
 
 model <- keras_model(inputs = list(sentence, entidades), outputs = preds)
 model %>% compile(
@@ -130,8 +175,6 @@ history <- model %>% fit(
   epochs = 4,
   validation_split=0.20
 )
-
-history
 
 
 #TREINADO

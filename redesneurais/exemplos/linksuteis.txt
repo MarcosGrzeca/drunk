@@ -1,4 +1,13 @@
+Tensorflow
 https://tensorflow.rstudio.com/blog/keras-for-r.html
 https://tensorflow.rstudio.com/keras/articles/examples/babi_rnn.html
 https://tensorflow.rstudio.com/keras/articles/examples/conv_lstm.html
 https://tensorflow.rstudio.com/keras/articles/examples/imdb_bidirectional_lstm.html
+
+Keras R Studio
+https://keras.rstudio.com/reference/index.html
+https://keras.rstudio.com/articles/functional_api.html
+https://cran.r-project.org/web/packages/keras/vignettes/functional_api.html
+
+https://machinelearningmastery.com/keras-functional-api-deep-learning/
+https://www.datacamp.com/community/tutorials/keras-r-deep-learning

@@ -1,3 +1,5 @@
+#https://keras.rstudio.com/reference/index.html
+
 library(keras)
 library(readr)
 library(stringr)
@@ -85,22 +87,64 @@ entidades_maxlen <- map_int(all_data$entidades, ~length(.x)) %>% max()
 textParser_maxlen
 entidades_maxlen
 
+
 train_vec <- vectorize_stories(dadosTransformado, vocab, textParser_maxlen, entidades_maxlen)
 # Defining the model ------------------------------------------------------
+
+versaoFuncion <- function() {
+  entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+  encoded_entidades <- entidades %>%
+    layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+    layer_dropout(rate = 0.3) %>%
+    layer_lstm(units = embed_hidden_size)
+  #%>%   layer_repeat_vector(n = textParser_maxlen)
+}
 
 sentence <- layer_input(shape = c(textParser_maxlen), dtype = "int32")
 encoded_sentence <- sentence %>% 
   layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>% 
   layer_dropout(rate = 0.3) %>%
   layer_lstm(units = embed_hidden_size) %>%
-  layer_repeat_vector(n = entidades_maxlen)
+  layer_repeat_vector(n = textParser_maxlen)
 
-entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
+max_features <- 5000
+maxlen = textParser_maxlen
+outputDim = 32
+dados <- getDados()
+data <- processarDados(dados$textParser, maxlen, max_features)
+str(data)
+
+entidades <- layer_input(shape = c(textParser_maxlen), dtype = "int32")  
 encoded_entidades <- entidades %>%
   layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
   layer_dropout(rate = 0.3) %>%
   layer_lstm(units = embed_hidden_size)
-  #%>%   layer_repeat_vector(n = textParser_maxlen)
+#%>%   layer_repeat_vector(n = textParser_maxlen)
+
+anterior <- function() {
+  max_features <- 5000
+  maxlen = 30
+  outputDim = 32
+
+  dados <- getDados()
+  data <- processarDados(dados$textParser, maxlen, max_features)
+
+  labelsTmp <- as.numeric(dados$resposta)
+  labels <- as.array(labelsTmp)
+  cat('Shape of label tensor:', dim(labels), "\n")
+
+  training_samples <- 3195
+  validation_samples <- 799
+
+  source(file_path_as_absolute("redesneurais/separadorDados.R"))
+
+  model <- keras_model_sequential() %>%
+    layer_embedding(input_dim = max_features, output_dim = outputDim) %>%
+    layer_lstm(units = 32) %>%
+    layer_dense(units = 16, activation = "relu") %>%
+    layer_dense(units = 16, activation = "relu") %>%
+    layer_dense(units = 1, activation = "sigmoid")
+}
 
 merged <- list(encoded_sentence, encoded_entidades) %>%
   layer_add() %>%
@@ -124,14 +168,12 @@ model %>% compile(
 #stop("Nao treinar")
 
 history <- model %>% fit(
-  x = list(train_vec$new_textParser, train_vec$new_entidades),
+  x = list(train_vec$new_textParser, data),
   y = y_train,
   batch_size = batch_size,
   epochs = 4,
   validation_split=0.20
 )
-
-history
 
 
 #TREINADO

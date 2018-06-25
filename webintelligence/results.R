@@ -1,3 +1,11 @@
+library(tools)
+source(file_path_as_absolute("functions.R"))
+
+load("webintelligence/compare_estatistico_0406.RData")
+load("webintelligence/compareq1_v30.RData")
+View(resultados)
+dump(resultados, "estatistico.csv")
+
 options(max.print = 99999999)
 
 load("webintelligence/compare_estatistico.RData")

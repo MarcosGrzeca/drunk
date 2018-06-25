@@ -6,6 +6,8 @@ library(tibble)
 library(dplyr)
 library(tools)
 
+source(file_path_as_absolute("redesneurais/getDados.R"))
+
 tokenize_words <- function(x){
   x <- x %>% 
     str_replace_all('([[:punct:]]+)', ' \\1') %>% 
@@ -39,7 +41,6 @@ epochs <- 3
 # Data Preparation --------------------------------------------------------s
 max_features <- 5000
 
-source(file_path_as_absolute("redesneurais/getDados.R"))
 dados <- getDados()
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)
@@ -88,30 +89,76 @@ entidades_maxlen
 train_vec <- vectorize_stories(dadosTransformado, vocab, textParser_maxlen, entidades_maxlen)
 # Defining the model ------------------------------------------------------
 
-sentence <- layer_input(shape = c(textParser_maxlen), dtype = "int32")
-encoded_sentence <- sentence %>% 
+main_input <- layer_input(shape = c(textParser_maxlen), dtype = "int32")
+lstm_out <- main_input %>% 
   layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>% 
-  layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size) %>%
-  layer_repeat_vector(n = entidades_maxlen)
+  layer_lstm(units = 64)
 
-entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")  
-encoded_entidades <- entidades %>%
-  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3) %>%
-  layer_lstm(units = embed_hidden_size)
-  #%>%   layer_repeat_vector(n = textParser_maxlen)
 
-merged <- list(encoded_sentence, encoded_entidades) %>%
-  layer_add() %>%
-  layer_lstm(units = embed_hidden_size) %>%
-  layer_dropout(rate = 0.3)
+#entidades <- layer_input(shape = c(entidades_maxlen), dtype = "int32")
+#encoded_entidades <- entidades %>%
+#  layer_embedding(input_dim = vocab_size, output_dim = embed_hidden_size) %>%
+#  layer_dropout(rate = 0.3) %>%
+#  layer_lstm(units = embed_hidden_size)
 
+
+sequences <- processarSequence(x_train$entidades, entidades_maxlen, max_features)
+sequences <- vectorize_sequences(sequences, dimension = 5000)
+
+#auxiliary_input <- layer_input(shape = c(entidades_maxlen))
+auxiliary_input <- layer_input(shape = c(5000))
+
+main_output <- layer_concatenate(c(lstm_out, auxiliary_input)) %>%  
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 1, activation = 'sigmoid')
+
+
+model <- keras_model(
+  inputs = c(main_input, auxiliary_input),
+  outputs = main_output
+)
+
+model %>% compile(
+  optimizer = "rmsprop",
+  loss = "binary_crossentropy",
+  metrics = c("acc")
+)
+
+history <- model %>% fit(
+  x = list(train_vec$new_textParser, sequences),
+  y = y_train,
+  batch_size = batch_size,
+  epochs = 4,
+  validation_split=0.20
+)
+
+history
+
+#Fim Example funcional API
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 16, activation = "relu", input_shape = c(max_features)) %>%
+  layer_dense(units = 16, activation = "relu") %>%
+  layer_flatten()
+  
+
+
+merged <- layer_concatenate(c(lstm_out, encoded_entidades)) %>%  
+      layer_dense(units = 64, activation = 'relu') %>% 
+      layer_dense(units = 64, activation = 'relu')
+
+merged <- layer_concatenate(c(lstm_out, output_tensor)) %>%  
+  layer_dense(units = 64, activation = 'relu') %>% 
+  layer_dense(units = 64, activation = 'relu')
+  
 preds <- merged %>%
   #layer_dense(units = vocab_size, activation = "sigmoid")
   layer_dense(units = 1, activation = "sigmoid")
 
-model <- keras_model(inputs = list(sentence, entidades), outputs = preds)
+list(main_input, entidades)
+
+model <- keras_model(inputs = list(main_input, entidades), outputs = preds)
 model %>% compile(
   optimizer = "rmsprop",
   loss = "binary_crossentropy",
@@ -130,8 +177,6 @@ history <- model %>% fit(
   epochs = 4,
   validation_split=0.20
 )
-
-history
 
 
 #TREINADO

@@ -131,8 +131,6 @@ history <- model %>% fit(
   validation_split=0.20
 )
 
-history
-
 
 #TREINADO
 test_vec <- vectorize_stories(dadosTransformadoTest, vocab, textParser_maxlen, entidades_maxlen)

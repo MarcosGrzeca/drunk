@@ -1,0 +1,34 @@
+ Examples R word embedding + Enriquecimento semântico:
+✔ babi_memnn: https://keras.rstudio.com/articles/examples/babi_memnn.html @done (18-06-24 17:08)
+  Utiliza word embedding para tudo
+  match <- list(sequence_encoded_m, question_encoded) %>%
+    layer_dot(axes = c(2,2)) %>%
+    layer_activation("softmax")
+
+  response <- list(match, sequence_encoded_c) %>%
+    layer_add() %>%
+    layer_permute(c(2,1))
+
+  answer <- list(response, question_encoded) %>%
+    layer_concatenate() %>%
+    layer_lstm(32) %>%
+    layer_dropout(rate = 0.3) %>%
+    layer_dense(vocab_size) %>%
+    layer_activation("softmax")
+--- ✄ -----------------------
+☐ https://keras.rstudio.com/articles/functional_api.html
+  Exemplo com concatenate
+  O exemplo é bom, porém não demonstra como os dados podem ser "inseridos"
+    main_input <- layer_input(shape = c(100), dtype = 'int32', name = 'main_input')
+
+    lstm_out <- main_input %>% 
+      layer_embedding(input_dim = 10000, output_dim = 512, input_length = 100) %>% 
+      layer_lstm(units = 32)
+
+    auxiliary_input <- layer_input(shape = c(5), name = 'aux_input')
+    main_output <- layer_concatenate(c(lstm_out, auxiliary_input)) %>%  
+      layer_dense(units = 64, activation = 'relu') %>% 
+      layer_dense(units = 64, activation = 'relu') %>% 
+      layer_dense(units = 64, activation = 'relu') %>% 
+      layer_dense(units = 1, activation = 'sigmoid', name = 'main_output')
+--- ✄ -----------------------
