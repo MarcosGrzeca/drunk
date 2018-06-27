@@ -75,9 +75,9 @@ model %>% compile(
 # Training ----------------------------------------------------------------
 
 history <- model %>%
-  fit(
-    dados, y_train,
-    batch_size = batch_size,
-    epochs = epochs,
-    validation_split = 0.2
-  )
+              fit(
+                dados, y_train,
+                batch_size = batch_size,
+                epochs = epochs,
+                validation_split = 0.2
+              )

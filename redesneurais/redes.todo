@@ -3,11 +3,13 @@ Redes neuras funcionando:
   Word Embedding LSTM do texto + Word Embedding LSTM do enriquecimento semântico
 ✔ redesneurais/exemplos/concatenatev2.R @done (18-06-25 21:13)
   One hot enconding do Enriquecimento semântico + Word Embedding LSTM do texto
-☐ CNN para texto
+✔ CNN para texto: redesneurais\exemplos\cnn\cnn_drunk.R @done (18-06-26 22:45)
   https://keras.rstudio.com/articles/examples/imdb_cnn.html
   Acurácia treinamento: 0.9072
   Acurácia validação: 0.8873
-☐ CNN + LSTM para texto
+✔ CNN + LSTM para texto: redesneurais\exemplos\cnn\cnn_lstm_drunk.R @done (18-06-26 22:45)
   https://keras.rstudio.com/articles/examples/imdb_cnn_lstm.html
   Acurácia treinamento: 0.9245
   Acurácia validação: 0.8574
+☐ CNN + Enriquecimento semântico:
+
