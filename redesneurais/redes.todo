@@ -1,0 +1,13 @@
+Redes neuras funcionando:
+✔ redesneurais/exemplos/versaofuncional1.R @done (18-06-25 21:14)
+  Word Embedding LSTM do texto + Word Embedding LSTM do enriquecimento semântico
+✔ redesneurais/exemplos/concatenatev2.R @done (18-06-25 21:13)
+  One hot enconding do Enriquecimento semântico + Word Embedding LSTM do texto
+☐ CNN para texto
+  https://keras.rstudio.com/articles/examples/imdb_cnn.html
+  Acurácia treinamento: 0.9072
+  Acurácia validação: 0.8873
+☐ CNN + LSTM para texto
+  https://keras.rstudio.com/articles/examples/imdb_cnn_lstm.html
+  Acurácia treinamento: 0.9245
+  Acurácia validação: 0.8574
