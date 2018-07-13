@@ -7,7 +7,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 5
+CORES <- 2
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -27,14 +27,22 @@ treinarPoly <- function(data_train){
     return (fit)
 }
 
+getMatriz <- function(fit, data_test) {
+  # registerDoMC(CORES)
+  pred <- predict(fit, subset(data_test, select = -c(resposta)))
+  matriz <- confusionMatrix(data = pred, data_test$resposta, positive="1")
+  return (matriz)
+}
+
 library(magrittr)
 
 set.seed(10)
-split=0.80
+split = 0.80
 
-try({
-	load("2110/rdas/2gram-q2-not-null.Rda")
-	model <- treinarPoly(maFinal)
-	saveRDS(model, "model_q2.rds")
-    save(model, file="model_q2.Rdata")
-})
+#try({
+	 model1 <- readRDS("model_q2.rds")
+   load("pre_selecionar/model_q2.Rdata")
+   load("2110/rdas/2gram-candidatos.Rda");
+	 data_test <- subset(maFinal, select = -c(idzaoTweet))
+   pred <- predict(model, data_test)
+#})
