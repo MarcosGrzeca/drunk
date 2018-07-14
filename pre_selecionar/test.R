@@ -40,9 +40,16 @@ set.seed(10)
 split = 0.80
 
 #try({
-	 model1 <- readRDS("model_q2.rds")
+	 model1 <- readRDS("pre_selecionar/model_q2.rds")
    load("pre_selecionar/model_q2.Rdata")
+   
+
+
    load("pre_selecionar/2gram-candidatos.Rda");
 	 data_test <- subset(maFinal, select = -c(idzaoTweet))
+   data_test <- subset(maFinal, select = -c(resposta))
    pred <- predict(model, data_test)
 #})
+
+load("pre_selecionar/train.Rdata")
+   

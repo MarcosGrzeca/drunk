@@ -9,13 +9,16 @@ outputDim = 16
 dados <- getDados()
 data <- processarDados(dados$textParser, maxlen, max_features)
 
+str(data)
+
 labelsTmp <- as.numeric(dados$resposta)
 labels <- as.array(labelsTmp)
 cat('Shape of label tensor:', dim(labels), "\n")
 
+#1054 - 843
 
-training_samples <- 3195
-validation_samples <- 799
+training_samples <- 843
+validation_samples <- 211
 
 source(file_path_as_absolute("redesneurais/separadorDados.R"))
 
@@ -35,15 +38,24 @@ model %>% compile(
 
 tecnica <- "Word Embedding"
 testes <- adicionarTeste(3, 16)
-testes <- adicionarTeste(3, 32)
-testes <- adicionarTeste(3, 64)
-testes <- adicionarTeste(5, 16)
-testes <- adicionarTeste(5, 32)
-testes <- adicionarTeste(5, 64)
-testes <- adicionarTeste(7, 16)
-testes <- adicionarTeste(7, 32)
-testes <- adicionarTeste(7, 64)
-testes <- adicionarTeste(10, 16)
-testes <- adicionarTeste(10, 32)
-testes <- adicionarTeste(10, 64)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+testes <- adicionarTeste(3, 16)
+#testes <- adicionarTeste(3, 32)
+#testes <- adicionarTeste(3, 64)
+#testes <- adicionarTeste(5, 16)
+#testes <- adicionarTeste(5, 32)
+#testes <- adicionarTeste(5, 64)
+#testes <- adicionarTeste(7, 16)
+#testes <- adicionarTeste(7, 32)
+#testes <- adicionarTeste(7, 64)
+#testes <- adicionarTeste(10, 16)
+#testes <- adicionarTeste(10, 32)
+#testes <- adicionarTeste(10, 64)
 source(file_path_as_absolute("redesneurais/parteFinal.R"))

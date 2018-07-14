@@ -9,7 +9,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 
 getDados <- function() {
-  dados <- query("SELECT q1 AS resposta,
+  dados <- query("SELECT q3 AS resposta,
                  CONCAT(textParser, ' marcos') as textParser,
                  textoParserRisadaEmoticom,
                  textoParserEmoticom,
@@ -22,7 +22,8 @@ getDados <- function() {
                  FROM tweets t
                  WHERE textparser <> ''
                  AND id <> 462478714693890048
-                 AND q1 IS NOT NULL
+                 AND q3 IS NOT NULL
+                 AND q2 = 1
                  ")
   dados$resposta[is.na(dados$resposta)] <- 0
   dados$textParser <- enc2utf8(dados$textParser)
@@ -153,7 +154,7 @@ avaliacaoFinalSave <- function(model, x_test, y_test, history, tecnica, InputDim
   rownames(tableResultados) <- tecnica
   names(tableResultados) <- c("Tecnica", "InputDim", "OutputDim", "Features", "Epochs", "Batch", "F1", "Precisao", "Revocacao", "Acuracia", "Acuracia treinamento", "Acuracia validação", "Loss treinamento", "Loss validação", "Iteracao", "Texto")
 
-  pathSave <- "redesneurais/planilhas/resultados_1905.csv"
+  pathSave <- "redesneurais/planilhas/wtdb.csv"
   if (file.exists(pathSave)) {
     write.table(tableResultados, pathSave, sep = ";", col.names = F, append = T)
   } else {

@@ -7,7 +7,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 5
+CORES <- 2
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -35,6 +35,8 @@ split=0.80
 try({
 	load("2110/rdas/2gram-q2-not-null.Rda")
 	model <- treinarPoly(maFinal)
-	saveRDS(model, "model_q2.rds")
-    save(model, file="model_q2.Rdata")
+	#saveRDS(model, "pre_selecionar/model_q2.rds")
+    #save(model, file="pre_selecionar/model_q2.Rdata")
+    save.image("pre_selecionar/train_local.Rdata")
+
 })
