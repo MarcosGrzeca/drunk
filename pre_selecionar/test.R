@@ -40,16 +40,36 @@ set.seed(10)
 split = 0.80
 
 #try({
-	 model1 <- readRDS("pre_selecionar/model_q2.rds")
-   load("pre_selecionar/model_q2.Rdata")
+	 #model1 <- readRDS("pre_selecionar/model_q2.rds")
+   #load("pre_selecionar/model_q2.Rdata")
    
-
-
-   load("pre_selecionar/2gram-candidatos.Rda");
-	 data_test <- subset(maFinal, select = -c(idzaoTweet))
-   data_test <- subset(maFinal, select = -c(resposta))
-   pred <- predict(model, data_test)
+   load("pre_selecionar/train_local.Rdata")
+   load("pre_selecionar/2gram-adaptado_novos_tweets.Rda");
+	 #data_test <- subset(maFinal, select = -c(idzaoTweet, numeroErros, emoticonPos, emoticonNeg))
+   #data_test <- subset(maFinal, select = -c(idzaoTweet))
+   #data_test <- subset(maFinal, select = -c(resposta))
+   #data_test <- maClassificar
+   
+   
+  
+   load("2110/rdas/2gram-q2-not-null.Rda")
+   maTreinamento <- maFinal
+   
+   View(data_test)
+   pred <- predict(model, subset(maFinal, select = - c(resposta)))
+   
+   pred
+   data_test
+   
+   write.csv(pred, "pre_selecionar/dump.csv")
+   
+   extractProb(model, testX = data_test)
+   
 #})
 
-load("pre_selecionar/train.Rdata")
-   
+#load("pre_selecionar/train.Rdata")
+
+
+
+alphaindex(model$finalModel)
+coef(model$finalModel)

@@ -7,14 +7,15 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 2
+CORES <- 5
 registerDoMC(CORES)
 
 treinar <- function(data_train){
     fit <- train(x = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = 5, savePred=T))
+            #trControl = trainControl(method = "cv", number = 5, savePred=T))
+            trControl = trainControl(method = "cv", number = 5, classProbs =  TRUE))
     return (fit)
 }
 
@@ -35,8 +36,5 @@ split=0.80
 try({
 	load("2110/rdas/2gram-q2-not-null.Rda")
 	model <- treinarPoly(maFinal)
-	#saveRDS(model, "pre_selecionar/model_q2.rds")
-    #save(model, file="pre_selecionar/model_q2.Rdata")
-    save.image("pre_selecionar/train_local.Rdata")
-
+	save.image("pre_selecionar/train_Poly.Rdata")
 })

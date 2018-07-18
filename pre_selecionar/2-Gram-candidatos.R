@@ -18,7 +18,6 @@ dados <- query("
           hora
   FROM semantic_tweets t
   WHERE textparser <> ''
-  LIMIT 100
 ")
 
 dados$textParser <- enc2utf8(dados$textParser)
@@ -76,4 +75,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, hashtags))
 
-save(maFinal, file = "pre-selecionar/2gram-candidatos.Rda")
+save(maFinal, file = "pre_selecionar/2gram-candidatos.Rda")
