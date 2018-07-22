@@ -9,17 +9,22 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("
-  SELECT  t.id as idzaoTweet,
+  SELECT  t.id,
+          q2 AS resposta,
           textParser,
           hashtags,
-          erros as numeroErros,
+          erroParseado as numeroErros,
           emoticonPos,
           emoticonNeg,
           hora
-  FROM semantic_tweets t
+  FROM tweets t
   WHERE textparser <> ''
-")
+  AND id <> 462478714693890048
+  AND q1 = 1
+  AND q2 IS NOT NULL")
 
+dados$resposta[is.na(dados$resposta)] <- 0
+dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
 dados$textParser = gsub("'", "", dados$textParser)
@@ -37,7 +42,8 @@ library(data.table)
 library(SnowballC)
 
 setDT(dados)
-setkey(dados, idzaoTweet)
+setkey(dados, id)
+
 
 prep_fun = tolower
 tok_fun = word_tokenizer
@@ -45,24 +51,26 @@ tok_fun = word_tokenizer
 it_train = itoken(dados$textParser, 
                   preprocessor = prep_fun, 
                   tokenizer = tok_fun,
-                  ids = dados$idzaoTweet, 
+                  ids = dados$id, 
                   progressbar = TRUE)
 
 stop_words = tm::stopwords("en")
-#vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 2L))
 vocab = create_vocabulary(it_train, stopwords = stop_words)
 vocab = prune_vocabulary(vocab, term_count_min = 2)
+
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
+
 
 it_train_hash = itoken(dados$hashtags, 
                        preprocessor = prep_fun, 
                        tokenizer = tok_fun, 
-                       ids = dados$idzaoTweet, 
+                       ids = dados$id, 
                        progressbar = TRUE)
 
 vocabHashTags = create_vocabulary(it_train_hash)
 vocabHashTags = prune_vocabulary(vocabHashTags, term_count_min = 2)
+
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
@@ -76,6 +84,6 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, hashtags))
+maFinal <- subset(maFinal, select = -c(textParser, id, hashtags))
 
-save(maFinal, file = "pre_selecionar/gram-candidatos.Rda")
+save(maFinal, file = "pre_selecionar/gram-q2-not-null.Rda")

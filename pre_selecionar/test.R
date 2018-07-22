@@ -50,13 +50,12 @@ split = 0.80
    #data_test <- subset(maFinal, select = -c(resposta))
    #data_test <- maClassificar
    
-   
-  
    load("2110/rdas/2gram-q2-not-null.Rda")
+   "pre_selecionar/2gram-adaptado_novos_tweets.Rda"
    maTreinamento <- maFinal
    
    View(data_test)
-   pred <- predict(model, subset(maFinal, select = - c(resposta)))
+   pred <- predict(model, subset(maClassificar, select = - c(resposta, idzaoTweet)))
    
    pred
    data_test

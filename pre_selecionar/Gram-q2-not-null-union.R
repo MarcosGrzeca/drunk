@@ -21,12 +21,27 @@ dados <- query("
   WHERE textparser <> ''
   AND id <> 462478714693890048
   AND q1 = 1
-  AND q2 IS NOT NULL")
+  AND q2 IS NOT NULL
+  UNION ALL
+  SELECT id,
+        q2 AS resposta,
+        textParser,
+        hashtags,
+        erros as numeroErros,
+        emoticonPos,
+        emoticonNeg,
+        hora
+  FROM semantic_tweets
+  WHERE q1 = 1
+  AND q2 IS NOT NULL
+  ")
 
 dados$resposta[is.na(dados$resposta)] <- 0
 dados$resposta <- as.factor(dados$resposta)
 dados$textParser <- enc2utf8(dados$textParser)
 dados$textParser <- iconv(dados$textParser, to='ASCII//TRANSLIT')
+dados$textParser = gsub("'", "", dados$textParser)
+dados$hashtags = gsub("#", "hashtag__", dados$hashtags)
 dados$numeroErros[dados$numeroErros > 1] <- 1
 dados <- discretizarHora(dados)
 
@@ -42,8 +57,6 @@ library(SnowballC)
 setDT(dados)
 setkey(dados, id)
 
-dados$textParser = sub("'", "", dados$textParser)
-
 prep_fun = tolower
 tok_fun = word_tokenizer
 
@@ -54,9 +67,12 @@ it_train = itoken(dados$textParser,
                   progressbar = TRUE)
 
 stop_words = tm::stopwords("en")
-vocab = create_vocabulary(it_train, stopwords = stop_words, ngram = c(1L, 2L))
+vocab = create_vocabulary(it_train, stopwords = stop_words)
+vocab = prune_vocabulary(vocab, term_count_min = 2)
+
 vectorizer = vocab_vectorizer(vocab)
 dtm_train_texto = create_dtm(it_train, vectorizer)
+
 
 it_train_hash = itoken(dados$hashtags, 
                        preprocessor = prep_fun, 
@@ -65,6 +81,8 @@ it_train_hash = itoken(dados$hashtags,
                        progressbar = TRUE)
 
 vocabHashTags = create_vocabulary(it_train_hash)
+vocabHashTags = prune_vocabulary(vocabHashTags, term_count_min = 2)
+
 vectorizerHashTags = vocab_vectorizer(vocabHashTags)
 dtm_train_hash_tags = create_dtm(it_train_hash, vectorizerHashTags)
 
@@ -80,4 +98,4 @@ maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
 maFinal <- subset(maFinal, select = -c(textParser, id, hashtags))
 
-save(maFinal, file = "2110/rdas/2gram-q2-not-null.Rda")
+save(maFinal, file = "pre_selecionar/gram-q2-not-null-union.Rda")

@@ -8,25 +8,31 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-load("2110/rdas/2gram-q2-not-null.Rda")
+#load("2110/rdas/2gram-q2-not-null.Rda")
+
+load("pre_selecionar/gram-q2-not-null-union.Rda")
 maTreinamento <- maFinal
 colunasTreinamento <- colnames(maTreinamento)
 
-load("pre_selecionar/2gram-candidatos.Rda")
-maNovos <- subset(maFinal, select = c(beer))
+load("pre_selecionar/gram-candidatos.Rda")
+maNovos <- maFinal
+maFinal$resposta
 
-View(maNovos)
-
-maNovos$beer
+countNovos <- 0
 
 for(i in 1:length(colunasTreinamento)) {
   if(colunasTreinamento[i] %in% colnames(maNovos)) {
   } else {
+    print(colunasTreinamento[i])
     maNovos[colunasTreinamento[i]] <- sample(0, nrow(maNovos), replace = TRUE)
+    countNovos = countNovos + 1
   }
 }
 
 maClassificar <- subset(maNovos, select = colunasTreinamento)
+maClassificar <- cbind.fill(maClassificar, subset(maNovos, select = idzaoTweet))
 
-save(maClassificar, file = "pre_selecionar/2gram-adaptado_novos_tweets.Rda")
+maNovos$resposta
+maClassificar$resposta
 
+save(maClassificar, file = "pre_selecionar/gram-adaptado-union_train.Rda")
