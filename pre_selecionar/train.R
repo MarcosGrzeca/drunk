@@ -34,20 +34,13 @@ set.seed(10)
 split=0.80
 
 try({
-	#load("2110/rdas/2gram-q2-not-null.Rda")
-  #load("pre_selecionar/gram-q2-not-null.Rda")
-  #load("pre_selecionar/gram-q2-not-null-adaptado.Rda")
-  
-  load("pre_selecionar/gram-q2-not-null-union.Rda")
+  load("pre_selecionar/gram-q2-not-null-union-v2.Rda")
   model <- treinar(maFinal)
-	#save.image("pre_selecionar/train_Poly.Rdata")
 })
 
-load("pre_selecionar/gram-adaptado-union_train.Rda")
-
+load("pre_selecionar/gram-adaptado-union_test-v2.Rda")
 pred <- predict(model, subset(maClassificar, select = -c(idzaoTweet, resposta)))
-View(pred)
-
 pred
+
 maPred <- cbind.fill(subset(maClassificar, select = c(idzaoTweet)), pred)
-write.csv(maPred, "pre_selecionar/pred_union.csv")
+write.csv(maPred, "pre_selecionar/pred_union_v2.csv")

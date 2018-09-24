@@ -9,20 +9,6 @@ DATABASE <- "icwsm"
 clearConsole();
 
 dados <- query("
-  SELECT  t.id,
-          q2 AS resposta,
-          textParser,
-          hashtags,
-          erroParseado as numeroErros,
-          emoticonPos,
-          emoticonNeg,
-          hora
-  FROM tweets t
-  WHERE textparser <> ''
-  AND id <> 462478714693890048
-  AND q1 = 1
-  AND q2 IS NOT NULL
-  UNION ALL
   SELECT id,
         q2 AS resposta,
         textParser,
@@ -96,6 +82,61 @@ library(RWeka)
 
 maFinal <- cbind.fill(dados, dataFrameTexto)
 maFinal <- cbind.fill(maFinal, dataFrameHash)
-maFinal <- subset(maFinal, select = -c(textParser, id, hashtags))
+maTreinamento <- subset(maFinal, select = -c(textParser, id, hashtags))
 
-save(maFinal, file = "pre_selecionar/gram-q2-not-null-union-v2.Rda")
+##ADAPTAÇÃO
+
+colunasTreinamento <- colnames(maTreinamento)
+
+load("pre_selecionar/gram-candidatos.Rda")
+maNovos <- maFinal
+countNovos <- 0
+
+for(i in 1:length(colunasTreinamento)) {
+  if(colunasTreinamento[i] %in% colnames(maNovos)) {
+  } else {
+    print(colunasTreinamento[i])
+    maNovos[colunasTreinamento[i]] <- sample(0, nrow(maNovos), replace = TRUE)
+    countNovos = countNovos + 1
+  }
+}
+
+maTeste <- subset(maNovos, select = colunasTreinamento)
+maTeste <- cbind.fill(maTeste, subset(maNovos, select = idzaoTweet))
+
+##TREINAMENTO
+
+library(tools)
+library(caret)
+
+if (!require("doMC")) {
+  install.packages("doMC")
+}
+library(doMC)
+library(mlbench)
+
+CORES <- 5
+registerDoMC(CORES)
+
+treinar <- function(data_train){
+    fit <- train(x = subset(data_train, select = -c(resposta)),
+            y = data_train$resposta, 
+            method = "svmLinear", 
+            trControl = trainControl(method = "cv", number = 5, savePred=T))
+    return (fit)
+}
+
+library(magrittr)
+
+set.seed(10)
+split=0.80
+
+model <- treinar(maTreinamento)
+
+pred <- predict(model, subset(maTeste, select = -c(idzaoTweet, resposta)))
+pred
+
+summary(pred)
+
+maPred <- cbind.fill(subset(maTeste, select = c(idzaoTweet)), pred)
+write.csv(maPred, "pre_selecionar/pred_union_v3.csv")

@@ -29,9 +29,13 @@ y_train <- labels[training_indices]
 x_test <- dados[validation_indices,]
 y_test <- labels[validation_indices]
 
+str(y_train)
+nrow(x_train)
+
 maxlen <- 39
 
 dados <- processarDados(x_train$textParser, maxlen, max_features)
+View(dados)
 
 # Parameters --------------------------------------------------------------
 batch_size <- 16

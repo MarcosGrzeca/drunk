@@ -1,0 +1,9 @@
+Instruções:
+ ☐ Gram-q2-not-null-union.R
+   Utilizado para gerar o RDA de treinamento
+ ☐ adaptar.R
+   Adpatar gram-candidatos.Rda conforme RDA de treinamento
+ ☐ train.R
+   Criar modelo e previsões
+ ☐ train_test_somente_stpatricks.R
+   Treina e testa apenas sobre os tweets coletados via Flowers, resultado é salvo em pre_selecionar/pred_union_v3.csv
