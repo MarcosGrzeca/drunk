@@ -10,14 +10,12 @@ library(mlbench)
 
 #load("2110/rdas/2gram-q2-not-null.Rda")
 
-load("pre_selecionar/gram-q2-not-null-union.Rda")
+load("pre_selecionar/gram-q2-not-null-union-v2.Rda")
 maTreinamento <- maFinal
 colunasTreinamento <- colnames(maTreinamento)
 
 load("pre_selecionar/gram-candidatos.Rda")
 maNovos <- maFinal
-maFinal$resposta
-
 countNovos <- 0
 
 for(i in 1:length(colunasTreinamento)) {
@@ -35,4 +33,4 @@ maClassificar <- cbind.fill(maClassificar, subset(maNovos, select = idzaoTweet))
 maNovos$resposta
 maClassificar$resposta
 
-save(maClassificar, file = "pre_selecionar/gram-adaptado-union_train.Rda")
+save(maClassificar, file = "pre_selecionar/gram-adaptado-union_test-v2.Rda")

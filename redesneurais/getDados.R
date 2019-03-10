@@ -9,7 +9,7 @@ source(file_path_as_absolute("processadores/discretizar.R"))
 DATABASE <- "icwsm"
 
 getDados <- function() {
-  dados <- query("SELECT q3 AS resposta,
+  dados <- query("SELECT q1 AS resposta,
                  CONCAT(textParser, ' marcos') as textParser,
                  textoParserRisadaEmoticom,
                  textoParserEmoticom,
@@ -22,8 +22,7 @@ getDados <- function() {
                  FROM tweets t
                  WHERE textparser <> ''
                  AND id <> 462478714693890048
-                 AND q3 IS NOT NULL
-                 AND q2 = 1
+                 AND q1 IS NOT NULL
                  ")
   dados$resposta[is.na(dados$resposta)] <- 0
   dados$textParser <- enc2utf8(dados$textParser)

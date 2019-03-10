@@ -1,7 +1,7 @@
 library(ggplot2)
 df1 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),
-                  len=c(87.673, 89.047, 88.360, 87.517, 92.151, 89.834))
+                  len=c(76.722, 88.785, 82.313, 97.662, 99.782, 98.71))
 
 df2 <- data.frame(supp=rep(c("Baseline", "Proposed Framework"), each=3),
                   metric=rep(c("Recall", "Precision", "F1-Measure"),2),

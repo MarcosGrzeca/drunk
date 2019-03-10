@@ -1,12 +1,12 @@
 resultados <- data.frame(matrix(ncol = 4, nrow = 0))
 names(resultados) <- c("Baseline", "F1", "Precisão", "Revocação")
 
-try({
-    load("webintelligence/compare.RData")
-})
-
 library(tools)
 library(caret)
+if (!require("caretEnsemble")) {
+  install.packages("caretEnsemble")
+}
+library(caretEnsemble)
 
 if (!require("doMC")) {
   install.packages("doMC")
@@ -14,7 +14,7 @@ if (!require("doMC")) {
 library(doMC)
 library(mlbench)
 
-CORES <- 10
+CORES <- 25
 registerDoMC(CORES)
 
 treinar <- function(data_train){
@@ -26,11 +26,11 @@ treinar <- function(data_train){
     return (fit)
 }
 
-treinarFolds <- function(data_train, numFolds){
-    fit <- train(x = subset(data_train, select = -c(resposta)),
+treinarEnsemble <- function(data_train) {
+    fit <- train( = subset(data_train, select = -c(resposta)),
             y = data_train$resposta, 
             method = "svmLinear", 
-            trControl = trainControl(method = "cv", number = numFolds, savePred=T),
+            trControl = trainControl(method = "cv", number = 5, savePred=T),
             preProc=c("center"))
     return (fit)
 }
@@ -65,165 +65,42 @@ library(magrittr)
 set.seed(10)
 split=0.80
 
+# try({
+  # for (indice in 1:3){
+    load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
 
-if (!exists("matriz2GramEntidadesHoraErro")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
+    dataset = 
+    control <- trainControl(method="repeatedcv", number=5, repeats=3, savePredictions=TRUE)
+    #algorithmList <- c('lda', 'rpart', 'rf', 'knn', 'svmRadial')
+    algorithmList <- c('svmLinear', 'rf')
+    models <- caretList(y = data_train$resposta, x=subset(data_train, select = -c(resposta)), trControl=control, methodList=algorithmList)
+    results <- resamples(models)
 
-      twogramEntidadesHoraErro <- treinar(data_train)
-      twogramEntidadesHoraErro
-      matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
-      resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
 
-if (!exists("matriz2GramEntidadesHoraErroPoly")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
+    twogramEntidadesHoraErro <- treinar(data_train)
+    twogramEntidadesHoraErro
+    matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
+    resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
+    #save.image(file="webintelligence/compare.RData")
+  # }
+# })
 
-      twogramEntidadesHoraErro <- treinar(data_train)
-      twogramEntidadesHoraErro
-      matriz2GramEntidadesHoraErroPoly <- getMatriz(twogramEntidadesHoraErro, data_test)
-      resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro (Poly)", matriz2GramEntidadesHoraErroPoly)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
+try({
+  for (indice in 1:3){
+    load("2110/rdas/2gram-entidades-hora-erro-q2-not-null.Rda")
+    maFinal$resposta <- as.factor(maFinal$resposta)
+    trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
+    data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
+    data_test <- maFinal[-trainIndex,]
 
-if (!exists("matriz3Gram")) {
-  try({
-    for (indice in 1:5) {
-      load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      threeGram25 <- treinar(data_train)
-      threeGram25
-      matriz3Gram <- getMatriz(threeGram25, data_test)
-      resultados <- addRow(resultados, "3 Gram + 25% + Bow #", matriz3Gram)
-      save.image(file="webintelligence/compare.RData")
-      }
-  })
-}
-
-if (!exists("matriz3GramPoly")) {
-  try({
-    for (indice in 1:5) {
-      load("2110/rdas/3gram-25-q2-v2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      threeGram25 <- treinar(data_train)
-      threeGram25
-      matriz3GramPoly <- getMatriz(threeGram25, data_test)
-      resultados <- addRow(resultados, "3 Gram + 25% + Bow # (Poly)", matriz3GramPoly)
-      save.image(file="webintelligence/compare.RData")
-      }
-  })
-}
-
-if (!exists("matrizTwoGramTypesInfoQ2Entidades")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFS <- treinar(data_train)
-      twoGramTypesCFS
-      matrizTwoGramTypesInfoQ2Entidades <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2", matrizTwoGramTypesInfoQ2Entidades)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
-
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesPolyV2")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFS <- treinarPoly(data_train)
-      twoGramTypesCFS
-      matrizTwoGramTypesInfoQ2EntidadesPolyV2 <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types + entidades + Info Gain Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesPolyV2)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
-
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFS <- treinar(data_train)
-      twoGramTypesCFS
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPoda)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
-
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFS <- treinarPoly(data_train)
-      twoGramTypesCFS
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly <- getMatriz(twoGramTypesCFS, data_test)
-      resultados <- addRow(resultados, "2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPoly)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
-
-if (!exists("matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2")) {
-  try({
-    for (indice in 1:5){
-      load("2110/rdas/2-Gram-dbpedia-types-enriquecimento-info-q2-not-null_info_entidades.Rda")
-      maFinal$resposta <- as.factor(maFinal$resposta)
-      trainIndex <- createDataPartition(maFinal$resposta, p=split, list=FALSE)
-      data_train <- as.data.frame(unclass(maFinal[ trainIndex,]))
-      data_test <- maFinal[-trainIndex,]
-
-      twoGramTypesCFSV2 <- treinarPoly(data_train)
-      twoGramTypesCFSV2
-      matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2 <- getMatriz(twoGramTypesCFSV2, data_test)
-      resultados <- addRow(resultados, "V2 2 Gram + Types (Info Gain) + Entidades (Info Gain) + Q2 (Poly)", matrizTwoGramTypesInfoQ2EntidadesEnriquecimentoEPodaPolyV2)
-      save.image(file="webintelligence/compare.RData")
-    }
-  })
-}
+    twogramEntidadesHoraErro <- treinar(data_train)
+    twogramEntidadesHoraErro
+    matriz2GramEntidadesHoraErro <- getMatriz(twogramEntidadesHoraErro, data_test)
+    resultados <- addRow(resultados, "2 GRAM + entidades + hora + erro", matriz2GramEntidadesHoraErro)
+    #save.image(file="webintelligence/compare.RData")
+  }
+})
