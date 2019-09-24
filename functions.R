@@ -20,7 +20,7 @@ finishFileLog <- function(nome){
 
 query <- function(sql) {
   dbDataType(RMySQL::MySQL(), "a")
-  mydb = dbConnect(MySQL(), user='root', password='senharoot123', dbname=DATABASE, host='marcosrds.ce948apvv9n9.sa-east-1.rds.amazonaws.com')
+  mydb = dbConnect(MySQL(), user='root', password='senharoot123', dbname=DATABASE, host='marcosrdsgmail.cfxafx6qs9ok.sa-east-1.rds.amazonaws.com')
   rs = dbSendQuery(mydb, sql);
   dataBD <- fetch(rs, n=-1)
   huh <- dbHasCompleted(rs)

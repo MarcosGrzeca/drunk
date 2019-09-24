@@ -3,7 +3,7 @@ source(file_path_as_absolute("functions.R"))
 
 DATABASE <- "icwsm"
 clearConsole();
-dados <- query("SELECT id, tweet as textoCompleto FROM tweets_amazon")
+dados <- query("SELECT id, tweet as textoCompleto FROM tweets_amazon WHERE q2 IN ('0', '1')")
 
 library(doMC)
 library(rowr)
@@ -12,6 +12,7 @@ library(tidytext)
 library(glue)
 library(stringr)
 library(NLP)
+library(syuzhet)
 
 processador <- function(x) {
   
@@ -71,13 +72,11 @@ processador <- function(x) {
   }
   if("positive" %in% colnames(sentiment)) {
     positive <- sentiment$positive
-  }  
-  
-
-  #as.character(marcos)
+  }
   sqla <-paste("INSERT INTO `tweets_sentiment_type` VALUES (", as.character(x[1]), ", ", anger, ", ", anticipation, ", ", disgust, ", ", fear, ", ", joy, ", ", sadness, ", ", surprise, ", ", trust, ", ", negative, ", ", positive, ", 'ds3')", sep="");
   query(sqla)
   return (1)
 }
 
-apply(subset(dados, select = c(id, textoCompleto)), 1, processador)
+dados$id <- as.character(dados$id)
+apply(dados, 1, processador)
