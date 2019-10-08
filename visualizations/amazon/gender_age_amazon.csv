@@ -1,0 +1,13 @@
+agegroup,Gender,totalUsers,totalUsersQ2,totalTweets,totalTweetsQ2,totalTweetsQ0
+"Age group 6 <=17",Female,75,43,201,79,80
+"Age group 6 <=17",Male,-48,-32,-94,-43,-33
+"Age group 5 18-24",Female,433,312,1217,498,529
+"Age group 5 18-24",Male,-261,-170,-1679,-538,-1049
+"Age group 4 25-34",Female,886,636,4766,2069,2056
+"Age group 4 25-34",Male,-605,-383,-2615,-1042,-909
+"Age group 3 35-44",Female,674,424,2182,943,781
+"Age group 3 35-44",Male,-628,-347,-1830,-757,-705
+"Age group 2 45-54",Female,380,226,1182,507,425
+"Age group 2 45-54",Male,-431,-242,-1407,-620,-516
+"Age group 1 >=55",Female,128,78,410,194,173
+"Age group 1 >=55",Male,-207,-124,-689,-313,-222
